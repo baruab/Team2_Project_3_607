@@ -1,0 +1,31 @@
+---
+title: 'Project 3: Machine Learning and Data Science Survey'
+author: "by William Aiken, Bikram Barua, Catherine Cho, Eric Lehmphul, Nnaemeka Newman Okereafor"
+date: "10/10/2021"
+output: pdf_document
+---
+
+#### Introduction: In 2018, Kaggle conducted a survey to gather information on the state of data science and machine learning around the world. A total of 23,859 responses were collected and was compiled for analysis and the raw data can be found via https://www.kaggle.com/kaggle/kaggle-survey-2018?select=SurveySchema.csv. The survey was given in the form of a multiple choice and free form response. For the purpose of this analysis, the multiple choice dataset was considered. 
+
+#### Purpose: This analysis studies a subset of the raw multiple choice data to better understand the skills currently required in industry around the world. The data scientist's skill and experience will be measured by the highest level of degree earned, the type of degree earned, the type of software used (specialized or non-specific), the number of software a data scientist is proficient in, and the reported proficiency level of the software predominately used. Additionally, these will be compared globally and the analysis will determine if there is a geographical trend. 
+
+##### 1a) For all that identified their current title to be "data scientist" (Q6), what percentage earned a bachelor degree, masters degree, or a doctoral degreen (Q4)?
+##### 1b) Among each category of degree earned, what proportion was related to statistics, computers, information (Q5)?
+##### 1c) Is there a geographical trend of these proportions per continent? (Asia, North America, South America, Africa, Austrailia, Europe, Austrailia) Q3
+```{r}
+library(readr)
+urlfile<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
+survey<-read_csv(url(urlfile))
+
+
+```
+
+##### 2a) What is the primary tool data scientists use to analyze data accross the globe? (Q12)
+##### 2b) Out of each group of people that use a certain tool, what proportion of people consider themselves proficient? 
+##### 2c) Is there an obvious trend of users of these tools depending on geographical location? 
+##### 2c) What is the average of tools used per continent? (Q16)
+
+```{r}
+
+```
+
