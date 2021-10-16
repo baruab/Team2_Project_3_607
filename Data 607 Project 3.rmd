@@ -1,8 +1,11 @@
 ---
 title: 'Project 3: Machine Learning and Data Science Survey'
-author: "by William Aiken, Bikram Barua, Catherine Cho, Eric Lehmphul, Nnaemeka Newman Okereafor"
+author: by William Aiken, Bikram Barua, Catherine Cho, Eric Lehmphul, Nnaemeka Newman
+  Okereafor
 date: "10/10/2021"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 #### Introduction: In 2018, Kaggle conducted a survey to gather information on the state of data science and machine learning around the world. A total of 23,859 responses were collected and was compiled for analysis and the raw data can be found via https://www.kaggle.com/kaggle/kaggle-survey-2018?select=SurveySchema.csv. The survey was given in the form of a multiple choice and free form response. For the purpose of this analysis, the multiple choice dataset was considered. 
@@ -15,21 +18,91 @@ output: pdf_document
 ```{r}
 library(readr)
 urlfile<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
-survey<-read_csv(url(urlfile))
+survey_raw<-read_csv(url(urlfile))
 
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+
+#subsetting the data
+#survey<-subset(survey_raw,select=c(5:8,13,66:83,85,89:107))
+survey<-subset(survey_raw,select=c(5:8,13))
+
+#filtering out data listed under data scientist only
+survey_ds<-filter(survey,survey$Q6=="Data Scientist")
+survey_ds<-subset(survey_ds,select=-c(4))
+
+#renaming columns
+colnames(survey_ds)<-c("country","highest_degree","undergrad_deg","salary")
+
+#barplot of raw count of different levels of education
+p<-ggplot(survey_ds,aes(x=factor(highest_degree)))+
+  geom_bar(stat="count",width=0.7,fill="steelblue")+
+  theme_minimal()
+q<-p+aes(stringr::str_wrap(highest_degree,15))+xlab(NULL)
+q<-q+coord_flip()
+
+#Is there a correlation between salary and highest degree earned?
+undergrad<-unique(survey_ds$undergrad_deg)
+survey_ds$salary<-str_replace_all(survey_ds$salary,"(\\d|\\d+)-","") 
+survey_ds$salary<-str_replace_all(survey_ds$salary,",","")
+survey_ds$salary<-as.numeric(survey_ds$salary)
+survey_ds$salary<-survey_ds$salary/1000
+
+#raw plot with all values
+r<-ggplot(survey_ds%>%count(salary,highest_degree),
+  aes(salary,n,fill=highest_degree))+
+  geom_bar(stat="identity")+
+  ggtitle("Salary and Highest Degree Globally")+
+  xlab("salary K ($)")+ylab("count")
+
+#removing null data and looking at data bettween 0-100k salary
+survey_f1<-filter(survey_ds,salary<250)
+survey_f1<-filter(survey_f1,highest_degree!="I prefer not to answer")
+ggplot(survey_f1%>%count(salary,highest_degree),
+    aes(salary,n,fill=highest_degree))+
+  geom_bar(stat="identity")+
+  ggtitle("Salary and Highest Degree Globally")+
+  xlab("salary K ($)")+ylab("count")
+
+#further filter out non-degree inputs
+survey_f2<-filter(survey_f1,highest_degree=="Master’s degree"|highest_degree=="Bachelor’s degree"|highest_degree=="Doctoral degree")
+ggplot(survey_f2%>%count(salary,highest_degree),
+  aes(salary,n,fill=highest_degree))+
+  geom_bar(stat="identity")+
+  ggtitle("Salary and Highest Degree Globally")+
+  xlab("salary K ($)")+ylab("count")
 
 ```
-
-##### 2a) What is the primary tool data scientists use to analyze data accross the globe? (Q12)
-##### 2b) Out of each group of people that use a certain tool, what proportion of people consider themselves proficient? 
-##### 2c) Is there an obvious trend of users of these tools depending on geographical location? 
-##### 2c) What is the average of tools used per continent? (Q16)
-(language and framework)
 
 ```{r}
+#summarizing with proportions
+library(plyr)
+subset1<-subset(survey_f2,select=c("highest_degree","salary"))
+MS<-filter(subset1,highest_degree=="Master’s degree")
+BA<-filter(subset1,highest_degree=="Bachelor’s degree")
+PHD<-filter(subset1,highest_degree=="Doctoral degree")
+MS_count<-count(MS,'salary')
+BA_count<-count(BA,'salary')
+PHD_count<-count(PHD,'salary')
+deg_freq<-data.frame(BA_count$freq,MS_count$freq,PHD_count$freq)
+row_sum<-rowSums(deg_freq)
+deg_freq<-data.frame(BA_count$salary,BA_count$freq,MS_count$freq,PHD_count$freq,row_sum)
+
+BA_pct<-round(deg_freq$BA_count.freq/deg_freq$row_sum*100)
+BA_pct<-data.frame(BA[1:length(BA_pct),1],BA_pct)
+colnames(BA_pct)<-c('highest degree','percent')
+MS_pct<-round(deg_freq$MS_count.freq/deg_freq$row_sum*100)
+MS_pct<-data.frame(MS[1:length(MS_pct),1],MS_pct)
+colnames(MS_pct)<-c('highest degree','percent')
+PHD_pct<-round(deg_freq$PHD_count.freq/deg_freq$row_sum*100)
+PHD_pct<-data.frame(PHD[1:length(PHD_pct),1],PHD_pct)
+colnames(PHD_pct)<-c('highest degree','percent')
+combined<-rbind(BA_pct,MS_pct,PHD_pct)
+
+
+
 
 ```
 
-##### 3a) Number of languages v sallary. 
-Country vs. Sallary, 
-Degree vs. Sallary
