@@ -1,0 +1,212 @@
+---
+title: 'Project 3: Analysis'
+author: "Eric Lehmphul"
+date: "10/15/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Libraries:
+```{r}
+library(tidyverse)
+library(tidyr)
+library(readr)
+```
+
+## Load Data:
+```{r}
+## survey schema
+
+survey.schema <- read.csv("https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/SurveySchema.csv")
+
+## freeform responses
+
+free.form <- read.csv("https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/freeFormResponses.csv")
+
+
+## multiple choice
+
+multiple.choice <- read.csv("https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv")
+```
+
+
+## Subset:
+
+```{r}
+urlfile<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
+survey_raw<-read_csv(url(urlfile))
+
+#subsetting the data
+survey<-subset(survey_raw,select=c(5:8,13,66:83,85,89:107))
+survey_ds<-filter(survey,survey$Q6=="Data Scientist")
+survey_ds<-subset(survey_ds,select=-c(4))
+```
+
+## 1a) For all that identified their current title to be "data scientist" (Q6), what percentage earned a bachelor degree, masters degree, or a doctoral degreen (Q4)?
+
+We can conclude that a masters degree is important to acquire for an individual who intends to pursue data science as a career.
+```{r}
+survey_ds$Q4 <- as.factor(survey_ds$Q4)
+
+education <- survey_ds %>%
+  group_by(Q4) %>%
+  summarise(n = n()) %>%
+  mutate(freq = round(n / sum(n),4)) %>%
+  arrange(desc(freq))
+
+education
+
+```
+
+
+```{r}
+# Compared to non data scientist responses
+survey$Q6 <- as.factor(survey$Q6)
+
+survey_no_ds<-filter(survey,survey$Q6!="Data Scientist")
+
+education_no_ds <- survey_no_ds %>%
+  group_by(Q4) %>%
+  summarise(n = n()) %>%
+  mutate(freq = round(n / sum(n),4)) %>%
+  arrange(desc(freq))
+
+education_no_ds
+```
+
+## 1b) Among each category of degree earned, what proportion was related to statistics, computers, information (Q5)?
+
+The tibble below shows the spread of respondents degree background.
+```{r}
+# Data Scientist responses
+survey_ds$Q5 <- as.factor(survey_ds$Q5)
+
+degree_type <- survey_ds %>%
+  group_by(Q5) %>%
+  summarise(n = n()) %>%
+  mutate(freq = round(n / sum(n),4)) %>%
+  arrange(desc(freq))
+
+degree_type
+```
+
+```{r}
+# Non - Data Scientist responses
+survey_ds$Q5 <- as.factor(survey_ds$Q5)
+
+degree_type_no_ds <- survey_no_ds %>%
+  group_by(Q5) %>%
+  summarise(n = n()) %>%
+  mutate(freq = round(n / sum(n),4)) %>%
+  arrange(desc(freq))
+
+degree_type_no_ds
+```
+
+## 1c) Is there a geographical trend of these proportions per continent? (Asia, North America, South America, Africa, Austrailia, Europe, Austrailia) Q3
+
+```{r}
+mapdata <- map_data("world")
+names(mapdata)[5] <- "Q3"
+
+mapdata$Q3<-replace(mapdata$Q3, mapdata$Q3=="USA", "United States of America")
+
+# mapdata <- left_join(mapdata,survey_ds, by = "Q3")
+```
+
+```{r}
+# mapdata1 <- mapdata %>% filter(!is.na(mapdata$Q4))
+```
+
+```{r}
+education_map <- survey_ds %>%
+  group_by(Q4,Q3) %>%
+  summarise(n = n()) %>%
+  mutate(freq = round(n / sum(n),4)) %>%
+  arrange(desc(freq))
+
+education_map
+```
+
+```{r}
+mapdata <- left_join(mapdata,education_map, by = "Q3")
+```
+
+```{r}
+# mapdata1 <- mapdata %>% filter(!is.na(mapdata$Q4))
+```
+
+```{r}
+# map1 <- ggplot(mapdata1, aes(x = long, y = lat, group=group)) +
+#   geom_polygon(aes(fill = Q4), color = "black")
+# map1
+```
+
+```{r}
+map2 <- ggplot(mapdata, aes(x = long, y = lat, group=group)) +
+  geom_polygon(aes(fill = n), color = "black")
+map2
+```
+
+```{r}
+# mapdata1$Q3 <- as.factor(mapdata1$Q3)
+# levels(mapdata1$Q3)
+```
+
+## 2a) What is the primary tool data scientists use to analyze data accross the globe? (Q12)
+
+Most data scientist respondents believe it is valuable to learn Python, SQL, and R to be sucessful in practice.
+```{r}
+Q16 <- gather(survey_ds, key = "Q16_Part", value = "Q16_Answer", Q16_Part_1, Q16_Part_2, Q16_Part_3, Q16_Part_4, Q16_Part_5, Q16_Part_6, Q16_Part_7, Q16_Part_8, Q16_Part_9, Q16_Part_10, Q16_Part_11, Q16_Part_12, Q16_Part_13, Q16_Part_14, Q16_Part_15, Q16_Part_16)
+
+Q16 <- Q16[,c(27,28)]
+
+tools_ds <- Q16 %>%
+  group_by(Q16_Answer) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+
+tools_ds <- tools_ds[-1,]
+
+tools_ds <-mutate(tools_ds, freq = round(n / sum(n),4))
+```
+
+```{r}
+tools_ds
+```
+
+## Importance of knowing how to read and write code.
+
+It is valuable for a data scientist to spend time to become a solid coder. About half of the data scientists that participated in the survey code between 25% of the time to 75% of the time.
+```{r}
+time_coding_ds <- multiple.choice %>%
+  group_by(Q23) %>%
+  summarise(n = n()) %>%
+  mutate(freq = round(n / sum(n),4))
+
+time_coding_ds <- time_coding_ds[-c(1,8),]
+
+x <- c("0% of my time", "1% to 25% of my time", "25% to 49% of my time", "50% to 74% of my time", "75% to 99% of my time", "100% of my time")
+
+time_coding_ds <- time_coding_ds %>%
+  mutate(Q23 =  factor(Q23, levels = x)) %>%
+  arrange(Q23)   
+```
+
+```{r}
+time_coding_ds
+```
+
+```{r}
+barplot_coding_time <- ggplot(data=time_coding_ds, aes(x=Q23, y=n)) +
+  geom_bar(stat="identity", fill="black")+
+  geom_text(aes(label=n), vjust=1.6, color="white", size=3.5)+
+  ggtitle("Survey: \n Time Spent Coding") +
+  xlab("Time Spent") + ylab("Number of Participants")+
+  scale_x_discrete(breaks=c("0% of my time", "1% to 25% of my time", "25% to 49% of my time", "50% to 74% of my time", "75% to 99% of my time", "100% of my time"), labels=c("0%", "1% to 25%", "25% to 49%", "50% to 74%", "75% to 99%", "100%"))+
+  theme_minimal()
+
+barplot_coding_time 
+```
+Based on barplot coding is an extremely valueable skill to have.
