@@ -1,0 +1,215 @@
+---
+title: 'Project 3: Machine Learning and Data Science Survey'
+author: by William Aiken, Bikram Barua, Catherine Cho, Eric Lehmphul, Nnaemeka Newman
+  Okereafor
+date: "10/10/2021"
+output:
+  html_document:
+    df_print: paged
+---
+
+#### Introduction: In 2018, Kaggle conducted a survey to gather information on the state of data science and machine learning around the world. A total of 23,859 responses were collected and was compiled for analysis and the raw data can be found via https://www.kaggle.com/kaggle/kaggle-survey-2018?select=SurveySchema.csv. The survey was given in the form of a multiple choice and free form response. For the purpose of this analysis, the multiple choice dataset was considered. 
+
+#### Purpose: This analysis studies a subset of the raw multiple choice data to better understand the skills currently required in industry in the US. The data scientist's skill and experience will be measured by the highest level of degree earned, the type of degree earned, the type of software used (specialized or non-specific), the number of software a data scientist is proficient in, and the reported proficiency level of the software predominately used. Additionally, these will be compared globally and the analysis will determine if there is a geographical trend. 
+
+##### The first part of this analysis will gauge the level of education of data scientists in the US. Is there a correlation between the level of education and marketability of the data scientist? Is there a strong trend in the level of education that Data Scientist pursue? 
+
+##### A cursory look at the raw count per degree is shown below. Overall, there were significantly more people with a Master's degree than any other degree level than with those with a Bachelor's and Master's degree. 
+```{r}
+library(readr)
+urlfile<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
+survey_raw<-read_csv(url(urlfile))
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+
+#subsetting the data
+#survey<-subset(survey_raw,select=c(5:8,13,66:83,85,89:107))
+survey<-subset(survey_raw,select=c(5:8,13))
+
+#filtering out data listed under data scientist only
+survey_ds<-filter(survey,survey$Q6=="Data Scientist")
+survey_ds<-subset(survey_ds,select=-c(4))
+
+#renaming columns
+colnames(survey_ds)<-c("country","highest_degree","undergrad_deg","salary")
+
+```
+
+```{r}
+
+#barplot of raw count of different levels of education
+p<-ggplot(survey_ds,aes(x=factor(highest_degree)))+
+  geom_bar(stat="count",width=0.7,fill="steelblue")+
+  theme_minimal()
+q<-p+aes(stringr::str_wrap(highest_degree,15))+xlab(NULL)
+q<-q+coord_flip()
+
+survey_ds<-survey_ds%>%
+  mutate(highest_degree=str_replace(highest_degree,"Some college/university study without earning a bachelor’s degree","Some College"))
+
+survey_ds<-survey_ds%>%
+  mutate(highest_degree=str_replace(highest_degree,"No formal education past high school","High School"))
+
+
+p<-survey_ds%>%
+  group_by(highest_degree)%>%
+  summarise(count=n())%>%
+  ggplot(aes(x=reorder(highest_degree,(count)),y=count))+
+  geom_bar(stat="identity")+
+  theme_minimal()+
+  coord_flip()+
+   xlab(NULL)+ylab("count")
+
+p
+
+
+```
+
+```{r}
+
+#Is there a correlation between salary and highest degree earned?
+undergrad<-unique(survey_ds$undergrad_deg)
+survey_ds$salary<-str_replace_all(survey_ds$salary,"(\\d|\\d+)-","") 
+survey_ds$salary<-str_replace_all(survey_ds$salary,",","")
+survey_ds$salary<-as.numeric(survey_ds$salary)
+survey_ds$salary<-survey_ds$salary/1000
+
+```
+###### The following shows a stacked barplot that counts the number of data scientists per salary range, which is further divided between degree level earned in the US only. This is the raw count of all degree options offered in the survey. Some features to note is that data scientists in  general earn less than $250K. Generally there are more data scientists that earned a Bachelor's, Master's, or Doctoral degree than those that partially completed a program, earned a certificate, or had no formal education. The overall salary  mean in the US is $136K.  
+
+```{r}
+#US count only
+#Is there a correlation between salary and highest degree earned?
+survey_ds_US<-filter(survey_ds,country=="United States of America")
+
+#raw plot with all values
+ggplot(survey_ds_US%>%count(salary,highest_degree),
+  aes(salary,n,fill=highest_degree))+
+  geom_bar(stat="identity")+
+  ggtitle("Salary and Highest Degree in the US")+
+  xlab("salary K ($)")+ylab("count")
+
+mean(survey_ds_US$salary,na.rm=TRUE)
+
+```
+
+
+##### This analysis will focus on the salary ranges between $0-$250K since there are more data points in those ranges. The data is further filtered to focus on those that had a Bachelor's, Master's and Doctoral degrees. The salary mean when looking at this truncated data drops to $123K from $135K.
+
+```{r}
+#removing null data and looking at data bettween 0-100k salary
+survey_f1<-filter(survey_ds_US,salary<250)
+survey_f1<-filter(survey_f1,highest_degree!="I prefer not to answer")
+
+#further filter out non-degree inputs
+survey_f2<-filter(survey_f1,highest_degree=="Master’s degree"|highest_degree=="Bachelor’s degree"|highest_degree=="Doctoral degree")
+ggplot(survey_f2%>%count(salary,highest_degree),
+  aes(salary,n,fill=highest_degree))+
+  geom_bar(stat="identity")+
+  ggtitle("Salary and Highest Degree in the US")+
+  xlab("salary K ($)")+ylab("count")
+
+mean(survey_f2$salary,na.rm=TRUE)
+
+```
+
+##### Since it is difficult to determine if there is an obvious trend between salary and education level, the barplots are adjusted to show proportions of degree per salary rather than count. The adjusted bar plot shows that the proportion of Master's and Doctoral degrees do not increase by an obvious margin as expected but rather  stays consistent. However, the number of Bachelor degrees decrease generally. 
+
+```{r}
+#summarizing with proportions for the US
+subset1<-subset(survey_f2,select=c("highest_degree","salary"))
+MS<-filter(subset1,highest_degree=="Master’s degree")
+BA<-filter(subset1,highest_degree=="Bachelor’s degree")
+PHD<-filter(subset1,highest_degree=="Doctoral degree")
+
+MS_count<-count(MS,salary)
+BA_count<-count(BA,salary)
+PHD_count<-count(PHD,salary)
+PHD_count<-PHD_count%>%add_row(salary=50,n=0,.before=5)
+
+deg_freq1<-data.frame(BA_count$n,MS_count$n,PHD_count$n)
+row_sum<-rowSums(deg_freq1)
+deg_freq1<-data.frame(BA_count$salary,BA_count$n,MS_count$n,PHD_count$n,row_sum)
+
+BA_pct<-round(deg_freq1$BA_count.n/deg_freq1$row_sum*100)
+BA_pct<-data.frame(BA[1:length(BA_pct),1],BA_pct,BA_count$salary)
+colnames(BA_pct)<-c('highest degree','percent','salary')
+MS_pct<-round(deg_freq1$MS_count.n/deg_freq1$row_sum*100)
+MS_pct<-data.frame(MS[1:length(MS_pct),1],MS_pct,BA_count$salary)
+colnames(MS_pct)<-c('highest degree','percent','salary')
+PHD_pct<-round(deg_freq1$PHD_count.n/deg_freq1$row_sum*100)
+PHD_pct<-data.frame(PHD[1:length(PHD_pct),1],PHD_pct,BA_count$salary)
+colnames(PHD_pct)<-c('highest degree','percent','salary')
+combined<-rbind(BA_pct,MS_pct,PHD_pct)
+```
+
+```{r}
+
+combined<-combined%>%
+  group_by(salary)%>%
+  arrange(salary,desc(`highest degree`))%>%
+  mutate(lab_ypos=cumsum(percent)-0.5*percent)
+ggplot(combined,aes(x=salary,y=percent))+
+  geom_col(aes(fill=`highest degree`),width=8)+
+  xlab("salary K ($)")+ylab("percent %")+
+  ggtitle("Degree and Salary in the US <$250K")+
+  geom_text(aes(y=lab_ypos,label=percent,group=`highest degree`),color="white")
+
+```
+##### When looking at the ranges above $250K, it is interesting to see that there are still some with Bachelor's degrees only.  
+
+```{r}
+#For salary greater than 200k
+survey_f3<-filter(survey_ds_US,salary>250)
+survey_f3<-filter(survey_f3,highest_degree!="I prefer not to answer")
+
+survey_f3<-filter(survey_f3,highest_degree=="Master’s degree"|highest_degree=="Bachelor’s degree"|highest_degree=="Doctoral degree")
+ggplot(survey_f3%>%count(salary,highest_degree),
+  aes(salary,n,fill=highest_degree))+
+  geom_bar(stat="identity")+
+  ggtitle("Salary and Highest Degree Globally >$250K")+
+  xlab("salary K ($)")+ylab("count")
+```
+##### The data is further analyzed using proportions instead of count and people with Doctoral and Master's degrees make up majority of the people who earn greater than $250K.  
+```{r}
+#summarizing with proportions for the US
+subset3<-subset(survey_f3,select=c("highest_degree","salary"))
+MS<-filter(subset3,highest_degree=="Master’s degree")
+BA<-filter(subset3,highest_degree=="Bachelor’s degree")
+PHD<-filter(subset3,highest_degree=="Doctoral degree")
+
+MS_count<-count(MS,salary)
+BA_count<-count(BA,salary)
+PHD_count<-count(PHD,salary)
+BA_count<-BA_count%>%add_row(salary=500,n=0)
+
+deg_freq1<-data.frame(BA_count$n,MS_count$n,PHD_count$n)
+row_sum<-rowSums(deg_freq1)
+deg_freq1<-data.frame(BA_count$salary,BA_count$n,MS_count$n,PHD_count$n,row_sum)
+
+BA_pct<-round(deg_freq1$BA_count.n/deg_freq1$row_sum*100)
+BA_pct<-data.frame(BA[1:length(BA_pct),1],BA_pct,BA_count$salary)
+colnames(BA_pct)<-c('highest degree','percent','salary')
+MS_pct<-round(deg_freq1$MS_count.n/deg_freq1$row_sum*100)
+MS_pct<-data.frame(MS[1:length(MS_pct),1],MS_pct,BA_count$salary)
+colnames(MS_pct)<-c('highest degree','percent','salary')
+PHD_pct<-round(deg_freq1$PHD_count.n/deg_freq1$row_sum*100)
+PHD_pct<-data.frame(PHD[1:length(PHD_pct),1],PHD_pct,BA_count$salary)
+colnames(PHD_pct)<-c('highest degree','percent','salary')
+combined<-rbind(BA_pct,MS_pct,PHD_pct)
+
+combined<-combined%>%
+  group_by(salary)%>%
+  arrange(salary,desc(`highest degree`))%>%
+  mutate(lab_ypos=cumsum(percent)-0.5*percent)
+ggplot(combined,aes(x=salary,y=percent))+
+  geom_col(aes(fill=`highest degree`),width=50)+
+  xlab("salary K ($)")+ylab("percent %")+
+  ggtitle("Degree and Salary in the US <$250K")+
+  geom_text(aes(y=lab_ypos,label=percent,group=`highest degree`),color="white")
+
+```
+### Conclusion: It seems that in the salary ranges less than $250K, having a Bachelor's, Master's, or Doctoral degree makes up the largest proportions. There does not seem to be an obvious trend to show that either of these degrees will increase the likelihood of earning more within this range. However as you move into salary ranges greater than $250K, the majority of the people either have at least a Master's and Doctoral. Surprisingly enough, there are still a good proportion of people with Bachelor's degrees. The marketability of a data scientist may not fully depend on their level of education alone but other factors should be considered. 
