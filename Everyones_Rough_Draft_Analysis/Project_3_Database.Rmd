@@ -1,0 +1,204 @@
+---
+title: "Project_3_Database"
+author: "William Aiken"
+date: "10/16/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+```{r}
+library(dplyr)
+library(readr)  
+library(knitr)
+library(reshape2)
+library(kableExtra)
+library(RPostgres)
+library(DBI)
+library(dbplyr)
+library(keyring)
+library(seplyr)
+```
+
+
+## Introduction
+
+#### This is where we save parse the Kaggle survey dataset into the fields of interests.  And save those files out as normalized tables.
+
+## Method
+
+#### 1. Load the dataset from GitHub
+
+```{r}
+survey_raw <- read_csv("https://raw.githubusercontent.com/catfoodlover/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv")
+```
+
+#### 2. Filter out rows not of interest
+* filter down to just participants who identify as Data Scientists
+* filter down to just participants within the United States of America
+
+```{r}
+survey_df<-filter(survey_raw,survey_raw$Q6=="Data Scientist")
+survey_df <- survey_df %>% filter(Q3 %in% c("United States of America"))
+```
+
+#### 3. Create participant_info table
+* create id column
+* select rows corresponding to Gender, Age, Country, and Degree Name
+* create id column for age and degree
+
+```{r}
+survey_df <- survey_df %>% mutate(participant_id = row_number())
+# Split data up into tables
+# participant info
+participant_info <-
+  survey_df %>% select(
+    participant_id,
+    gender = Q1,
+    age_group_name = Q2,
+    country = Q3,
+    degree_name = Q4
+  ) %>% select(participant_id, gender, age_group_name, country, degree_name)
+
+participant_info <- add_group_indices(participant_info, c('age_group_name'), 'age_group_id')
+
+participant_info <- add_group_indices(participant_info, c('degree_name'), 'degree_id')
+```
+
+#### 4. Create age_group table
+* split of age_group_id and age_group_name from participant_info and keep distinct rows
+
+```{r}
+# Create the age_group table
+age_group <- participant_info %>% select(age_group_id, age_group_name) %>% distinct()
+```
+
+#### 5. Create education_degree table
+* split of degree_id and degree_name from participant_info and keep distinct rows
+
+```{r}
+# Create the education_degree table
+education_degree <- participant_info %>% select(degree_id, degree_name) %>% distinct()
+```
+
+#### 6. Create final participant_info table
+* select just the required rows
+
+```{r}
+# Reduce participant_info down to just the required fields
+participant_info <- participant_info %>% select(participant_id, gender, age_group_id, country, highest_education = degree_name)
+```
+
+#### 7. Create participant_job_activity
+* select participant_id and all columns for Question 11
+* convert data from wide to long
+* filter out NA values and rename columns
+
+```{r}
+# create participant_job_activity
+
+participant_job_activity <-
+  survey_df %>% select(participant_id, starts_with("Q11")) %>% melt(
+    id.var = c("participant_id"),
+    measure.vars = c(
+      "Q11_Part_1",
+      "Q11_Part_2",
+      "Q11_Part_3",
+      "Q11_Part_4",
+      "Q11_Part_5",
+      "Q11_Part_6",
+      "Q11_Part_7"
+    )
+  ) %>% filter(!is.na(value)) %>% select(participant_id, activity_description = value)
+```
+
+#### 8. Create participant_job table
+* Select participant_id and columns related to Undergraduate Major, Job Title, Industry, and Compensation
+
+```{r}
+#Create participant_job table
+participant_job <-
+  survey_df %>% select(
+    pt_job_id = participant_id,
+    under_graduate_major = Q5,
+    job_title = Q6,
+    industry = Q7,
+    compensation = Q9
+  )
+```
+
+#### 9. Create software table
+* select participant id and columns related to analysis tools, IDE and programming languages
+* convert columns from wide to long
+* create a column for participant_id, software, software_type
+
+```{r}
+# Create software table
+software <-
+  survey_df %>% select(
+    software_id = participant_id,
+    analysis_tool = starts_with("Q12"),
+    ide = starts_with("Q13"),
+    language = starts_with("Q16")
+  ) %>% melt(id.vars = c("software_id"), mearsure.vars = c("analysis_tool", "ide", "language")) %>%
+  mutate(variable = gsub('[1-9]', '', variable)) %>% filter(!is.na(value)&value != '-1'&value != 'Other')
+```
+
+#### 10. Create a software_type table
+* group by software type and create an id column called software_type
+* split the columns of interest off from the software table and take distinct rows
+
+```{r}
+software <- add_group_indices(software, c('variable'), 'software_type')
+
+software_type <- software %>% select(software_type_id = software_type, software_type_name = variable) %>% distinct()
+
+software <- software %>% select(software_id, software_type,  software_name = value) %>% distinct()
+```
+
+#### 10. Save tables out to bit.io
+* Rather than using CREATE and INSERT statements, we are saving out the tables as csv and using the bit.io GUI to load the tables
+
+```{r}
+# Save tables to load through the bit.io gui
+write = FALSE
+
+if (write == TRUE){
+write.csv2(software, "/Users/williamaiken/Data607/software.csv", row.names = FALSE)
+write.csv2(software_type, "/Users/williamaiken/Data607/software_type.csv", row.names = FALSE)
+write.csv2(participant_job, "/Users/williamaiken/Data607/participant_job.csv", row.names = FALSE)
+write.csv2(participant_job_activity, "/Users/williamaiken/Data607/participant_job_activity.csv", row.names = FALSE)
+write.csv2(participant_info, "/Users/williamaiken/Data607/participant_info.csv", row.names = FALSE)
+write.csv2(education_degree, "/Users/williamaiken/Data607/education_degree.csv", row.names = FALSE)
+write.csv2(age_group, "/Users/williamaiken/Data607/age_group.csv", row.names = FALSE)
+}
+```
+
+## Results
+#### We can now connect to bit.io and query our normalized tables
+[bit.io Project 3 tables]("https://bit.io/catfoodlover/Project%203#")
+
+* Here is a sample query where we are join the participant_info table to the participant_job table and selecting the participant_id, gender, industry and compensation
+
+```{r}
+password <- key_get("bit.io", "catfoodlover_demo_db_connection")
+
+Sys.setenv(PGGSSENCMODE="disable")
+
+con <- dbConnect(RPostgres::Postgres(), dbname = 'bitdotio', 
+                 host = 'db.bit.io',
+                 port = 5432,
+                 user = 'bitdotio',
+                 password = password)
+
+d <- dbGetQuery(con, 'SELECT * FROM "catfoodlover/Project 3"."participant_info" AS info
+                      LEFT JOIN "catfoodlover/Project 3"."participant_job" AS job
+                       ON info.participant_id = job.pt_job_id;')
+
+d %>% select(participant_id, gender, industry, compensation) %>% head() %>% kbl() %>% kable_styling()
+
+```
+
+
