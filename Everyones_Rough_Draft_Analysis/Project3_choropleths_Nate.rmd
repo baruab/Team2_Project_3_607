@@ -1,0 +1,117 @@
+---
+title: "Project3_choropleths"
+author: "William Aiken"
+date: "10/15/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(choroplethr)
+library(choroplethrMaps)
+library(readr)
+library(reshape2)
+```
+
+```{r}
+survey_raw <- read_csv("https://raw.githubusercontent.com/catfoodlover/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv")
+survey_df<-filter(survey_raw,survey_raw$Q6=="Data Scientist")
+survey_df <- survey_df %>% filter(!Q3 %in% c("I do not wish to disclose my location", "Other"))
+```
+
+```{r}
+ data(country.map)
+
+#save out country names as as dataframe
+temp <- as.data.frame(country.map$region) %>% distinct()
+temp$flag <- 1
+
+#take survey data and select age, country, experience and income
+#convert strings to numbers for age, experience and income
+#group by country and take the average
+#use distinct() to give us one row per country
+temp2<- survey_df %>% select(Q2, Q3, Q8, Q9) %>% mutate(region = tolower(Q3), income = gsub('.*-','', Q9), income = as.numeric(gsub(',','', income)), experience = as.numeric(gsub('.*-| +','', Q8)), age = as.numeric(gsub('.*-','', Q2))) %>% group_by(region) %>% mutate(income = round(mean(income, na.rm = TRUE)), experience = round(mean(experience, na.rm = TRUE)), age = round(mean(age, na.rm = TRUE))) %>% select(region, income, experience, age) %>% distinct() %>% ungroup()
+
+
+#join our survey data to country list to see which countries need a name change
+temp3 <- left_join(temp2, temp, by = c("region" = "country.map$region"))
+
+
+# Select the columns connected to question 16 and shaping it from wide to long
+# filter out NA values and create a count of languages for each respondant
+# group by country and calculate the average number of languages a respondant knows in each country
+temp4 <- survey_df %>% mutate(id = row_number(), region = tolower(Q3)) %>%  select(id, region, starts_with("Q16")) %>% melt(id.vars = c("id", "region"), measure.vars = c("Q16_Part_1","Q16_Part_2","Q16_Part_3","Q16_Part_4","Q16_Part_5","Q16_Part_6","Q16_Part_7","Q16_Part_8","Q16_Part_9","Q16_Part_10","Q16_Part_11","Q16_Part_12","Q16_Part_13","Q16_Part_14","Q16_Part_15","Q16_Part_16","Q16_Part_17","Q16_Part_18","Q16_OTHER_TEXT")) %>% filter(!is.na(value)) %>% select(id, region, value) %>% group_by(id, region) %>% mutate(num_lang = n()) %>% ungroup() %>% group_by(region) %>% mutate(avg_lang = round(mean(num_lang),1)) %>% select(region, avg_lang) %>% distinct() %>% ungroup()
+
+#fix poor mapping and filter out singapore and hong kong which are too small to show on map
+country_data <- temp2 %>% mutate(region = case_when(region == 'viet nam' ~ 'vietnam',
+                                    region == 'iran, islamic republic of...' ~ 'iran',
+                                    region == 'united kingdom of great britain and northern ireland' ~ 'united kingdom',
+                                    region == 'republic of korea' ~ 'north korea',
+                                    TRUE ~ region
+                                    )) %>% filter(!region %in% c('singapore', 'hong kong (s.a.r.)'))
+
+#fix poor mapping and filter out singapore and hong kong which are too small to show on map
+lang_country_data <- temp4 %>% mutate(region = case_when(region == 'viet nam' ~ 'vietnam',
+                                    region == 'iran, islamic republic of...' ~ 'iran',
+                                    region == 'united kingdom of great britain and northern ireland' ~ 'united kingdom',
+                                    region == 'republic of korea' ~ 'north korea',
+                                    TRUE ~ region
+                                    )) %>% filter(!region %in% c('singapore', 'hong kong (s.a.r.)'))
+```
+
+### Map Average Data Scientist Age by Country
+
+```{r}
+
+age_df <- country_data %>% rename(value = age) %>% select(region, value)
+
+country_choropleth(age_df,
+                 title      = "Data Scientist Age by Country",
+                 legend     = "Average Age",
+                 num_colors = 9) + scale_fill_brewer(palette = "BuGn")
+                                 
+```                                 
+
+### Map Average Data Scientist Income by Country
+                              
+```{r}                          
+income_df <- country_data %>% rename(value = income) %>% select(region, value)
+
+country_choropleth(income_df,
+                 title      = "Data Scientist Income by Country",
+                 legend     = "Average Income",
+                 num_colors = 9) + scale_fill_brewer(palette = "YlOrRd")
+
+
+
+
+
+```
+
+### Map Average Data Scientist Years Experience by Country
+
+```{r}
+experience_df <- country_data %>% rename(value = experience) %>% select(region, value)
+
+country_choropleth(experience_df,
+                 title      = "Data Scientist Years Experience by Country",
+                 legend     = "Average Years Experience",
+                 num_colors = 9) + scale_fill_brewer(palette = "Greys")
+
+```
+
+
+### Map Average Number of Programming Languages Data Scientist Knows by Country
+```{r}
+lang_df <- lang_country_data %>% rename(value = avg_lang) %>% select(region, value)
+
+country_choropleth(experience_df,
+                 title      = "Data Scientist Number of Programming Languages by Country",
+                 legend     = "Average Number of Languages",
+                 num_colors = 9) + scale_fill_brewer(palette = "Blues")
+
