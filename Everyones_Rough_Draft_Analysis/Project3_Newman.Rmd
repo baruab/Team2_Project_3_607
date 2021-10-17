@@ -1,0 +1,173 @@
+---
+title: "The tools and Programming languages used by Data Scientist in the United States of America (Project 3 Part)"
+author: "Nnaemeka Okereafor"
+date: "10/15/2021"
+output: rmdformats::readthedown
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(stringr)
+library(readr)
+library(kableExtra)
+```
+
+```{r}
+url<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
+survey_tib <- read.csv(file=url(url), sep=",")
+names(survey_tib) <- paste(names(survey_tib),survey_tib[1,],sep="_")
+
+#Remove row 1
+survey_tib <- survey_tib[-c(1),]
+```
+
+
+# 1) Code and tables
+
+## Select only Data Scientist in the United States of America
+
+### Select only Data Scientist in the United States of America
+
+```{r}
+survey_tib <- survey_tib %>% 
+ filter((`Q3_In which country do you currently reside?`=='United States of America')&(`Q6_Select the title most similar to your current role (or most recent title if retired): - Selected Choice`=='Data Scientist'))
+#write.csv(survey_tib,"C:/Users/newma/OneDrive/Desktop/MSDS Fall 2021/DATA 607 - Data Acquisition and Mgt/Project 3/surv.csv", row.names = FALSE)
+```
+
+
+### Select Required columns for Analysis
+
+```{r}
+survey_tib <- survey_tib %>% 
+  select(starts_with(c("Q1_","Q2_","Q3_","Q6_","Q7_","Q13","Q16","Q21","Q33")))
+#names(survey_tib)
+``` 
+
+### Where do you find public datasets?
+
+```{r}
+surv_dataset <- survey_tib %>% select(starts_with(c("Q1_","Q2_","Q3_","Q7_","Q33")),-contains("OTHER_TEXT")) %>%
+pivot_longer(starts_with("Q33"),names_to="Dataset",values_to="Dataset_type")
+
+```
+
+```{r}
+
+surv_dataset_tib<-surv_dataset %>% 
+  count(surv_dataset$Dataset_type) %>%
+  rename("DataSource" = "surv_dataset$Dataset_type","Count"="n")%>%
+  arrange(desc(Count))
+
+#write.csv(surv_dataset,"C:/Users/newma/OneDrive/Desktop/MSDS Fall 2021/DATA 607 - Data Acquisition and Mgt/Project 3/tibviz.csv", row.names = FALSE)
+```
+
+```{r}
+surv_dataset_tib<-surv_dataset_tib[-c(1),]
+surv_dataset_tib2<-surv_dataset_tib %>% 
+  mutate(proportion = round((surv_dataset_tib$Count /sum(surv_dataset_tib$Count))*100,2))
+
+surv_dataset_tib2 %>% ggplot(aes(reorder(DataSource,proportion),proportion)) +
+  geom_col(fill="#06272C")+coord_flip()+geom_text(aes(label=proportion),color="red") +labs(x="Data Sources")+theme_bw()
+
+kbl(surv_dataset_tib2)%>%
+  kable_styling() %>% kable_paper("hover", full_width = F)
+```
+
+
+# 2) Code and tables
+
+## What data visualization libraries or tools have you used in the past 5 years?
+
+### What data visualization libraries or tools have you used in the past 5 years?
+
+
+```{r}
+surv_viz_tool<- survey_tib %>% select(starts_with(c("Q1_","Q2_","Q3_","Q7_","Q21")),-contains("OTHER_TEXT")) %>%
+pivot_longer(starts_with("Q21"),names_to="ToolName",values_to="Tool")
+
+```
+
+
+```{r}
+surv_viz_tool_tib <- surv_viz_tool %>%
+  count(surv_viz_tool$Tool) %>% rename("VisualTools" = "surv_viz_tool$Tool","Count"="n")%>%
+  arrange(desc(Count))
+
+```
+
+
+```{r}
+surv_viz_tool_tib <- surv_viz_tool_tib[-c(1),]
+surv_viz_tool_tib2<-surv_viz_tool_tib %>%
+  mutate(proportion = round((Count /sum(Count))*100,2))%>% arrange(desc(proportion))
+  
+surv_viz_tool_tib2 %>% ggplot(aes(reorder(VisualTools,proportion),proportion)) +
+  geom_col()+coord_flip()+geom_col(fill="#A7ADBE")+
+  geom_text(aes(label=proportion),color="red") +labs(x="Visual Tools")+theme_bw()
+
+kbl(surv_viz_tool_tib2) %>%
+  kable_styling() %>% kable_paper("hover", full_width = F)
+```
+
+### Which of the following integrated development environments (IDE's) have you used at work or school in the last 5 years?
+
+
+```{r}
+ide_tool<- survey_tib %>% 
+  select(starts_with(c("Q1_","Q2_","Q3_","Q7_","Q13")),-contains("OTHER_TEXT")) %>%
+pivot_longer(starts_with("Q13"),names_to="IDEName",values_to="IDEUsed")
+#write.csv(surv_viz_tool,"C:/Users/newma/OneDrive/Desktop/MSDS Fall 2021/DATA 607 - Data Acquisition and Mgt/Project 3/survviz.csv", row.names = FALSE)
+```
+
+```{r}
+ide_tool_tib <- ide_tool %>%
+  count(ide_tool$IDEUsed) %>% rename("IDE" = "ide_tool$IDEUsed","Count"="n")%>%
+  arrange(desc(Count))
+```
+
+```{r}
+ide_tool_tib<-ide_tool_tib[-c(1),]
+ide_tool_tib2<-ide_tool_tib %>%
+  mutate(proportion = round((Count /sum(Count))*100,2))%>%arrange(desc(proportion))
+
+ide_tool_tib2 %>% ggplot(aes(reorder(IDE,proportion),proportion)) +
+  geom_col(fill="#18213A")+coord_flip()+
+  geom_text(aes(label=proportion),color="red")+
+  labs(x="IDE")+theme_bw()
+
+kbl(ide_tool_tib2)%>%
+  kable_styling() %>% kable_paper("hover", full_width = F)
+```
+
+### What programming languages do you use on a regular basis?
+
+```{r}
+lang_tool<- survey_tib %>% 
+  select(starts_with(c("Q1_","Q2_","Q3_","Q7_","Q16")),-contains("OTHER_TEXT")) %>%
+pivot_longer(starts_with("Q16"),names_to="LangName",values_to="LangUsed")
+
+#write.csv(surv_viz_tool,"C:/Users/newma/OneDrive/Desktop/MSDS Fall 2021/DATA 607 - Data Acquisition and Mgt/Project 3/survviz.csv", row.names = FALSE)
+```
+
+
+
+```{r}
+Lang_tool_tib <- lang_tool %>%
+  count(lang_tool$LangUsed) %>% rename("Language" = "lang_tool$LangUsed","Count"="n")%>%
+  arrange(desc(Count))
+```
+
+```{r}
+Lang_tool_tib<-Lang_tool_tib[-c(1),]
+Lang_tool_tib2<-Lang_tool_tib %>%
+  mutate(proportion = round((Count /sum(Count))*100,2))%>%arrange(desc(proportion))
+
+Lang_tool_tib2 %>% ggplot(aes(reorder(Language,proportion),proportion)) +
+  geom_col(fill='#633974')+coord_flip()+
+  geom_text(aes(label=proportion),color="green")+ labs(x="Language")+theme_bw()
+kbl(Lang_tool_tib2) %>%
+  kable_styling() %>% kable_paper("hover", full_width = F)
+```
+
+
