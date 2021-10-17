@@ -1,0 +1,177 @@
+---
+title: 'Scatterplots: Comparing Salary to Data Science Skills'
+author:
+- Team Members - Eric Lehmphul, William Aiken, Bikram Barua,
+- Nnaemeka Newman Okereafor, Catherine Cho
+date: "10/16/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Comparing Salary to Data Science Skills
+
+## Load Libraries
+```{r}
+library(tidyverse)
+```
+
+## Load Data
+```{r}
+# Load Data
+
+multiple.choice <- read.csv("https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv")
+
+# declare lists that will be used to preprocess data
+x <- c(10000, 20000, 125000, 150000, 200000, 30000, 250000, 300000, 40000, 400000, 50000, 500000, 60000, 600000, 70000, 80000, 90000, 100000)
+level <- c("0-10,000", "10-20,000", "100-125,000", "125-150,000", "150-200,000", "20-30,000", "200-250,000", "250-300,000", "30-40,000", "300-400,000", "40-50,000", "400-500,000", "50-60,000", "500,000+", "60-70,000", "70-80,000", "80-90,000", "90-100,000")
+```
+
+## Salary vs Number of Programming Languages used
+
+```{r}
+# select desired filters
+a = multiple.choice %>%
+  filter(Q6=="Data Scientist")
+
+a = a %>%
+  filter(Q3 == "United States of America")
+
+# Choose necessary variables
+b <- a[,c(1:13,66:81,83,111:121,123,266:276)]
+
+# remove irrelevant data
+b <- b[b$Q9 != "I do not wish to disclose my approximate yearly compensation", ]  
+b <- b[b$Q9 != "", ] 
+
+# replace character data with numeric data
+for (i in 1:length(level)) {
+  b$Q9[b$Q9 == level[i]] <- x[i] 
+}
+
+b$Q9 <- as.numeric(b$Q9)
+
+# change empty strings to NA for easier count
+
+b$Q16_Part_1[b$Q16_Part_1 == ""] <- NA
+b$Q16_Part_2[b$Q16_Part_2 == ""] <- NA
+b$Q16_Part_3[b$Q16_Part_3 == ""] <- NA
+b$Q16_Part_4[b$Q16_Part_4 == ""] <- NA
+b$Q16_Part_5[b$Q16_Part_5 == ""] <- NA
+b$Q16_Part_6[b$Q16_Part_6 == ""] <- NA
+b$Q16_Part_7[b$Q16_Part_7 == ""] <- NA
+b$Q16_Part_8[b$Q16_Part_8 == ""] <- NA
+b$Q16_Part_9[b$Q16_Part_9 == ""] <- NA
+b$Q16_Part_10[b$Q16_Part_10 == ""] <- NA
+b$Q16_Part_11[b$Q16_Part_11 == ""] <- NA
+b$Q16_Part_12[b$Q16_Part_12 == ""] <- NA
+b$Q16_Part_13[b$Q16_Part_13 == ""] <- NA
+b$Q16_Part_14[b$Q16_Part_14 == ""] <- NA
+b$Q16_Part_15[b$Q16_Part_15 == ""] <- NA
+b$Q16_Part_16[b$Q16_Part_16 == ""] <- NA
+b$Q16_Part_18[b$Q16_Part_18 == ""] <- NA
+
+# calculate count
+
+c = 0
+c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(14:30))))
+
+# scatterplot
+
+ggplot(c, aes(x=Count, y=Q9)) +
+  geom_point() +
+  ggtitle("Salary vs Number of Programming Languages used") +
+  xlab("Programming Language by Count") +
+  ylab("Salary") +
+  stat_smooth(method = "lm", col = "red")
+```
+
+```{r}
+# linear regression to get the exact slope
+lm(data=c,Q9~Count)
+```
+
+### Conclusion: Salary vs Number of Programming Languages used
+
+We can conclude that having more knowledge and ability in a handful of programming languages is more lucrative in terms of salary. The highest paid participants in the survey knew between 5 and 9 different programming languages. The data supports that it is possible to receive a high paying job at any domain within the scatter plot (5 to 13) in which there is a slight upward trend in Salary as the Number of Programming Languages increases. The linear regression output shows that for every unit increase of a Programming Language used increases the participant's Salary by $795.30.
+
+## Salary vs Number of Visualization Tools used
+
+```{r}
+# Change empty string to NA
+b$Q21_Part_1[b$Q21_Part_1 == ""] <- NA
+b$Q21_Part_2[b$Q21_Part_2 == ""] <- NA
+b$Q21_Part_3[b$Q21_Part_3 == ""] <- NA
+b$Q21_Part_4[b$Q21_Part_4 == ""] <- NA
+b$Q21_Part_5[b$Q21_Part_5 == ""] <- NA
+b$Q21_Part_6[b$Q21_Part_6 == ""] <- NA
+b$Q21_Part_7[b$Q21_Part_7 == ""] <- NA
+b$Q21_Part_8[b$Q21_Part_8 == ""] <- NA
+b$Q21_Part_9[b$Q21_Part_9 == ""] <- NA
+b$Q21_Part_10[b$Q21_Part_10 == ""] <- NA
+b$Q21_Part_11[b$Q21_Part_11 == ""] <- NA
+b$Q21_Part_13[b$Q21_Part_13 == ""] <- NA
+
+# Calculate count
+c = 0
+c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(31:42))))
+
+# scatterplot
+
+ggplot(c, aes(x=Count, y=Q9)) +
+  geom_point() +
+  ggtitle("Salary vs Number of Visualization Tools used") +
+  xlab("Visualization Tools") +
+  ylab("Salary") +
+  stat_smooth(method = "lm", col = "red")
+```
+
+```{r}
+# linear regression to get the exact slope
+lm(data=c,Q9~Count)
+```
+
+### Conclusion: Salary vs Number of Visualization Tools used
+
+Visualization tools is a key component for relaying information to others. Is it important to know a wide array of visualization tools? Or is it more beneficial to master a select few tools? The data shows that more high paying jobs favor mastery in a few visualization tools, rather than the knowledge of many tools. Based on the data presented in the plot below, the number of visualization tools does not significantly affect the overall salary of a data scientist. For every unit increase in the Number of Visualization Tools a participant uses, their Salary is expected to decrease by -$80.63.
+
+
+## Salary vs Number of Data Acquisition Methods used
+
+```{r}
+# Change empty string to NA
+b$Q33_Part_1[b$Q33_Part_1 == ""] <- NA
+b$Q33_Part_2[b$Q33_Part_2 == ""] <- NA
+b$Q33_Part_3[b$Q33_Part_3 == ""] <- NA
+b$Q33_Part_4[b$Q33_Part_4 == ""] <- NA
+b$Q33_Part_5[b$Q33_Part_5 == ""] <- NA
+b$Q33_Part_6[b$Q33_Part_6 == ""] <- NA
+b$Q33_Part_7[b$Q33_Part_7 == ""] <- NA
+b$Q33_Part_8[b$Q33_Part_8 == ""] <- NA
+b$Q33_Part_9[b$Q33_Part_9 == ""] <- NA
+b$Q33_Part_10[b$Q33_Part_10 == ""] <- NA
+b$Q33_Part_11[b$Q33_Part_11 == ""] <- NA
+
+# Calculate count
+c = 0
+c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(43:53))))
+
+# scatterplot
+
+ggplot(c, aes(x=Count, y=Q9)) +
+  geom_point() +
+  ggtitle("Salary vs Number of Data Acquistion Methods used") +
+  xlab("Data Acquistion Methods by Count") +
+  ylab("Salary") +
+  stat_smooth(method = "lm", col = "red")
+```
+
+```{r}
+# linear regression to get the exact slope
+lm(data=c,Q9~Count) 
+```
+
+
+### Conclusion: Salary vs Number of Data Acquisition Methods used
+
+Found that there is a negative relationship between Data Acquisition Methods used and Salary. This is likely due to most high paying data science jobs using internal data provide by their company rather than relying on other method of data acquisition. For every unit increase in the Number of Data Acquisition Methods a participant uses, their Salary is expected to decrease by -$2,936.
