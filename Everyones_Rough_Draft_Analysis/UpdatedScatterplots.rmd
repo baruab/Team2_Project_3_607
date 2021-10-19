@@ -1,0 +1,212 @@
+---
+title: 'Updated Scatterplots: Comparing Salary to Data Science Skills'
+author:
+- Team Members - Eric Lehmphul, William Aiken, Bikram Barua,
+- Nnaemeka Newman Okereafor, Catherine Cho
+date: "10/16/2021"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Comparing Salary to Data Science Skills
+
+## Load Libraries
+```{r}
+library(tidyverse)
+library(reshape2)
+```
+
+## Load Data
+```{r}
+# Load Data
+
+multiple.choice <- read.csv("https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv")
+
+# declare lists that will be used to preprocess data
+x <- c(10000, 20000, 125000, 150000, 200000, 30000, 250000, 300000, 40000, 400000, 50000, 500000, 60000, 600000, 70000, 80000, 90000, 100000)
+level <- c("0-10,000", "10-20,000", "100-125,000", "125-150,000", "150-200,000", "20-30,000", "200-250,000", "250-300,000", "30-40,000", "300-400,000", "40-50,000", "400-500,000", "50-60,000", "500,000+", "60-70,000", "70-80,000", "80-90,000", "90-100,000")
+```
+
+## Salary vs Number of Programming Languages used
+
+```{r}
+# select desired filters
+a = multiple.choice %>%
+  filter(Q6=="Data Scientist")
+
+a = a %>%
+  filter(Q3 == "United States of America")
+
+# Choose necessary variables
+b <- a[,c(1:13,66:81,82,83,111:121,123,266:276)]
+
+# remove irrelevant data
+b <- b[b$Q9 != "I do not wish to disclose my approximate yearly compensation", ]  
+b <- b[b$Q9 != "", ] 
+
+# replace character data with numeric data
+for (i in 1:length(level)) {
+  b$Q9[b$Q9 == level[i]] <- x[i] 
+}
+
+b$Q9 <- as.numeric(b$Q9)
+
+
+# change empty strings to NA for easier count
+
+b$Q16_Part_1[b$Q16_Part_1 == ""] <- NA
+b$Q16_Part_2[b$Q16_Part_2 == ""] <- NA
+b$Q16_Part_3[b$Q16_Part_3 == ""] <- NA
+b$Q16_Part_4[b$Q16_Part_4 == ""] <- NA
+b$Q16_Part_5[b$Q16_Part_5 == ""] <- NA
+b$Q16_Part_6[b$Q16_Part_6 == ""] <- NA
+b$Q16_Part_7[b$Q16_Part_7 == ""] <- NA
+b$Q16_Part_8[b$Q16_Part_8 == ""] <- NA
+b$Q16_Part_9[b$Q16_Part_9 == ""] <- NA
+b$Q16_Part_10[b$Q16_Part_10 == ""] <- NA
+b$Q16_Part_11[b$Q16_Part_11 == ""] <- NA
+b$Q16_Part_12[b$Q16_Part_12 == ""] <- NA
+b$Q16_Part_13[b$Q16_Part_13 == ""] <- NA
+b$Q16_Part_14[b$Q16_Part_14 == ""] <- NA
+b$Q16_Part_15[b$Q16_Part_15 == ""] <- NA
+b$Q16_Part_16[b$Q16_Part_16 == ""] <- NA
+b$Q16_Part_18[b$Q16_Part_18 == ""] <- NA
+
+# calculate count
+
+# c = 0
+# c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(14:30))))
+# 
+# c<-subset(c, Count!=0)
+
+count.data <- b %>% 
+  mutate(id = row_number(), income=Q9) %>%
+  select(id, income, starts_with("Q16")) %>%
+  melt(id.vars = c("id", "income"), measure.vars = c("Q16_Part_1","Q16_Part_2","Q16_Part_3","Q16_Part_4","Q16_Part_5","Q16_Part_6","Q16_Part_7","Q16_Part_8","Q16_Part_9","Q16_Part_10","Q16_Part_11","Q16_Part_12","Q16_Part_13","Q16_Part_14","Q16_Part_15","Q16_Part_16","Q16_Part_18")) %>%
+  filter(!is.na(value) & !is.na(income)) %>%
+  group_by(id) %>%
+  mutate(num_lang = n()) %>%
+  select(id,income,num_lang) %>%
+  distinct()
+
+
+# scatterplot
+
+ggplot(count.data, aes(num_lang, income)) +
+  geom_point(position = position_jitter(width = .07, height = .07)) +
+  scale_color_gradient(low='red', high='green') +
+  ggtitle("Salary vs Number of Programming Languages used") +
+  xlab("Programming Language by Count") +
+  scale_x_continuous(limits=c(0, 10), breaks = seq(0,10,1)) +
+  ylab("Salary") +
+  geom_smooth()
+```
+
+
+### Conclusion: Salary vs Number of Programming Languages used
+
+We can conclude that having more knowledge and ability in a handful of programming languages is more lucrative in terms of salary. The highest paid participants in the survey knew 3 different programming languages. The data supports that it is possible to receive a high paying job at any domain within the scatter plot (5 to 13) in which there is a slight upward trend in Salary as the Number of Programming Languages increases.
+
+## Salary vs Number of Visualization Tools used
+
+```{r}
+# Change empty string to NA
+b$Q21_Part_1[b$Q21_Part_1 == ""] <- NA
+b$Q21_Part_2[b$Q21_Part_2 == ""] <- NA
+b$Q21_Part_3[b$Q21_Part_3 == ""] <- NA
+b$Q21_Part_4[b$Q21_Part_4 == ""] <- NA
+b$Q21_Part_5[b$Q21_Part_5 == ""] <- NA
+b$Q21_Part_6[b$Q21_Part_6 == ""] <- NA
+b$Q21_Part_7[b$Q21_Part_7 == ""] <- NA
+b$Q21_Part_8[b$Q21_Part_8 == ""] <- NA
+b$Q21_Part_9[b$Q21_Part_9 == ""] <- NA
+b$Q21_Part_10[b$Q21_Part_10 == ""] <- NA
+b$Q21_Part_11[b$Q21_Part_11 == ""] <- NA
+b$Q21_Part_13[b$Q21_Part_13 == ""] <- NA
+
+# Calculate count
+
+
+# c = 0
+# c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(31:42))))
+# 
+# c<-subset(c, Count!=0)
+
+count.data <- b %>% 
+  mutate(id = row_number(), income=Q9) %>%
+  select(id, income, starts_with("Q21")) %>%
+  melt(id.vars = c("id", "income"), measure.vars = c("Q21_Part_1","Q21_Part_2","Q21_Part_3","Q21_Part_4","Q21_Part_5","Q21_Part_6","Q21_Part_7","Q21_Part_8","Q21_Part_9","Q21_Part_10","Q21_Part_11","Q21_Part_13")) %>%
+  filter(!is.na(value) & !is.na(income)) %>%
+  group_by(id) %>%
+  mutate(num_lang = n()) %>%
+  select(id,income,num_lang) %>%
+  distinct()
+
+
+# scatterplot
+
+ggplot(count.data, aes(num_lang, income)) +
+  geom_point(position = position_jitter(width = .07, height = .07)) +
+  ggtitle("Salary vs Number of Visualization Tools used") + 
+  xlab("Visualization Tools by Count") +
+  scale_x_continuous(limits=c(0, 10), breaks = seq(0,10,1)) +
+  ylab("Salary") +
+  geom_smooth()
+```
+
+
+### Conclusion: Salary vs Number of Visualization Tools used
+
+Visualization tools is a key component for relaying information to others. Is it important to know a wide array of visualization tools? Or is it more beneficial to master a select few tools? The data shows that more high paying jobs favor mastery in a few visualization tools, rather than the knowledge of many tools. Based on the data presented in the plot below, the number of visualization tools does not significantly affect the overall salary of a data scientist.
+
+
+## Salary vs Number of Data Acquisition Methods used
+
+```{r}
+# Change empty string to NA
+b$Q33_Part_1[b$Q33_Part_1 == ""] <- NA
+b$Q33_Part_2[b$Q33_Part_2 == ""] <- NA
+b$Q33_Part_3[b$Q33_Part_3 == ""] <- NA
+b$Q33_Part_4[b$Q33_Part_4 == ""] <- NA
+b$Q33_Part_5[b$Q33_Part_5 == ""] <- NA
+b$Q33_Part_6[b$Q33_Part_6 == ""] <- NA
+b$Q33_Part_7[b$Q33_Part_7 == ""] <- NA
+b$Q33_Part_8[b$Q33_Part_8 == ""] <- NA
+b$Q33_Part_9[b$Q33_Part_9 == ""] <- NA
+b$Q33_Part_10[b$Q33_Part_10 == ""] <- NA
+b$Q33_Part_11[b$Q33_Part_11 == ""] <- NA
+
+# Calculate count
+
+# c = 0
+# c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(43:53))))
+# 
+# c<-subset(c, Count!=0)
+
+
+count.data <- b %>% 
+  mutate(id = row_number(), income=Q9) %>%
+  select(id, income, starts_with("Q33")) %>%
+  melt(id.vars = c("id", "income"), measure.vars = c("Q33_Part_1","Q33_Part_2","Q33_Part_3","Q33_Part_4","Q33_Part_5","Q33_Part_6","Q33_Part_7","Q33_Part_8","Q33_Part_9","Q33_Part_10","Q33_Part_11")) %>%
+  filter(!is.na(value) & !is.na(income)) %>%
+  group_by(id) %>%
+  mutate(num_lang = n()) %>%
+  select(id,income,num_lang) %>%
+  distinct()
+
+# scatterplot
+
+ggplot(count.data, aes(num_lang, income)) +
+  geom_point(position = position_jitter(width = .07, height = .07)) +
+  ggtitle("Salary vs Number of Data Acquistion Methods used") +
+  xlab("Data Acquistion Methods by Count") +
+  scale_x_continuous(limits=c(0, 10.5), breaks = seq(0,10.5,1)) +
+  ylab("Salary") +
+  geom_smooth()
+```
+
+
+### Conclusion: Salary vs Number of Data Acquisition Methods used
+
+Data Acquisition is important to conduct any analysis. We found that the highest paying jobs only use a select few data acquisition methods. This is likely due to most high paying data science jobs using internal data provide by their company rather than relying on other public method of data acquisition.
