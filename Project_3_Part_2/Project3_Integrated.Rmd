@@ -52,15 +52,119 @@ survey_tib <- survey_tib[-c(1),]
 ```
 
 
-# Filter the data
+
+############################################################################
+# Load world map data
+```{r warning=FALSE, message=FALSE}
+survey_df<-filter(survey_raw,survey_raw$Q6=="Data Scientist")
+survey_df <- survey_df %>% filter(!Q3 %in% c("I do not wish to disclose my location", "Other"))
+
+ data(country.map)
+
+#save out country names as as dataframe
+temp <- as.data.frame(country.map$region) %>% distinct()
+temp$flag <- 1
+
+#take survey data and select age, country, experience and income
+#convert strings to numbers for age, experience and income
+#group by country and take the average
+#use distinct() to give us one row per country
+temp2<- survey_df %>% select(Q2, Q3, Q8, Q9) %>% mutate(region = tolower(Q3), income = gsub('.*-','', Q9), income = as.numeric(gsub(',','', income)), experience = as.numeric(gsub('.*-| +','', Q8)), age = as.numeric(gsub('.*-','', Q2))) %>% group_by(region) %>% mutate(income = round(mean(income, na.rm = TRUE)), experience = round(mean(experience, na.rm = TRUE)), age = round(mean(age, na.rm = TRUE))) %>% select(region, income, experience, age) %>% distinct() %>% ungroup()
+
+
+#join our survey data to country list to see which countries need a name change
+temp3 <- left_join(temp2, temp, by = c("region" = "country.map$region"))
+
+
+# Select the columns connected to question 16 and shaping it from wide to long
+# filter out NA values and create a count of languages for each respondant
+# group by country and calculate the average number of languages a respondant knows in each country
+temp4 <- survey_df %>% mutate(id = row_number(), region = tolower(Q3)) %>%  select(id, region, starts_with("Q16")) %>% melt(id.vars = c("id", "region"), measure.vars = c("Q16_Part_1","Q16_Part_2","Q16_Part_3","Q16_Part_4","Q16_Part_5","Q16_Part_6","Q16_Part_7","Q16_Part_8","Q16_Part_9","Q16_Part_10","Q16_Part_11","Q16_Part_12","Q16_Part_13","Q16_Part_14","Q16_Part_15","Q16_Part_16","Q16_Part_17","Q16_Part_18","Q16_OTHER_TEXT")) %>% filter(!is.na(value)) %>% select(id, region, value) %>% group_by(id, region) %>% mutate(num_lang = n()) %>% ungroup() %>% group_by(region) %>% mutate(avg_lang = round(mean(num_lang),1)) %>% select(region, avg_lang) %>% distinct() %>% ungroup()
+
+#fix poor mapping and filter out singapore and hong kong which are too small to show on map
+country_data <- temp2 %>% mutate(region = case_when(region == 'viet nam' ~ 'vietnam',
+                                    region == 'iran, islamic republic of...' ~ 'iran',
+                                    region == 'united kingdom of great britain and northern ireland' ~ 'united kingdom',
+                                    region == 'republic of korea' ~ 'north korea',
+                                    TRUE ~ region
+                                    )) %>% filter(!region %in% c('singapore', 'hong kong (s.a.r.)'))
+
+#fix poor mapping and filter out singapore and hong kong which are too small to show on map
+lang_country_data <- temp4 %>% mutate(region = case_when(region == 'viet nam' ~ 'vietnam',
+                                    region == 'iran, islamic republic of...' ~ 'iran',
+                                    region == 'united kingdom of great britain and northern ireland' ~ 'united kingdom',
+                                    region == 'republic of korea' ~ 'north korea',
+                                    TRUE ~ region
+                                    )) %>% filter(!region %in% c('singapore', 'hong kong (s.a.r.)'))
+
+
+```
+
+
+## Data Scientist Age by Country
+
+```{r warning=FALSE, message=FALSE}
+
+age_df <- country_data %>% rename(value = age) %>% select(region, value)
+
+country_choropleth(age_df,
+                 title      = "Data Scientist Age by Country",
+                 legend     = "Average Age",
+                 num_colors = 9) + scale_fill_brewer(palette = "BuGn")
+                                 
+```                                 
+
+## Data Scientist Income by Country
+                              
+```{r warning=FALSE, message=FALSE}                          
+income_df <- country_data %>% rename(value = income) %>% select(region, value)
+
+country_choropleth(income_df,
+                 title      = "Data Scientist Income by Country",
+                 legend     = "Average Income",
+                 num_colors = 9) + scale_fill_brewer(palette = "YlOrRd")
+
+
+
+
+
+```
+
+## Data Scientist Years Experience by Country
+
+```{r warning=FALSE, message=FALSE}
+experience_df <- country_data %>% rename(value = experience) %>% select(region, value)
+
+country_choropleth(experience_df,
+                 title      = "Data Scientist Years Experience by Country",
+                 legend     = "Average Years Experience",
+                 num_colors = 9) + scale_fill_brewer(palette = "Greys")
+
+```
+
+
+## Programming Languages known by Country
+
+```{r warning=FALSE, message=FALSE}
+lang_df <- lang_country_data %>% rename(value = avg_lang) %>% select(region, value)
+
+country_choropleth(experience_df,
+                 title      = "Data Scientist Number of Programming Languages by Country",
+                 legend     = "Average Number of Languages",
+                 num_colors = 9) + scale_fill_brewer(palette = "Blues")
+```
+
+
+
+# Data Scientists in US
 
 ## Select only Data Scientist(DS) in the United States of America
 
 
-```{r}
+
+```{r warning=FALSE, message=FALSE}
 survey_tib <- survey_tib %>% 
  filter((`Q3_In which country do you currently reside?`=='United States of America')&(`Q6_Select the title most similar to your current role (or most recent title if retired): - Selected Choice`=='Data Scientist'))
-#write.csv(survey_tib,"C:/Users/newma/OneDrive/Desktop/MSDS Fall 2021/DATA 607 - Data Acquisition and Mgt/Project 3/surv.csv", row.names = FALSE)
 ```
 
 
@@ -158,9 +262,10 @@ survey_ds$salary<-as.numeric(survey_ds$salary)
 survey_ds$salary<-survey_ds$salary/1000
 ```
 
-# Filter on US Salary data
-
 ###### The following shows a stacked barplot that counts the number of data scientists per salary range, which is further divided between degree level earned in the US only. This is the raw count of all degree options offered in the survey. Some features to note is that data scientists in  general earn less than $250K. Generally there are more data scientists that earned a Bachelor's, Master's, or Doctoral degree than those that partially completed a program, earned a certificate, or had no formal education. The overall salary  mean in the US is $136K.  
+
+
+# Filter on US Salary data
 
 ```{r warning=FALSE, message=FALSE}
 #US count only
@@ -289,7 +394,7 @@ ggplot(combined,aes(x=salary,y=percent))+
 
 #############################################################
 
-# Tools and Libraries used by DS
+# Tools and Libraries used
 
 ## What data visualization libraries or tools have you used in the past 5 years?
 
@@ -354,8 +459,9 @@ kbl(ide_tool_tib2)%>%
   kable_styling() %>% kable_paper("hover", full_width = F)
 ```
 
-# Programming Languages used
-### What programming languages do you use on a regular basis?
+# Salary and Programming Languages
+
+## Programming languages used on a regular basis
 
 ```{r}
 lang_tool<- survey_tib %>% 
@@ -403,7 +509,7 @@ a = survey_raw %>%
 a = a %>%
   filter(Q3 == "United States of America")
 # Choose necessary variables
-b <- a[,c(1:13,66:81,83,111:121,123,266:276)]
+b <- a[,c(1:13,66:81,82,83,111:121,123,266:276)]
 # remove irrelevant data
 b <- b[b$Q9 != "I do not wish to disclose my approximate yearly compensation", ]  
 b <- b[b$Q9 != "", ] 
@@ -412,7 +518,6 @@ for (i in 1:length(level)) {
   b$Q9[b$Q9 == level[i]] <- x[i] 
 }
 b$Q9 <- as.numeric(b$Q9)
-
 # change empty strings to NA for easier count
 b$Q16_Part_1[b$Q16_Part_1 == ""] <- NA
 b$Q16_Part_2[b$Q16_Part_2 == ""] <- NA
@@ -431,38 +536,39 @@ b$Q16_Part_14[b$Q16_Part_14 == ""] <- NA
 b$Q16_Part_15[b$Q16_Part_15 == ""] <- NA
 b$Q16_Part_16[b$Q16_Part_16 == ""] <- NA
 b$Q16_Part_18[b$Q16_Part_18 == ""] <- NA
-
 # calculate count
-c = 0
-c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(14:30))))
-d <- count(c,as.factor(Count))
-
+# c = 0
+# c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(14:30))))
+# 
+# c<-subset(c, Count!=0)
+count.data <- b %>% 
+  mutate(id = row_number(), income=Q9) %>%
+  select(id, income, starts_with("Q16")) %>%
+  melt(id.vars = c("id", "income"), measure.vars = c("Q16_Part_1","Q16_Part_2","Q16_Part_3","Q16_Part_4","Q16_Part_5","Q16_Part_6","Q16_Part_7","Q16_Part_8","Q16_Part_9","Q16_Part_10","Q16_Part_11","Q16_Part_12","Q16_Part_13","Q16_Part_14","Q16_Part_15","Q16_Part_16","Q16_Part_18")) %>%
+  filter(!is.na(value) & !is.na(income)) %>%
+  group_by(id) %>%
+  mutate(num_lang = n()) %>%
+  select(id,income,num_lang) %>%
+  distinct()
 # scatterplot
-ggplot(c, aes(x=Count, y=Q9)) +
+ggplot(count.data, aes(num_lang, income)) +
   geom_point(position = position_jitter(width = .07, height = .07)) +
   scale_color_gradient(low='red', high='green') +
   ggtitle("Salary vs Number of Programming Languages used") +
   xlab("Programming Language by Count") +
+  scale_x_continuous(limits=c(0, 10), breaks = seq(0,10,1)) +
   ylab("Salary") +
-  stat_smooth(method = "lm", col = "red")
-
-
+  geom_smooth()
 ```
 
-
-
-```{r warning=FALSE, message=FALSE}
-# linear regression to get the exact slope
-lm(data=c,Q9~Count)
-```
 
 ### Conclusion: Salary vs Number of Programming Languages used
 
-We can conclude that having more knowledge and ability in a handful of programming languages is more lucrative in terms of salary. The highest paid participants in the survey knew between 5 and 9 different programming languages. The data supports that it is possible to receive a high paying job at any domain within the scatter plot (5 to 13) in which there is a slight upward trend in Salary as the Number of Programming Languages increases. The linear regression output shows that for every unit increase of a Programming Language used increases the participant's Salary by $795.30.
+We can conclude that having more knowledge and ability in a handful of programming languages is more lucrative in terms of salary. The highest paid participants in the survey knew 3 different programming languages. The data supports that it is possible to receive a high paying job at any domain within the scatter plot (5 to 13) in which there is a slight upward trend in Salary as the Number of Programming Languages increases.
 
 ## Salary vs Number of Visualization Tools used
 
-```{r warning=FALSE, message=FALSE}
+```{r}
 # Change empty string to NA
 b$Q21_Part_1[b$Q21_Part_1 == ""] <- NA
 b$Q21_Part_2[b$Q21_Part_2 == ""] <- NA
@@ -477,163 +583,43 @@ b$Q21_Part_10[b$Q21_Part_10 == ""] <- NA
 b$Q21_Part_11[b$Q21_Part_11 == ""] <- NA
 b$Q21_Part_13[b$Q21_Part_13 == ""] <- NA
 # Calculate count
-c = 0
-c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(31:42))))
-d <- c %>% count(Count)
+# c = 0
+# c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(31:42))))
+# 
+# c<-subset(c, Count!=0)
+count.data <- b %>% 
+  mutate(id = row_number(), income=Q9) %>%
+  select(id, income, starts_with("Q21")) %>%
+  melt(id.vars = c("id", "income"), measure.vars = c("Q21_Part_1","Q21_Part_2","Q21_Part_3","Q21_Part_4","Q21_Part_5","Q21_Part_6","Q21_Part_7","Q21_Part_8","Q21_Part_9","Q21_Part_10","Q21_Part_11","Q21_Part_13")) %>%
+  filter(!is.na(value) & !is.na(income)) %>%
+  group_by(id) %>%
+  mutate(num_lang = n()) %>%
+  select(id,income,num_lang) %>%
+  distinct()
 # scatterplot
-ggplot(c, aes(x=Count, y=Q9)) +
+ggplot(count.data, aes(num_lang, income)) +
   geom_point(position = position_jitter(width = .07, height = .07)) +
   ggtitle("Salary vs Number of Visualization Tools used") + 
-  xlab("Visualization Tools") +
+  xlab("Visualization Tools by Count") +
+  scale_x_continuous(limits=c(0, 10), breaks = seq(0,10,1)) +
   ylab("Salary") +
-  stat_smooth(method = "lm", col = "red")
+  geom_smooth()
 ```
 
-```{r warning=FALSE, message=FALSE}
-# linear regression to get the exact slope
-lm(data=c,Q9~Count)
-```
 
 ### Conclusion: Salary vs Number of Visualization Tools used
 
-Visualization tools is a key component for relaying information to others. Is it important to know a wide array of visualization tools? Or is it more beneficial to master a select few tools? The data shows that more high paying jobs favor mastery in a few visualization tools, rather than the knowledge of many tools. Based on the data presented in the plot below, the number of visualization tools does not significantly affect the overall salary of a data scientist. For every unit increase in the Number of Visualization Tools a participant uses, their Salary is expected to decrease by -$80.63.
+Visualization tools is a key component for relaying information to others. Is it important to know a wide array of visualization tools? Or is it more beneficial to master a select few tools? The data shows that more high paying jobs favor mastery in a few visualization tools, rather than the knowledge of many tools. Based on the data presented in the plot below, the number of visualization tools does not significantly affect the overall salary of a data scientist.
 
 
-## Salary vs Number of Data Acquisition Methods used
+# Shiny Apps
 
-```{r warning=FALSE, message=FALSE}
-# Change empty string to NA
-b$Q33_Part_1[b$Q33_Part_1 == ""] <- NA
-b$Q33_Part_2[b$Q33_Part_2 == ""] <- NA
-b$Q33_Part_3[b$Q33_Part_3 == ""] <- NA
-b$Q33_Part_4[b$Q33_Part_4 == ""] <- NA
-b$Q33_Part_5[b$Q33_Part_5 == ""] <- NA
-b$Q33_Part_6[b$Q33_Part_6 == ""] <- NA
-b$Q33_Part_7[b$Q33_Part_7 == ""] <- NA
-b$Q33_Part_8[b$Q33_Part_8 == ""] <- NA
-b$Q33_Part_9[b$Q33_Part_9 == ""] <- NA
-b$Q33_Part_10[b$Q33_Part_10 == ""] <- NA
-b$Q33_Part_11[b$Q33_Part_11 == ""] <- NA
-# Calculate count
-c = 0
-c <- b %>% rowwise() %>% mutate(Count=sum(!is.na(c_across(43:53))))
-# scatterplot
-ggplot(c, aes(x=Count, y=Q9)) +
-  geom_point(position = position_jitter(width = .07, height = .07)) +
-  ggtitle("Salary vs Number of Data Acquistion Methods used") +
-  xlab("Data Acquistion Methods by Count") +
-  ylab("Salary") +
-  stat_smooth(method = "lm", col = "red")
-```
+<a href="https://bikrambarua.shinyapps.io/Project3/">Salary by Gender, Education, Experience and Country</a>
 
-```{r warning=FALSE, message=FALSE}
-# linear regression to get the exact slope
-lm(data=c,Q9~Count) 
-```
+<a href="https://bikrambarua.shinyapps.io/Prj3_Salary_Languages/">Salary by Programming Languages</a>
 
 
-### Conclusion: Salary vs Number of Data Acquisition Methods used
-
-Found that there is a negative relationship between Data Acquisition Methods used and Salary. This is likely due to most high paying data science jobs using internal data provide by their company rather than relying on other method of data acquisition. For every unit increase in the Number of Data Acquisition Methods a participant uses, their Salary is expected to decrease by -$2,936.
+# Q & A
 
 
-############################################################################
-# Load world map data
-```{r warning=FALSE, message=FALSE}
-survey_df<-filter(survey_raw,survey_raw$Q6=="Data Scientist")
-survey_df <- survey_df %>% filter(!Q3 %in% c("I do not wish to disclose my location", "Other"))
-
- data(country.map)
-
-#save out country names as as dataframe
-temp <- as.data.frame(country.map$region) %>% distinct()
-temp$flag <- 1
-
-#take survey data and select age, country, experience and income
-#convert strings to numbers for age, experience and income
-#group by country and take the average
-#use distinct() to give us one row per country
-temp2<- survey_df %>% select(Q2, Q3, Q8, Q9) %>% mutate(region = tolower(Q3), income = gsub('.*-','', Q9), income = as.numeric(gsub(',','', income)), experience = as.numeric(gsub('.*-| +','', Q8)), age = as.numeric(gsub('.*-','', Q2))) %>% group_by(region) %>% mutate(income = round(mean(income, na.rm = TRUE)), experience = round(mean(experience, na.rm = TRUE)), age = round(mean(age, na.rm = TRUE))) %>% select(region, income, experience, age) %>% distinct() %>% ungroup()
-
-
-#join our survey data to country list to see which countries need a name change
-temp3 <- left_join(temp2, temp, by = c("region" = "country.map$region"))
-
-
-# Select the columns connected to question 16 and shaping it from wide to long
-# filter out NA values and create a count of languages for each respondant
-# group by country and calculate the average number of languages a respondant knows in each country
-temp4 <- survey_df %>% mutate(id = row_number(), region = tolower(Q3)) %>%  select(id, region, starts_with("Q16")) %>% melt(id.vars = c("id", "region"), measure.vars = c("Q16_Part_1","Q16_Part_2","Q16_Part_3","Q16_Part_4","Q16_Part_5","Q16_Part_6","Q16_Part_7","Q16_Part_8","Q16_Part_9","Q16_Part_10","Q16_Part_11","Q16_Part_12","Q16_Part_13","Q16_Part_14","Q16_Part_15","Q16_Part_16","Q16_Part_17","Q16_Part_18","Q16_OTHER_TEXT")) %>% filter(!is.na(value)) %>% select(id, region, value) %>% group_by(id, region) %>% mutate(num_lang = n()) %>% ungroup() %>% group_by(region) %>% mutate(avg_lang = round(mean(num_lang),1)) %>% select(region, avg_lang) %>% distinct() %>% ungroup()
-
-#fix poor mapping and filter out singapore and hong kong which are too small to show on map
-country_data <- temp2 %>% mutate(region = case_when(region == 'viet nam' ~ 'vietnam',
-                                    region == 'iran, islamic republic of...' ~ 'iran',
-                                    region == 'united kingdom of great britain and northern ireland' ~ 'united kingdom',
-                                    region == 'republic of korea' ~ 'north korea',
-                                    TRUE ~ region
-                                    )) %>% filter(!region %in% c('singapore', 'hong kong (s.a.r.)'))
-
-#fix poor mapping and filter out singapore and hong kong which are too small to show on map
-lang_country_data <- temp4 %>% mutate(region = case_when(region == 'viet nam' ~ 'vietnam',
-                                    region == 'iran, islamic republic of...' ~ 'iran',
-                                    region == 'united kingdom of great britain and northern ireland' ~ 'united kingdom',
-                                    region == 'republic of korea' ~ 'north korea',
-                                    TRUE ~ region
-                                    )) %>% filter(!region %in% c('singapore', 'hong kong (s.a.r.)'))
-
-
-```
-
-
-## Data Scientist Age by Country
-
-```{r warning=FALSE, message=FALSE}
-
-age_df <- country_data %>% rename(value = age) %>% select(region, value)
-
-country_choropleth(age_df,
-                 title      = "Data Scientist Age by Country",
-                 legend     = "Average Age",
-                 num_colors = 9) + scale_fill_brewer(palette = "BuGn")
-                                 
-```                                 
-
-## Data Scientist Income by Country
-                              
-```{r warning=FALSE, message=FALSE}                          
-income_df <- country_data %>% rename(value = income) %>% select(region, value)
-
-country_choropleth(income_df,
-                 title      = "Data Scientist Income by Country",
-                 legend     = "Average Income",
-                 num_colors = 9) + scale_fill_brewer(palette = "YlOrRd")
-
-
-
-
-
-```
-
-## Data Scientist Years Experience by Country
-
-```{r warning=FALSE, message=FALSE}
-experience_df <- country_data %>% rename(value = experience) %>% select(region, value)
-
-country_choropleth(experience_df,
-                 title      = "Data Scientist Years Experience by Country",
-                 legend     = "Average Years Experience",
-                 num_colors = 9) + scale_fill_brewer(palette = "Greys")
-
-```
-
-
-## Programming Languages known by Country
-
-```{r warning=FALSE, message=FALSE}
-lang_df <- lang_country_data %>% rename(value = avg_lang) %>% select(region, value)
-
-country_choropleth(experience_df,
-                 title      = "Data Scientist Number of Programming Languages by Country",
-                 legend     = "Average Number of Languages",
-                 num_colors = 9) + scale_fill_brewer(palette = "Blues")
 
