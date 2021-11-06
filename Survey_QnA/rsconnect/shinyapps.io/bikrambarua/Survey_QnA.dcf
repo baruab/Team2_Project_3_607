@@ -1,0 +1,13 @@
+name: Survey_QnA
+title: Survey_QnA
+username:
+account: bikrambarua
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5057173
+bundleId: 5219893
+url: https://bikrambarua.shinyapps.io/Survey_QnA/
+when: 1636169669.08383
+lastSyncTime: 1636169669.08383
+asMultiple: FALSE
+asStatic: FALSE
