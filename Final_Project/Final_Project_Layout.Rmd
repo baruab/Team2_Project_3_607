@@ -1,0 +1,130 @@
+---
+title: 'Final Project: Job Recommender'
+author: by Team Shiny (William Aiken, Bikram Barua, Catherine Cho, Eric Lehmphul, Nnaemeka Newman
+  Okereafor)
+date: "11/27/2021"
+output: rmdformats::readthedown
+---
+
+
+### Introduction: Kaggle conducted a survey to gather information on the state of data science and machine learning around the world. Glassdoor data science job dataset .... Online resume dataset .... 
+
+#### Purpose: In this project, we present a recommender system designed for job seeking and recruiting purpose. The proposed recommender system aims at leveraging the jobs and companies that are important for a target candidate and vice-versa. To meet this objective user profile such as job descriptions and candidate resumes are examined along with other user inputs. The recommendation approach is modeled on content-based analysis .... The dataset consisted of survey dataset of 23,859 respondents and job postings from [Glassdoor](http://www.glassdoor.com) and resumes from [Post Resumes Free](https://www.postjobfree.com/resume/adktqz/senior-data-scientist-brooklyn-ny) 
+
+##### Research Question: How reliable is the job description in the listings that a candidate who had applied to the position in predicting the strength of their preference for the skills in the resume ? How reliable are company ratings in predicting candidates preference towards the job?
+
+
+##### Approach: We have applied the following process to organize our workflow:
+
+1) Business Understanding - TBDs
+2) Data Understanding - ...
+3) Data Preparation -  ...
+4) Modeling - ...
+5) Evaluation -  ...
+6) Integration and Deployment - ...
+
+
+
+############################################################################
+# Instructions
+This project is a proof-of-concept(POC) with certain assumptions on the data. For this implementation, following are the guidelines ...
+
+
+
+
+# Load the data
+
+```{r warning=FALSE, message=FALSE}
+
+
+```
+
+
+## Filter the datasets
+
+
+```{r warning=FALSE, message=FALSE}
+
+```
+
+
+
+
+## Join the dataframes
+
+
+```{r warning=FALSE, message=FALSE}
+
+```
+
+
+## Summaruze the data
+
+
+
+# Data Modelling 
+In our system, each entity has a profile. We use the content- and interaction-based relations to connect entities.
+
+Profile match: Bidirectional relation based on the hypothesis that if a candidate’s resume matches a job description, they are probably interested in each other.
+
+.....
+
+## Calculate ratings based on ... algorithm
+
+
+```{r warning=FALSE, message=FALSE}
+
+```
+
+
+
+## Training and test data
+
+
+```{r warning=FALSE, message=FALSE}
+
+```
+
+
+
+# Build Recommender
+
+
+## Connect the entities
+
+## Find similarities 
+
+## Examine the relationships
+
+
+
+## Test the Recommender
+
+
+
+
+# Create the Shiny UI
+
+
+## Authenticate the user
+
+## Gather Inputs
+
+
+## Present visualizations
+
+
+
+
+# Conclusion
+
+Evaluation: Our recommender predicted ...
+
+Conclusion: ...
+
+# Shiny Apps Links
+
+# Q & A
+
+
+
