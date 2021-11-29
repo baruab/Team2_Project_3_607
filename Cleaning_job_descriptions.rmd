@@ -29,23 +29,7 @@ job.data$job_description <- job.data$job_description %>%
   str_replace_all("�", " ") %>%
   str_replace_all("—", "") %>%
   str_replace_all("   ", " ")
-  
- 
- 
-# clean.data <- function(dataframe){
-#   emails <- VectorSource(dataframe$text)
-#   emails <- VCorpus(emails)
-#   corpus <- emails %>%
-#     tm_map(removeNumbers) %>%    
-#     tm_map(removePunctuation) %>% 
-#     tm_map(tolower) %>% 
-#     tm_map(PlainTextDocument) %>%          
-#     tm_map(removeWords, stopwords("en")) %>%
-#     tm_map(stripWhitespace) %>% 
-#     tm_map(stemDocument)%>%
-#     DocumentTermMatrix()
-#   return(corpus)
-# }
+
 ```
 
 ```{r}
