@@ -180,9 +180,9 @@ get_educaion_level <- function(dataset){
   description <- dataset$job_descripion
   
   # get true/false values for these key words 
-  bachelors <- grepl("Bachelor", ignore.case = T, job_description)
-  masters <- grepl("Master", ignore.case = T, job_description)
-  phd <- grepl("Phd|doctorate", ignore.case = T, job_description)
+  bachelors <- grepl("Bachelor|bachelor|BS|B.S.", ignore.case = F, b$job_description)
+  masters <- grepl("Master|Graduate|master|MS|M.S.", ignore.case = F, b$job_description)
+  phd <- grepl("Phd|doctorate|Postgraduate", ignore.case = T, b$job_description)
   
   # combine into a single list
   education <- cbind(bachelors, masters, phd)
