@@ -21,7 +21,7 @@
 21,Data scientist,56277,98241,Janesville,WI,Blain's Farm & Fleet,Retail,3.2,1,1,1
 22,Data scientist,71336,131770,Quantico,VA,Zenetex LLC,Business Services,3.6,0,0,0
 23,Director of Decision Science,0,0,St. Louis,MI,"Anvil A0lytics and Insights, LLC",0,0,0,1,0
-24,Ma0ger of Data Science,0,0,Remote,Remote,Tealium,Information Technology,4,1,1,1
+24,Manager of Data Science,0,0,Remote,Remote,Tealium,Information Technology,4,1,1,1
 25,Counter WMD Data scientist,50759,115777,Lorton,VA,"Systems Planning and A0lysis, Inc.",Aerospace & Defense,3.9,1,1,0
 26,Information Technology/Data scientist,0,0,Fresno,CA,Endodontic SuperSystems,0,0,1,1,0
 27,Lead Software Developer (AI and Machine Learning),0,0,Remote,Remote,RSDC,Manufacturing,0,1,0,0
@@ -167,7 +167,7 @@
 203,"Head of Data Science, Insights & A0lytics",0,0,San Francisco,CA,Medium,Media,3.9,0,0,0
 204,Data A0lyst,61655,115933,San Francisco,CA,Duetto,Information Technology,4.4,0,0,0
 205,Data scientist,0,0,San Francisco,CA,Mindstrong,Information Technology,3.6,0,1,1
-206,Data Science Ma0ger- Health,171792,206772,San Francisco,CA,Twitter,Information Technology,4,0,0,1
+206,Data Science Manager- Health,171792,206772,San Francisco,CA,Twitter,Information Technology,4,0,0,1
 207,Data scientist,109941,146400,Menlo Park,CA,Mackin,Business Services,3.1,0,0,0
 208,Data scientist,71317,110221,San Francisco,CA,Appen,Business Services,3.5,0,1,1
 209,Principal Machine Learning Scientist,97024,145756,San Francisco,CA,Sage Intacct,Information Technology,4.7,0,0,0
@@ -206,7 +206,7 @@
 242,Data scientist,136562,163387,Menlo Park,CA,Quantifind,Information Technology,4.3,0,1,0
 243,Data scientist,0,0,Palo Alto,CA,Landing AI,Information Technology,4.5,0,1,0
 244,Data A0lyst,72951,110623,San Francisco,CA,Seen by Indeed,0,0,0,0,0
-245,Business A0lytics Ma0ger,0,0,San Francisco,CA,Fleetsmith,Information Technology,5,1,0,0
+245,Business A0lytics Manager,0,0,San Francisco,CA,Fleetsmith,Information Technology,5,1,0,0
 246,Data A0lyst,60261,111313,San Francisco,CA,The Climate Corporation,Information Technology,3.2,1,1,0
 247,Senior Data scientist,0,0,San Francisco,CA,CyberCoders,Business Services,4.1,1,0,0
 248,"Data scientist, Relevancy Ranking Algorithms - 6 Month Contract Position",107496,172644,San Francisco,CA,Getty Images,"Arts, Entertainment & Recreation",2.9,0,1,1
@@ -255,7 +255,7 @@
 291,Data scientist (Contract),116415,145067,Oakland,CA,"Psi0pse Technology, Ltd.",Business Services,4.6,0,1,1
 292,Senior Data scientist,0,0,San Francisco,CA,Landing,Real Estate,5,0,0,0
 293,"Data scientist, Charging Data and Modeling",97283,153957,Palo Alto,CA,Tesla Motors,Manufacturing,3.4,1,1,1
-294,Scientist / Experienced Ma0ger - Bioengineering- Next Gen Sequencing,114312,131140,South San Francisco,CA,PACT Pharma,Biotech & Pharmaceuticals,3.5,0,0,0
+294,Scientist / Experienced Manager - Bioengineering- Next Gen Sequencing,114312,131140,South San Francisco,CA,PACT Pharma,Biotech & Pharmaceuticals,3.5,0,0,0
 295,"Scientist, A0lytics - Process and Technical Development, Manufacturing",0,0,South San Francisco,CA,Arse0l Biosciences,Biotech & Pharmaceuticals,5,1,1,1
 296,Staff Scientist/Sr. Staff Scientist,94815,191132,Brisbane,CA,CareDx,Biotech & Pharmaceuticals,2.5,0,0,1
 297,Senior Data Engineer,125822,140691,Palo Alto,CA,Lumi0r Technologies,Information Technology,3.9,0,1,0
@@ -281,7 +281,7 @@
 317,"Senior Data scientist - Real World Data, I2O, Perso0lized Healthcare (PHC)",162444,186754,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,1,1
 318,"Data scientist, Applied Machine Learning - Bay Area",95011,119195,Redwood City,CA,Tempus Labs,Biotech & Pharmaceuticals,3,0,0,0
 319,Senior Data scientist,0,0,San Francisco,CA,Vhire,0,0,1,1,1
-320,"A0lytics Ma0ger, Research",50113,107352,San Francisco,CA,Chime,Fi0nce,4.7,0,0,0
+320,"A0lytics Manager, Research",50113,107352,San Francisco,CA,Chime,Fi0nce,4.7,0,0,0
 321,Data scientist - Client Recommendations,0,0,San Francisco,CA,Stitch Fix,Retail,3.3,0,0,0
 322,"Data scientist - Client Acquisitions, Visitor Experience",154074,192752,San Francisco,CA,Stitch Fix,Retail,3.3,0,1,1
 323,Data A0lyst,0,0,San Francisco,CA,Sensor Tower,Business Services,4.6,1,0,0
@@ -326,12 +326,12 @@
 362,Research Scientist Intern-Cryptography & Internet Technology (PhD),0,0,Menlo Park,CA,Facebook,Information Technology,4.4,0,0,0
 363,"Data scientist/A0lyst Intern, Tencent Games in America",0,0,Palo Alto,CA,Tencent,Media,4.1,1,0,0
 364,Principal Data scientist,172401,208461,San Francisco,CA,Windfall Data,Business Services,0,0,0,1
-365,"Applied A0lytics Ma0ger, Customer Experience (CX)",43843,93277,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,0,0
+365,"Applied A0lytics Manager, Customer Experience (CX)",43843,93277,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,0,0
 366,Senior Data scientist,149267,180823,South San Francisco,CA,De0li Therapeutics,0,3.7,1,1,0
 367,"Data Architect, Staff",152194,181709,San Francisco,CA,Life360,Information Technology,3.9,1,1,0
 368,"Associate Scientist /Scientist, BioA0lytical Sciences",106610,130479,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,0,1
 369,Scientist -Tissue/Cell Processing Lead,0,0,South San Francisco,CA,Arse0l Biosciences,Biotech & Pharmaceuticals,5,0,1,1
-370,Data A0lytics Program Ma0ger,90477,119575,San Francisco,CA,Doximity,Information Technology,4.5,1,1,0
+370,Data A0lytics Program Manager,90477,119575,San Francisco,CA,Doximity,Information Technology,4.5,1,1,0
 371,Machine Learning Engineer,134273,161717,San Mateo,CA,Upstart,Fi0nce,4,0,0,0
 372,Data A0lyst,98222,149724,San Mateo,CA,Upstart,Fi0nce,4,1,1,0
 373,Senior Data scientist,0,0,Foster City,CA,Two95 Inter0tio0l Inc.,Business Services,4,0,0,0
@@ -350,16 +350,16 @@
 386,Data A0lyst,0,0,Redwood City,CA,"Iconma, L.L.C.",Business Services,4.1,1,1,0
 387,"Data scientist, Machine Learning",105765,142959,Menlo Park,CA,One Concern,Information Technology,3.7,0,1,1
 388,Data Engineer,99278,122333,San Francisco,CA,Zypmedia,Business Services,4.2,1,1,0
-389,A0lytics Ma0ger,106487,130146,San Francisco,CA,Seen by Indeed,0,0,0,0,0
+389,A0lytics Manager,106487,130146,San Francisco,CA,Seen by Indeed,0,0,0,0,0
 390,Associate scientist,94222,174164,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,1
 391,Data Science,105765,142959,Foster City,CA,Aible,Information Technology,5,1,1,0
 392,Data scientist - 0tionwide Opportunities,116995,150120,Palo Alto,CA,Amazon,Information Technology,3.9,0,0,0
 393,"Data Science, A0lytics",0,0,Palo Alto,CA,Next Insurance,Insurance,4.5,0,0,0
 394,"Senior Machine Learning Engineer, 0tural Language Processing team",162741,184396,Palo Alto,CA,Tableau Software,Information Technology,3.8,0,0,0
-395,Operations Insights and A0lytics Ma0ger,0,0,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,1,1
+395,Operations Insights and A0lytics Manager,0,0,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,1,1
 396,Data A0lyst,59374,108548,San Francisco,CA,Mindlance,Business Services,3.9,0,0,0
 397,Research Data A0lyst,66742,95305,San Francisco,CA,UC San Francisco,0,4,1,1,0
-398,Insights and A0lytics Ma0ger,82796,160417,San Francisco,CA,Varo Money,Fi0nce,4,0,1,0
+398,Insights and A0lytics Manager,82796,160417,San Francisco,CA,Varo Money,Fi0nce,4,0,1,0
 399,"Scientist/Senior Scientist, Bioinformatics",161510,176639,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,1
 400,Assistant Research Scientist II (Pharmacology),59624,86204,Alameda,CA,Exelixis,Biotech & Pharmaceuticals,3,0,0,0
 401,Data A0lyst,0,0,Berkeley,CA,CyberCoders,Business Services,4.1,0,1,0
@@ -398,7 +398,7 @@
 434,Motif Capital Data scientist,115326,157639,San Mateo,CA,Motif Investing,Fi0nce,2.8,1,1,0
 435,Data Engineer,122598,159766,San Francisco,CA,"Conch Technologies, Inc",Business Services,4.6,0,0,0
 436,Data Engineering Practitioner,64209,125464,San Francisco,CA,Accenture,Business Services,3.8,0,0,0
-437,Data Ma0ger : Data Engineer,111187,195652,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,1,0
+437,Data Manager : Data Engineer,111187,195652,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,1,0
 438,Senior Data scientist - Computer Vision,149267,180823,San Francisco,CA,FortressIQ,0,5,0,1,1
 439,Senior Data Engineer,0,0,San Francisco,CA,CyberCoders,Business Services,4.1,1,1,0
 440,Computatio0l Toxicologist/ Associate Scientist / Scientist - Safety Assessment,64917,136101,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,1,1
@@ -415,10 +415,10 @@
 451,Data A0lyst (Marketing & Insurance Operations),63178,92448,San Francisco,CA,Gabi,"Restaurants, Bars & Food Services",4,1,0,0
 452,"Bioinformatics Scientist, Translatio0l Genomics",139265,166459,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,1
 453,Data Engineer,84239,152336,San Francisco,CA,Ready Responders,Health Care,4.6,0,0,0
-454,"Engineering Ma0ger, Data Science",126271,213065,San Francisco,CA,Cruise,Information Technology,3.8,0,1,1
+454,"Engineering Manager, Data Science",126271,213065,San Francisco,CA,Cruise,Information Technology,3.8,0,1,1
 455,Senior Data scientist,191071,196977,San Mateo,CA,Lattice Engines,Information Technology,3.7,0,0,0
 456,"Data scientist, A0lytics - Payment Risk",117464,156756,Menlo Park,CA,Facebook,Information Technology,4.4,0,0,0
-457,Visual A0lytics Ma0ger,0,0,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,0
+457,Visual A0lytics Manager,0,0,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,0
 458,"Clinical Scientist, Neuroscience",117507,196673,Palo Alto,CA,Jazz Pharma,Biotech & Pharmaceuticals,3.5,0,0,1
 459,Forward Deployed Data scientist,105765,142959,San Francisco,CA,TRM Labs,Information Technology,5,0,0,0
 460,Applied Scientist,38553,253938,San Francisco,CA,Amazon,Information Technology,3.9,0,0,0
@@ -455,7 +455,7 @@
 491,Data Engineer,0,0,San Francisco,CA,Collabera,Information Technology,4,0,0,0
 492,"Senior Scientist, Bioinformatics, Next Generation Sequencing",161510,176639,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,1
 493,Sr. Data scientist - Deep Learning and NLP Expert,111276,174539,Redwood City,CA,Allstate,Insurance,3.4,0,0,0
-494,"A0lytics Ma0ger, BI/Visualizations",103009,160967,San Francisco,CA,Chime,Fi0nce,4.7,0,0,0
+494,"A0lytics Manager, BI/Visualizations",103009,160967,San Francisco,CA,Chime,Fi0nce,4.7,0,0,0
 495,"Lead Data A0lyst, BI/Visualizations",71379,130405,San Francisco,CA,Chime,Fi0nce,4.7,0,0,0
 496,Data A0lyst Intern,0,0,San Francisco,CA,Showwcase,0,0,1,0,0
 497,Data Engineer,0,0,San Francisco,CA,APN Software Services Inc.,Information Technology,4.1,1,0,0
@@ -514,7 +514,7 @@
 550,Sr. Genomics Data Engineer,0,0,San Francisco,CA,CyberCoders,Business Services,4.1,1,0,0
 551,Clinical Data A0lyst,54050,92952,San Francisco,CA,UC San Francisco,0,4,1,1,0
 552,"Intern, Data Science",0,0,South San Francisco,CA,Second Genome,Biotech & Pharmaceuticals,5,0,0,0
-553,Data A0lytics Ma0ger (EPIC),29611,61334,San Francisco,CA,UC San Francisco,0,4,1,1,0
+553,Data A0lytics Manager (EPIC),29611,61334,San Francisco,CA,UC San Francisco,0,4,1,1,0
 554,Research Scientist Assist,32724,74427,San Francisco,CA,Veterans Health Research Institute,Non-Profit,3.3,0,1,1
 555,"Senior Machine Learning Engineer, Core ML",145771,179544,San Francisco,CA,Reddit,Information Technology,3.8,0,0,0
 556,"Statistical Scientist-Perso0lized Healthcare, US Medical Affairs",133572,158970,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,1,1
@@ -527,8 +527,8 @@
 563,Senior Machine Learning Engineer,0,0,San Francisco,CA,The RealReal,Retail,2.6,0,0,0
 564,Scientist I - Sample and Data Handler,47089,56619,Berkeley,CA,Eurofins,Biotech & Pharmaceuticals,3.2,1,1,0
 565,Data A0lyst/Data scientist,0,0,Menlo Park,CA,"QUICKEN INVESTMENT SERVICES, INC.",0,0,1,1,0
-566,"Senior Product Ma0ger, Data Science",70494,129629,San Francisco,CA,Shell,"Oil, Gas, Energy & Utilities",4,1,1,0
-567,Sr. Data Science Ma0ger,174661,278501,San Francisco,CA,Udemy,Education,4.4,0,1,0
+566,"Senior Product Manager, Data Science",70494,129629,San Francisco,CA,Shell,"Oil, Gas, Energy & Utilities",4,1,1,0
+567,Sr. Data Science Manager,174661,278501,San Francisco,CA,Udemy,Education,4.4,0,1,0
 568,Part-time instructor of Statistics for Data Science and Machine Learning,92770,121299,San Francisco,CA,Kaplan Test Prep,Education,3.8,0,0,0
 569,"Senior Marketing Data scientist, Cloud Migrations",0,0,San Francisco,CA,Atlassian,Information Technology,4.3,0,0,0
 570,Biological Data A0lyst,0,0,San Francisco,CA,Parker Institute for Cancer Immunotherapy,Non-Profit,0,0,1,0
@@ -544,16 +544,16 @@
 580,"Senior Scientist, Toxicology",114913,218793,San Francisco,CA,FibroGen,Biotech & Pharmaceuticals,3.5,1,1,1
 581,Lead Big Data Engineer,158396,178107,San Francisco,CA,Glassdoor,Information Technology,4.1,1,1,0
 582,Data Engineer (Genomics),0,0,Oakland,CA,CyberCoders,Business Services,4.1,1,0,0
-583,"Senior Forecasting and A0lytics Ma0ger, Web and Mobile Business",0,0,San Francisco,CA,DocuSign,Information Technology,4.5,0,0,0
+583,"Senior Forecasting and A0lytics Manager, Web and Mobile Business",0,0,San Francisco,CA,DocuSign,Information Technology,4.5,0,0,0
 584,Senior Data Engineer,0,0,San Francisco,CA,FreightVerify,0,0,0,1,0
 585,"Developer Advocate, Data Science (Remote)",34224,102583,San Francisco,CA,Databricks,Information Technology,4.8,0,0,0
 586,Associate Scientist,0,0,South San Francisco,CA,Apex Systems,Business Services,3.8,0,0,0
 587,Data A0lyst Intern,0,0,San Francisco,CA,MT Global US INC,0,0,1,0,1
 588,Marketing A0lytics Consultant/Developer,0,0,San Francisco,CA,"ICONMA, LLC",Business Services,4.1,1,1,0
-589,Fraud Strategy and A0lytics Ma0ger,0,0,San Francisco,CA,First Republic Bank,Fi0nce,3.7,1,0,0
+589,Fraud Strategy and A0lytics Manager,0,0,San Francisco,CA,First Republic Bank,Fi0nce,3.7,1,0,0
 590,Data A0lytics/ Data scientist,116415,143186,Menlo Park,CA,Sharpedge Solutions Inc,Media,4.7,0,0,0
 591,Postdoctoral Fellow in Biological Data Science,0,0,San Francisco,CA,Parker Institute for Cancer Immunotherapy,Non-Profit,0,0,0,1
-592,Ma0ger of Data Engineering,116168,212651,San Francisco,CA,Stitch Fix,Retail,3.3,0,0,0
+592,Manager of Data Engineering,116168,212651,San Francisco,CA,Stitch Fix,Retail,3.3,0,0,0
 593,Behavioral Core Director / Staff Research Scientist,67624,109833,San Francisco,CA,The Gladstone Institutes,Biotech & Pharmaceuticals,4.5,0,0,1
 594,Adobe A0lytics and Google A0lytics Consultant,0,0,San Francisco,CA,The Ascent Services Group,Business Services,4.6,1,0,0
 595,"Senior Software Engineer, Data",117024,228425,San Francisco,CA,Lob,Information Technology,4.3,0,0,0
@@ -579,18 +579,18 @@
 615,Proteomics Senior Scientist,158102,184366,San Francisco,CA,Nurix,Biotech & Pharmaceuticals,3.7,0,0,1
 616,"Associate Scientist, cell-based assay dev",43683,82868,San Francisco,CA,BioPhase Solutions,Biotech & Pharmaceuticals,4.9,1,1,0
 617,"Scientist (a0lytical dev, cell-based assays)",81511,114523,San Francisco,CA,BioPhase Solutions,Biotech & Pharmaceuticals,4.9,0,1,1
-618,Ma0ger-In-Training (MIT),70031,139889,Florence,KY,Take 5 Oil Change,Biotech & Pharmaceuticals,3.3,0,1,0
+618,Manager-In-Training (MIT),70031,139889,Florence,KY,Take 5 Oil Change,Biotech & Pharmaceuticals,3.3,0,1,0
 619,Data Engineer-Python and SQL Programming,90637,90637,San Francisco,CA,PDDN INC.,Consumer Services,5,0,0,0
 620,"Senior Software Engineer, Knowledge Platform (Data Infrastructure)",106596,201962,San Francisco,CA,Square,Information Technology,4,0,1,0
 621,Applied Scientist - Alexa Internet,0,0,San Francisco,CA,Alexa Internet,Information Technology,3.7,0,1,1
 622,Big Data Engineer,0,0,San Francisco,CA,Elite it professio0ls,0,2.7,0,0,0
 623,"Machine Learning Engineer, MI",105279,174998,San Francisco,CA,Meraki,Information Technology,3.6,1,1,1
-624,Digital Data Engineering & A0lytics Ma0ger,104933,189033,San Francisco,CA,NTT DATA Services,Information Technology,3.3,1,0,0
+624,Digital Data Engineering & A0lytics Manager,104933,189033,San Francisco,CA,NTT DATA Services,Information Technology,3.3,1,0,0
 625,Sr Data Engineer Hadoop,91839,166533,San Francisco,CA,NTT DATA,Information Technology,3.3,0,0,0
 626,"Associate/Scientist, Oncology BioMarker Development (Hematology)",0,0,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,1,0,1
 627,"Scientist/Senior Scientist, OMNI-Biomarker Development, Development Sciences",104005,114675,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,1
-628,"Lead Product Ma0ger, Data Products",74526,137434,San Francisco,CA,Samba TV,Business Services,3.4,1,1,0
-629,Data Science Ma0ger for Artificial Intelligence company,66543,108347,San Francisco,CA,Andiamo,"Restaurants, Bars & Food Services",3.5,1,1,0
+628,"Lead Product Manager, Data Products",74526,137434,San Francisco,CA,Samba TV,Business Services,3.4,1,1,0
+629,Data Science Manager for Artificial Intelligence company,66543,108347,San Francisco,CA,Andiamo,"Restaurants, Bars & Food Services",3.5,1,1,0
 630,"Scientist II/Senior Scientist, Omics Integration",100692,121463,South San Francisco,CA,Second Genome,Biotech & Pharmaceuticals,5,0,0,1
 631,Data engineer w/AWS and scala experience,0,0,San Francisco,CA,ICONMA,Business Services,4.1,0,0,0
 632,"Software Engineer, Data Science CoLab",39750,86992,San Francisco,CA,University of California San Francisco,0,4,1,0,0
@@ -600,7 +600,7 @@
 636,Senior Machine Learning and AI Data scientist,149398,174588,San Mateo,CA,Project Ronin,Information Technology,4.9,0,1,1
 637,"Principal Software Engineer, Big Data Platform",167809,187526,San Francisco,CA,Rally Health,Health Care,3.3,1,0,0
 638,Clinical Research Data Coordi0tor,67927,98517,San Francisco,CA,UC San Francisco,0,4,1,0,0
-639,Data Science Ma0ger,168671,203651,San Francisco,CA,Autodesk,Information Technology,4,0,0,0
+639,Data Science Manager,168671,203651,San Francisco,CA,Autodesk,Information Technology,4,0,0,0
 640,Founding Team : Quantitative Researcher,130478,169786,San Francisco,CA,Axiom Group,Manufacturing,4.7,0,0,1
 641,R&D Scientist,103136,124919,Emeryville,CA,Berkeley Lights,Biotech & Pharmaceuticals,4.3,0,1,1
 642,BioResearch Field Applications Scientist West Coast,64391,102710,South San Francisco,CA,Molecular Devices,Biotech & Pharmaceuticals,3,1,1,0
@@ -619,7 +619,7 @@
 655,Biostatistics Data scientist,130122,154279,San Mateo,CA,Project Ronin,Information Technology,4.9,0,1,1
 656,Machine Learning Engineer (NLP),151988,190612,San Francisco,CA,Ginger,Health Care,4.1,0,1,0
 657,Machine Learning Engineer,112619,135024,Alameda,CA,Saildrone,Information Technology,1.3,0,1,1
-658,Sr. Data Science Ma0ger - GTM Intelligence,190801,303637,San Francisco,CA,DocuSign,Information Technology,4.5,0,0,0
+658,Sr. Data Science Manager - GTM Intelligence,190801,303637,San Francisco,CA,DocuSign,Information Technology,4.5,0,0,0
 659,Senior Data Engineer,0,0,San Francisco,CA,Elevano,Business Services,4.5,0,0,0
 660,Senior Data Engineer,124778,161987,San Francisco,CA,Afresh Technologies,Retail,5,1,1,1
 661,SAP HA0 Expert/Data Modeler,0,0,San Rafael,CA,The Ascent Services Group,Business Services,4.6,0,1,0
@@ -675,13 +675,13 @@
 711,(Senior) Computatio0l Biologist/Chemist,0,0,San Francisco,CA,Brightseed,0,0,0,1,1
 712,"Senior Data Engineer in San Francisco, CA at Pyramid Consulting, Inc",0,0,San Francisco,CA,Pyramid Consulting,Information Technology,3.9,0,0,0
 713,Research Scientist,89585,169802,Foster City,CA,Gilead Sciences,Biotech & Pharmaceuticals,3.2,0,0,0
-714,Marketing A0lytics Ma0ger @ FinTech Startup ($B+ valuation),0,0,San Francisco,CA,Opus,"Construction, Repair & Mainte0nce",3.7,0,0,0
+714,Marketing A0lytics Manager @ FinTech Startup ($B+ valuation),0,0,San Francisco,CA,Opus,"Construction, Repair & Mainte0nce",3.7,0,0,0
 715,Senior Data Engineer,137812,166642,San Francisco,CA,Enlitic,0,4.8,1,0,0
-716,Card Fraud Strategy and A0lytics Ma0ger,123929,229657,San Francisco,CA,First Republic Bank,Fi0nce,3.7,1,0,0
+716,Card Fraud Strategy and A0lytics Manager,123929,229657,San Francisco,CA,First Republic Bank,Fi0nce,3.7,1,0,0
 717,RCT Data Engineer,108881,128276,San Francisco,CA,First Republic Bank,Fi0nce,3.7,0,0,0
 718,"Scientist, Discovery Oncology",142960,161259,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,1
 719,"Scientist, Cell Line Development",0,0,Fremont,CA,Kelly,Business Services,3.4,0,0,0
-720,Web A0lytics Ma0ger (Tag Ma0gement expert),0,0,San Francisco,CA,Course5 Intelligence,Business Services,3.6,0,0,0
+720,Web A0lytics Manager (Tag Ma0gement expert),0,0,San Francisco,CA,Course5 Intelligence,Business Services,3.6,0,0,0
 721,Research Scientist - Multi-View ML,98535,147509,San Francisco,CA,Fyusion,Information Technology,3.6,0,0,1
 722,Earth Research Scientist,0,0,Berkeley,CA,Lawrence Berkeley Lab,Government,4.1,0,0,1
 723,"Senior/Principal, Data Engineer (Data Insights)",100185,169700,San Francisco,CA,UnitedHealth Group,Health Care,3.4,0,0,0
@@ -692,7 +692,7 @@
 728,Senior/Principal Data Engineer (Data Insights),160126,199880,San Francisco,CA,Rally Health,Health Care,3.3,1,0,0
 729,"Fi0ncial Data A0lyst, Rideshare Planning and Operations",41439,74579,San Francisco,CA,Lyft,Information Technology,3.6,0,0,0
 730,Senior Data Engineer,82129,150813,San Francisco,CA,Point Banking,Fi0nce,2.8,1,0,0
-731,"A0lytics Ma0ger, Research",0,0,San Francisco,CA,Chime Bank,0,0,0,0,0
+731,"A0lytics Manager, Research",0,0,San Francisco,CA,Chime Bank,0,0,0,0,0
 732,Machine Learning Engineer,92455,155292,San Mateo,CA,QuinStreet,Business Services,3.4,0,1,0
 733,"Associate Scientist/Scientist, Computatio0l Pathology, Safety Assessment Pathology",106610,130479,South San Francisco,CA,Genentech,Biotech & Pharmaceuticals,3.9,0,0,1
 734,Senior Data Engineer,158305,181259,San Francisco,CA,Azlo,Fi0nce,0,1,1,0
@@ -728,7 +728,7 @@
 764,"Associate Scientist, A0lytical Development",0,0,South San Francisco,CA,"Allogene Therapeutics, Inc.",Biotech & Pharmaceuticals,5,1,1,0
 765,Machine Learning Engineer,0,0,San Mateo,CA,Rakuten Americas,0,0,0,0,0
 766,SAP HA0 Expert/Data Modeler,0,0,San Rafael,CA,Rose Inter0tio0l,Business Services,4.5,1,1,0
-767,Digital Data Engineering & A0lytics Ma0ger,95073,174012,San Francisco,CA,"NTT DATA, Inc.",Accounting & Legal,2.9,0,0,0
+767,Digital Data Engineering & A0lytics Manager,95073,174012,San Francisco,CA,"NTT DATA, Inc.",Accounting & Legal,2.9,0,0,0
 768,SRA/Associate Scientist,46189,75288,San Carlos,CA,Apexigen,0,5,0,1,1
 769,Senior Data Engineer,150000,170000,San Francisco,CA,My Job Tank,Information Technology,3.6,0,0,0
 770,Head of Product-Data Platforms,0,0,San Francisco,CA,Oracle,Information Technology,3.5,1,1,0
@@ -790,12 +790,12 @@
 826,Data Science Course Teaching Assistant,31772,67391,San Francisco,CA,Springboard,Education,4.4,0,0,0
 827,Senior Data A0lyst (Banking Domain Experience - Lending / Loan Lifecycle),0,0,San Francisco,CA,OneDotSix Consulting Inc,0,0,0,0,0
 828,Research Scientist (NLP),84007,115763,San Francisco,CA,AI Foundation,0,4.1,0,0,0
-829,Data Engineer Ma0ger,0,0,San Francisco,CA,Womply San Francisco,0,0,0,0,0
+829,Data Engineer Manager,0,0,San Francisco,CA,Womply San Francisco,0,0,0,0,0
 830,Senior Data Science Engineer,0,0,San Francisco,CA,super{set} startup studio,0,0,0,0,0
 831,Data A0lyst,45551,86720,Fremont,CA,Sunvalleytek Inter0tio0l Inc.,Transportation & Logistics,3.7,1,1,0
 832,Exascale Computatio0l Crystallographer Project Scientist,0,0,Berkeley,CA,Lawrence Berkeley Lab,Government,4.1,0,0,1
 833,Data Engineer,120363,145993,Belmont,CA,B-Stock Solutions,Information Technology,4.4,1,1,0
-834,Data Engineer Ma0ger,152164,195246,San Francisco,CA,Womply,Information Technology,3.2,0,0,0
+834,Data Engineer Manager,152164,195246,San Francisco,CA,Womply,Information Technology,3.2,0,0,0
 835,Research Associate or Scientist (Process Development),0,0,San Francisco,CA,"Biotium, Inc. Fremont, California",0,0,1,1,1
 836,Associate Scientist- Car-T,0,0,San Francisco,CA,Sonoma Biotherapeutics,0,0,1,1,0
 837,SAS Data A0lyst,0,0,Oakland,CA,Ascent,Business Services,4.6,0,0,0
@@ -831,7 +831,7 @@
 867,Software Engineer (Data Science),0,0,Redwood City,CA,CyberCoders,Business Services,4.1,0,0,0
 868,Sr. Business Intelligence A0lyst - Web A0lytics,102328,109495,San Francisco,CA,Bank of the West,Fi0nce,2.5,1,1,0
 869,Senior Quantitative A0lyst,110282,216263,San Francisco,CA,MUFG,Fi0nce,3.1,1,1,0
-870,Staff Research Scientist/Research Ma0ger - Akassoglou Lab,105349,138404,San Francisco,CA,The Gladstone Institutes,Biotech & Pharmaceuticals,4.5,0,0,1
+870,Staff Research Scientist/Research Manager - Akassoglou Lab,105349,138404,San Francisco,CA,The Gladstone Institutes,Biotech & Pharmaceuticals,4.5,0,0,1
 871,"Senior Data A0lyst, YouTube",104265,115495,San Bruno,CA,YouTube,Information Technology,4.2,1,0,0
 872,Data A0lyst w/ Tealium - Remote Work,0,0,San Mateo,CA,Two95 Inter0tio0l Inc.,Business Services,4,0,0,0
 873,Senior Scientist I - Disease Biology,0,0,South San Francisco,CA,MyoKardia,0,4.3,0,0,1
@@ -870,7 +870,7 @@
 906,Biological Engineering Project Scientist,76227,97680,Berkeley,CA,Lawrence Berkeley Lab,Government,4.1,0,1,1
 907,Computatio0l Project Scientist,76227,97680,Berkeley,CA,Lawrence Berkeley Lab,Government,4.1,1,1,1
 908,Cloud Data Engineer,115799,205195,San Mateo,CA,Snowflake Computing,Information Technology,4,1,1,0
-909,Marketing A0lytics Ma0ger,0,0,San Francisco,CA,Asa0,Information Technology,4.8,0,0,0
+909,Marketing A0lytics Manager,0,0,San Francisco,CA,Asa0,Information Technology,4.8,0,0,0
 910,Business Intelligence A0lyst,0,0,San Mateo,CA,Sequoia Benefits,Business Services,3.9,1,1,0
 911,Flood Data scientist: Hydrody0mics,105765,142959,Menlo Park,CA,One Concern,Information Technology,3.7,0,1,1
 912,Senior Scientist - Immuno-oncology,93744,137386,Foster City,CA,Notable Labs,Biotech & Pharmaceuticals,5,0,0,1
@@ -900,7 +900,7 @@
 936,SAP HA0 Expert/Data Modeler,0,0,San Rafael,CA,osairtech,0,0,1,0,0
 937,Biomarker Scientist,48523,100568,Redwood City,CA,ProClinical,Business Services,3.6,0,0,1
 938,Sr. Data Engineer / Architect (Genomics),0,0,Berkeley,CA,CyberCoders,Business Services,4.1,1,0,0
-939,Advanced A0lytics Ma0ger 2- Senior Ma0ger Supply Chain Strategy & A0lytics,88652,164563,San Bruno,CA,Walmart,Retail,3.3,1,1,0
+939,Advanced A0lytics Manager 2- Senior Manager Supply Chain Strategy & A0lytics,88652,164563,San Bruno,CA,Walmart,Retail,3.3,1,1,0
 940,"Scientist, Synthetic Biology Assay Development",103136,124919,Emeryville,CA,Berkeley Lights,Biotech & Pharmaceuticals,4.3,0,1,1
 941,"Associate Scientist 2, Fermentation (664)",49361,107718,Emeryville,CA,Amyris,Biotech & Pharmaceuticals,3.3,1,0,0
 942,Data Engineer lead / Architect,0,0,Emeryville,CA,KRG Technologies,Information Technology,4.5,0,0,0
@@ -991,7 +991,7 @@
 1027,"Research Data A0lyst (6256U) , Haas School of Business",66091,80231,Berkeley,CA,University of California Berkeley,Education,4.2,1,0,0
 1028,Research Scientist-Computer Vision & Deep Learning.,84007,115763,Fremont,CA,Deeproute.ai,0,5,0,1,1
 1029,Clinical Genomics Scientist,119591,138716,Oakland,CA,Fabric Genomics,0,0,0,0,1
-1030,Product Ma0ger - Data Pipeline,141056,145766,San Mateo,CA,Apixio,Information Technology,4.2,1,1,0
+1030,Product Manager - Data Pipeline,141056,145766,San Mateo,CA,Apixio,Information Technology,4.2,1,1,0
 1031,"Senior Scientist, A0lytical Chemistry",0,0,Emeryville,CA,Finless Foods,0,0,0,1,1
 1032,"Senior Big Data Engineer @ Emeryville, California",96816,174534,Emeryville,CA,Reveille Technologies,Information Technology,3.3,1,1,0
 1033,Senior Data scientist,81260,101976,Dallas,TX,Brinks Home Security,Business Services,3.4,0,0,0
@@ -1086,7 +1086,7 @@
 1122,Marketing Data A0lyst,35018,63354,Dallas,TX,Advancial Federal Credit Union,Fi0nce,4.8,0,0,0
 1123,Data scientist needed - 10 positions,73121,105189,Irving,TX,Kairos Technologies,Information Technology,4.1,0,0,0
 1124,Sr. Data scientist,97880,123465,Allen,TX,Frontier Communications,Telecommunications,2.4,0,0,0
-1125,A0lytics Ma0ger,74250,116202,Austin,TX,Seen by Indeed,0,0,0,0,0
+1125,A0lytics Manager,74250,116202,Austin,TX,Seen by Indeed,0,0,0,0,0
 1126,Data scientist / Statistician,73121,105189,Dallas,TX,Vinli,Information Technology,4.6,0,1,1
 1127,Data scientist (Marketing A0lytics),97505,127064,Austin,TX,Whole Foods Market,Retail,3.6,0,0,0
 1128,Senior Data scientist,117916,131721,Houston,TX,Sense Corp,Accounting & Legal,3.9,1,1,0
@@ -1216,7 +1216,7 @@
 1252,eDiscovery Data A0lyst,49965,79525,Houston,TX,Servient,Information Technology,4,1,1,0
 1253,Scientist,0,0,Houston,TX,Lonza,Biotech & Pharmaceuticals,3.2,0,1,1
 1254,Data A0lyst,48851,84598,Houston,TX,Horne LLP,Accounting & Legal,3.2,1,1,0
-1255,Innovation - Data Science Ma0ger,107918,116361,Dallas,TX,PwC,Accounting & Legal,3.8,1,0,0
+1255,Innovation - Data Science Manager,107918,116361,Dallas,TX,PwC,Accounting & Legal,3.8,1,0,0
 1256,Cell and Molecular Associate Scientist â??,0,0,Houston,TX,Kelly Services,Business Services,3.4,0,0,0
 1257,SAS Data scientist,61860,99000,Houston,TX,VIVA USA,Information Technology,4.6,0,0,0
 1258,Big Data Engineer,0,0,Dallas,TX,Cloudious LLC,Information Technology,4,1,1,0
@@ -1263,7 +1263,7 @@
 1299,Data Engineer,75058,92531,San Antonio,TX,iHeartMedia,Media,3.2,1,1,0
 1300,Data A0lyst,0,0,Austin,TX,We Care Partnership,Health Care,0,0,0,0
 1301,Data Engineer,78114,141678,Irving,TX,NTT DATA Services,Information Technology,3.3,0,0,0
-1302,Web A0lytics Ma0ger,70747,88844,Irving,TX,Ace Cash Express,Fi0nce,3.1,0,0,0
+1302,Web A0lytics Manager,70747,88844,Irving,TX,Ace Cash Express,Fi0nce,3.1,0,0,0
 1303,Data Engineer (REMOTE),0,0,Austin,TX,Cloud Academy,Information Technology,4.7,0,0,0
 1304,Data Modeler,48482,83851,Arlington,TX,Tiger A0lytics,Business Services,4.6,1,0,0
 1305,Machine Learning Engineer,0,0,Irving,TX,otsi,0,4.6,0,0,0
@@ -1321,7 +1321,7 @@
 1357,Fi0ncial Data A0lyst,0,0,Austin,TX,RoverPass,0,5,0,0,0
 1358,Data A0lyst,87404,112948,Dallas,TX,"ZeniMax Media, Inc.",Media,3.4,1,0,0
 1359,Data Engineer (REMOTE),0,0,Austin,TX,PriceSenz,0,0,0,0,0
-1360,Laboratory Outreach and Pre-A0lytical Ma0ger- Outreach-Referral Lab- F-T Day Shift,32398,53566,Galveston,TX,University of Texas Medical Branch,Health Care,3.6,1,1,0
+1360,Laboratory Outreach and Pre-A0lytical Manager- Outreach-Referral Lab- F-T Day Shift,32398,53566,Galveston,TX,University of Texas Medical Branch,Health Care,3.6,1,1,0
 1361,Big Data Engineer,48232,89155,Dallas,TX,Tiger A0lytics,Business Services,4.6,1,0,0
 1362,Scientist - Molecular Biologist,24457,49395,Austin,TX,tekwissen,Business Services,4.5,1,0,0
 1363,Data A0lyst II,55183,95771,Austin,TX,Superior HealthPlan,Health Care,3.3,1,1,0
@@ -1341,7 +1341,7 @@
 1377,Data A0lyst II,0,0,Houston,TX,Competentia Holding,0,4.9,0,0,0
 1378,Director Data Science and Advanced A0lytics,107812,165765,Houston,TX,"NextEra Energy, Inc.","Oil, Gas, Energy & Utilities",3.2,1,0,0
 1379,Medical Laboratory Scientist - Nights,50363,54990,Houston,TX,Houston Methodist,Health Care,4,1,1,0
-1380,Data Science Ma0ger,108576,169672,Spring,TX,Southwestern Energy,"Oil, Gas, Energy & Utilities",3.6,1,0,0
+1380,Data Science Manager,108576,169672,Spring,TX,Southwestern Energy,"Oil, Gas, Energy & Utilities",3.6,1,0,0
 1381,HSC Research Scientist Garrison Institute on Aging,50027,107905,Lubbock,TX,Texas Tech University,Education,4.2,0,1,1
 1382,Data Modeler,0,0,Irving,TX,1Point Solutions Inc,0,0,0,0,0
 1383,US|Prod Dev Scientist-Contractor,0,0,Plano,TX,V R Della Infotech Inc,Business Services,4.1,1,1,0
@@ -1459,10 +1459,10 @@
 1495,RID Senior Scientist,0,0,Carrollton,TX,Insperity,Business Services,4.1,1,1,0
 1496,Reporting Data Architect,82836,136678,Austin,TX,Apple,Information Technology,4.1,0,0,0
 1497,HYDROLOGIST (QUALITY ASSURANCE SPECIALIST - HYDROLOGIC DATA MA0GEMENT),31074,70186,Austin,TX,US Geological Survey,Government,3.8,1,0,0
-1498,Tech Consulting Ma0ger - Big Data Engineer,98718,105090,Austin,TX,EY,Accounting & Legal,3.8,1,1,0
+1498,Tech Consulting Manager - Big Data Engineer,98718,105090,Austin,TX,EY,Accounting & Legal,3.8,1,1,0
 1499,Tech Consulting Senior - Big Data Engineer,85831,106392,Austin,TX,EY,Accounting & Legal,3.8,1,1,0
 1500,RESEARCH COMPUTER SCIENTIST - RESEARCH ENGINEER - SR. RESEARCH ENGINEER - INDUSTRIAL ROBOTICS,97756,110105,San Antonio,TX,Southwest Research Institute Inc.,Business Services,3.9,1,1,1
-1501,Data A0lytics Ma0ger,103471,145207,Houston,TX,AIG,Insurance,3.2,1,1,0
+1501,Data A0lytics Manager,103471,145207,Houston,TX,AIG,Insurance,3.2,1,1,0
 1502,"Cloud Data Engineer, Google Professio0l Services",92015,125285,Addison,TX,Google,Information Technology,4.4,0,0,0
 1503,Computatio0l Biologist II - McDermott Center for Human Growth and Development,70236,88291,Dallas,TX,UT Southwestern Medical Center,Health Care,3.7,0,0,0
 1504,"Population Science Data A0lyst I, II and III - Data Science",66241,70821,Dallas,TX,UT Southwestern Medical Center,Health Care,3.7,0,0,0
@@ -1486,7 +1486,7 @@
 1522,Application Vulnerability Gover0nce Data A0lyst,36956,50975,Irving,TX,Citibank,Fi0nce,3.7,1,0,0
 1523,Sr Data A0lyst,0,0,Belton,TX,"Corporate Pharmacy Services, Inc.",0,0,0,0,0
 1524,Senior Business/Data A0lyst-Irving-VP/C13 - R,116750,210331,Irving,TX,Citibank,Fi0nce,3.7,1,1,0
-1525,Data Science Ma0ger,122652,144576,Austin,TX,Sphere Software LLC,0,0,1,0,0
+1525,Data Science Manager,122652,144576,Austin,TX,Sphere Software LLC,0,0,1,0,0
 1526,Senior Data Engineer,0,0,Austin,TX,Intersys,0,0,1,1,0
 1527,"Network Data A0lyst, NSW",46041,80014,Dallas,TX,Nokia,Telecommunications,4.1,0,0,0
 1528,CIB QR- Quantitative Research - Wholesale Credit Capital Modeling - Quantitative Developer - Associate/Vice President,145273,251541,Plano,TX,JP Morgan Chase &amp;amp; Co,Fi0nce,3.9,0,1,1
@@ -1505,14 +1505,14 @@
 1541,Scientist (Pre-Clinical Development),72399,101914,Fort Worth,TX,Alcon,Biotech & Pharmaceuticals,3.5,1,0,0
 1542,Research Scientist - IMM,52240,65938,Houston,TX,UTHealth Houston,Education,4,0,0,1
 1543,Air Quality Scientist,51043,69831,Freeport,TX,AECOM,Business Services,3.3,1,1,0
-1544,Reporting and A0lytics Ma0ger,96465,111905,Dallas,TX,Digital Realty,Information Technology,4.2,0,0,0
+1544,Reporting and A0lytics Manager,96465,111905,Dallas,TX,Digital Realty,Information Technology,4.2,0,0,0
 1545,Quantitative A0lyst - Asset Allocation A0lyst,49772,96260,Dallas,TX,State Farm,Insurance,3.2,1,1,0
 1546,Data Infrastructure Engineer (Sensia),77722,98231,Houston,TX,Rockwell Automation,Manufacturing,3.8,0,0,0
 1547,Sr Data Engineer,83748,153672,Plano,TX,"InfoVision, Inc.",Information Technology,3,0,0,0
 1548,CIB QR- Quantitative Research - Commodities Quantitative A0lyst - Executive Director,95092,152114,Houston,TX,J.P. Morgan,Fi0nce,3.9,0,1,1
 1549,Merchant Data A0lyst,33547,79470,Austin,TX,GetUpside,Information Technology,5,1,0,0
 1550,Business Intelligence A0lyst,0,0,Harlingen,TX,Su Clinica,Health Care,2.2,0,1,0
-1551,Laboratory Outreach and Pre-A0lytical Ma0ger- Outreach-Referral Lab,32398,53566,Galveston,TX,University of Texas Medical Branch,Health Care,3.6,1,0,0
+1551,Laboratory Outreach and Pre-A0lytical Manager- Outreach-Referral Lab,32398,53566,Galveston,TX,University of Texas Medical Branch,Health Care,3.6,1,0,0
 1552,QA Scientist,60508,94014,Austin,TX,"Sig0ture Science, LLC",Business Services,3.1,1,1,0
 1553,(Senior) Data Engineer,84456,108389,Dallas,TX,Boston Consulting Group,Business Services,4.3,1,1,0
 1554,Azure Data Engineer,50561,96836,Irving,TX,"TekLeaders, Inc",Information Technology,5,0,0,0
@@ -1530,7 +1530,7 @@
 1566,Research Engineering/ Scientist Associate III,40129,66815,Austin,TX,University of Texas at Austin,Education,4.3,0,1,0
 1567,Water Quality Scientist Senior,0,0,Austin,TX,"City of Austin, TX",0,0,1,1,0
 1568,Federal - Data Engineer - Senior,82788,154088,Dallas,TX,Solekai Systems Corp,Information Technology,4.2,0,0,0
-1569,Data Engineer Ma0ger,102730,143172,Dallas,TX,Amazon,Information Technology,3.9,0,0,0
+1569,Data Engineer Manager,102730,143172,Dallas,TX,Amazon,Information Technology,3.9,0,0,0
 1570,"Solutions Architect, Sr. (Data Applications)",83822,138968,The Woodlands,TX,Entergy,"Oil, Gas, Energy & Utilities",3.7,1,0,0
 1571,Data A0lyst II,42538,49367,Houston,TX,Virtus Partners,Fi0nce,2.8,1,0,0
 1572,Market Data A0lyst H/F,0,0,Paris,TX,CFM INDOSUEZWEALTH,0,0,0,0,0
@@ -1594,7 +1594,7 @@
 1630,Big Data Engineer ( W2 Opening ),0,0,Irving,TX,"TSR Consulting Services, Inc",0,0,1,1,0
 1631,Performance Modeling Engineer,0,0,Austin,TX,Arteris,Information Technology,1,0,0,0
 1632,Staff Scientist/Biomedical Engineer,65807,74472,Austin,TX,Pattern Bioscience,Biotech & Pharmaceuticals,0,1,0,1
-1633,"Engineering Ma0ger, Data Infrastructure",118866,127185,Austin,TX,Duo Security,Information Technology,4.5,0,0,0
+1633,"Engineering Manager, Data Infrastructure",118866,127185,Austin,TX,Duo Security,Information Technology,4.5,0,0,0
 1634,Research Scientist - Pathology,55338,71386,Dallas,TX,UT Southwestern Medical Center,Health Care,3.7,0,0,0
 1635,Ma0gement A0lyst IV (Senior Data A0lyst),37244,129543,Houston,TX,City of Houston,Government,3.2,1,1,1
 1636,Project Scientist,53547,68473,Frisco,TX,Weston Solutions,"Oil, Gas, Energy & Utilities",3.5,1,0,0
@@ -1633,7 +1633,7 @@
 1669,Research Scientist II with Security Clearance,49011,104623,San Antonio,TX,Leidos,Aerospace & Defense,3.4,0,0,0
 1670,Lead Data Engineer,106757,140944,Plano,TX,Capital One,Fi0nce,3.8,1,1,0
 1671,Data Engineer - Orion,61795,74447,Dallas,TX,"ZeniMax Media, Inc.",Media,3.4,1,1,0
-1672,Marketing A0lytics Ma0ger,0,0,Dallas,TX,Bestow,Insurance,4.8,1,0,0
+1672,Marketing A0lytics Manager,0,0,Dallas,TX,Bestow,Insurance,4.8,1,0,0
 1673,Data A0lyst II - Retail,45333,52725,Houston,TX,ENGIE North America,"Oil, Gas, Energy & Utilities",3.9,1,0,0
 1674,CIB QR- Quantitative Research - Wholesale Credit Capital Modeling - Quantitative Developer - Associa,74917,136203,Plano,TX,JPMorgan Chase,Fi0nce,3.9,0,1,1
 1675,LEAD ENGINEER - PRINCIPAL ENGINEER - LEAD COMPUTER SCIENTIST- SPACE AVIONICS,74544,124660,San Antonio,TX,Southwest Research Institute,Business Services,3.9,1,1,0
@@ -1740,7 +1740,7 @@
 1777,Data scientist,0,0,Springfield,VA,"Strategic Alliance Consulting, Inc",Government,5,1,0,0
 1778,Data scientist,0,0,Arlington,VA,1884794,0,0,1,1,1
 1779,"Data scientist, Senior",80176,133374,Arlington,VA,Booz Allen Hamilton Inc.,Business Services,3.7,1,0,1
-1780,"Data and A0lytics Ma0ger (London or Washington, DC based)",0,0,Washington,DC,ONE Campaign,Non-Profit,2.4,1,0,0
+1780,"Data and A0lytics Manager (London or Washington, DC based)",0,0,Washington,DC,ONE Campaign,Non-Profit,2.4,1,0,0
 1781,Data scientist,0,0,Gaithersburg,MD,"Lucidus Solutions, LLC",0,0,1,0,0
 1782,Data scientist,0,0,Reston,VA,BlackFern Recruitment,0,0,1,1,0
 1783,Data scientist,85079,107525,McLean,VA,Leidos,Aerospace & Defense,3.4,0,0,0
@@ -1783,7 +1783,7 @@
 1820,Data scientist / Statistician,0,0,Washington,DC,Ledger Investing,0,0,0,1,1
 1821,Senior Data scientist,90000,150000,Washington,DC,West Creek Fi0ncial,Fi0nce,4.6,1,1,1
 1822,Senior Data Engineer,67104,126644,Reston,VA,Novetta,Information Technology,4.1,1,1,0
-1823,Senior Ma0ger - Data Acquisition & Partnerships,135546,160387,McLean,VA,ID.me,Information Technology,3.3,1,0,0
+1823,Senior Manager - Data Acquisition & Partnerships,135546,160387,McLean,VA,ID.me,Information Technology,3.3,1,0,0
 1824,Senior Data scientist,0,0,Arlington,VA,CyberCoders,Business Services,4.1,1,0,0
 1825,Data Engineer,0,0,Washington,DC,CyberCoders,Business Services,4.1,1,1,0
 1826,"Sr. Data scientist (Arlington, VA)",107484,147854,Arlington,VA,Tiger A0lytics,Business Services,4.6,1,1,0
@@ -1835,7 +1835,7 @@
 1872,"Data scientist, Lead",96151,159959,Arlington,VA,Booz Allen Hamilton Inc.,Business Services,3.7,1,1,1
 1873,"Senior Scientist for Clinical Research Late R&I - Durham, NC",56169,208069,Gaithersburg,MD,AstraZeneca,Biotech & Pharmaceuticals,3.9,0,0,0
 1874,"Senior Scientist for Clinical Research Late R&I - Gaithersburg, MD",56169,208069,Gaithersburg,MD,AstraZeneca,Biotech & Pharmaceuticals,3.9,0,0,0
-1875,Site Ma0ger - Data scientist,54254,161480,Washington,DC,SAIC,Information Technology,3.6,0,0,0
+1875,Site Manager - Data scientist,54254,161480,Washington,DC,SAIC,Information Technology,3.6,0,0,0
 1876,Operations Research A0lyst/Data scientist,78194,101772,Washington,DC,Veracity Engineering,Aerospace & Defense,4.4,1,0,0
 1877,"Data scientist, Lead",80890,135175,Alexandria,VA,ManTech,Business Services,4.1,0,0,0
 1878,"Scientist II, Clinical Immunology (Assay Development/ Validation)",58228,129579,Gaithersburg,MD,Novavax,Biotech & Pharmaceuticals,3.1,1,1,1
@@ -1877,7 +1877,7 @@
 1915,Cybersecurity Data scientist,76023,85673,Washington,DC,Booz Allen Hamilton Inc.,Business Services,3.7,1,1,0
 1916,Sr Data scientist,75749,127839,Alexandria,VA,IT Reso0nce Inc,Information Technology,4.3,0,0,0
 1917,Data scientist / Database Architect,0,0,Alexandria,VA,CMCI,0,4.6,0,1,0
-1918,"Ma0ger, R&D / Scientist II - Purification Process Sciences",100203,204179,Gaithersburg,MD,AstraZeneca,Biotech & Pharmaceuticals,3.9,0,0,0
+1918,"Manager, R&D / Scientist II - Purification Process Sciences",100203,204179,Gaithersburg,MD,AstraZeneca,Biotech & Pharmaceuticals,3.9,0,0,0
 1919,Data Modeler/Data scientist with Security Clearance,0,0,Springfield,VA,Royce Geospatial Consultants Inc,Aerospace & Defense,5,0,0,0
 1920,Scientist (Downstream Processing)- NIH,0,0,Bethesda,MD,Kelly,Business Services,3.4,0,0,0
 1921,Associate Data scientist,0,0,Alexandria,VA,Øptimus Consulting,0,0,0,1,1
@@ -1889,7 +1889,7 @@
 1927,Associate Data scientist,0,0,McLean,VA,Aireon,Aerospace & Defense,4.7,1,1,0
 1928,Senior Data scientist,0,0,Herndon,VA,Raytheon Intelligence &amp;amp; Space,Aerospace & Defense,4,1,0,0
 1929,Senior Data scientist,0,0,Alexandria,VA,Param Solutions,0,0,0,1,0
-1930,Data scientist Ma0ger,93846,117891,Bethesda,MD,NIH,Biotech & Pharmaceuticals,4.2,0,0,0
+1930,Data scientist Manager,93846,117891,Bethesda,MD,NIH,Biotech & Pharmaceuticals,4.2,0,0,0
 1931,Principal Data scientist,126167,194619,Reston,VA,Microsoft Corporation,Information Technology,4.3,0,0,0
 1932,Staff Scientist-Immunoassay Development,88656,109459,Chantilly,VA,Covance,Biotech & Pharmaceuticals,3.3,0,1,1
 1933,"Big Data Engineer, A0lytics",84247,97443,Chantilly,VA,Peraton,Aerospace & Defense,3.4,0,0,0
@@ -1937,7 +1937,7 @@
 1975,Data scientist/A0lyst with Security Clearance,0,0,Silver Spring,MD,KaiHonua,0,4,1,0,0
 1976,Software Engineer - Data Visualization,0,0,An0polis Junction,MD,ClearEdge,Information Technology,4,1,1,0
 1977,Senior/Field Medical Scientist - Southeast,0,0,Washington,DC,Allakos Inc.,0,0,0,1,1
-1978,Sr. Ma0ger - Ma0gement Accounting (Data scientist) (Advanced A0lytics),115563,136089,Arlington,VA,Lidl,Retail,3.3,1,0,0
+1978,Sr. Manager - Ma0gement Accounting (Data scientist) (Advanced A0lytics),115563,136089,Arlington,VA,Lidl,Retail,3.3,1,0,0
 1979,Data scientist (SME) - TS/SCI w/ Poly Required,85079,107525,Reston,VA,Leidos,Aerospace & Defense,3.4,0,0,0
 1980,"Senior Associate, Federal Data scientist",73663,121664,Mc Lean,VA,KPMG,Accounting & Legal,3.8,1,1,0
 1981,Data Engineer,94452,110632,Washington,DC,CIA,Government,3.7,1,0,0
@@ -1997,7 +1997,7 @@
 2036,Data Engineer,0,0,Washington,DC,ITConcepts Inc.,Information Technology,2.8,1,1,0
 2037,Senior Statistician/Data scientist,0,0,Springfield,VA,Parsons Commercial Technology Group Inc.,0,0,1,0,0
 2038,Data Architect,127839,160487,Washington,DC,Theta,0,4.6,1,1,0
-2039,Ma0ger - Ma0gement Accounting (Data scientist) (Advanced A0lytics),100443,118161,Arlington,VA,Lidl,Retail,3.3,1,0,0
+2039,Manager - Ma0gement Accounting (Data scientist) (Advanced A0lytics),100443,118161,Arlington,VA,Lidl,Retail,3.3,1,0,0
 2040,Senior Applied Education and Measurement Scientist,131982,229990,Washington,DC,Amazon,Information Technology,3.9,0,0,0
 2041,Senior Statistician/Data scientist,112491,181238,Springfield,VA,Parsons Corporation,Information Technology,3.6,1,0,0
 2042,Data Engineer,67559,122821,Alexandria,VA,AE Strategies,Business Services,4.8,1,1,0
@@ -2094,7 +2094,7 @@
 2134,"AI UI Web App Developer - Data Science, Senior Consultant",93436,175044,Washington,DC,Guidehouse,Business Services,3.2,1,0,0
 2135,Computer Scientist,70017,121791,Arlington,VA,Department of Defense,Government,3.3,1,1,1
 2136,Scientist/Research Consultant – Asia Pacific,50789,87701,Bethesda,MD,Pharmerit Inter0tio0l,Business Services,4.1,0,1,1
-2137,"Pharmacist, Medical Scientist, Doctor as Clinical Project Ma0ger - Clinical Research, Clinical Development (m/f/d)",0,0,Washington,DC,Topas Therapeutics GmbH,Biotech & Pharmaceuticals,0,0,1,1
+2137,"Pharmacist, Medical Scientist, Doctor as Clinical Project Manager - Clinical Research, Clinical Development (m/f/d)",0,0,Washington,DC,Topas Therapeutics GmbH,Biotech & Pharmaceuticals,0,0,1,1
 2138,Senior Data Engineer - Data Quality and Monitoring,101219,125827,McLean,VA,Freddie Mac,0,3.8,0,0,0
 2139,"PK Scientist/Sr. Scientist, Preclinical Development",81922,90291,Rockville,MD,REGENXBIO,Biotech & Pharmaceuticals,4.1,0,0,1
 2140,Biologist/Toxicologist/Environmental Engineer/Physical Scientist/Chemist,0,0,Washington,DC,US Government Other Agencies and Independent Organizations,0,0,1,0,0
@@ -2170,7 +2170,7 @@
 2210,Data Engineer,53540,100876,Fairfax,VA,ERPi,Business Services,3.8,1,1,0
 2211,Data Engineer,0,0,Rockville,MD,Tripoint Solutions,Information Technology,5,1,1,0
 2212,Bioinformatics Scientist,68687,111200,Bethesda,MD,Columbus Technologies And Services,Government,3.9,0,1,1
-2213,Data A0lytics Project Ma0ger,0,0,Washington,DC,"Oasis Systems, Inc.",Business Services,2.9,1,1,0
+2213,Data A0lytics Project Manager,0,0,Washington,DC,"Oasis Systems, Inc.",Business Services,2.9,1,1,0
 2214,Full Stack Developer - Data Science,58890,72830,Washington,DC,Guidehouse,Business Services,3.2,0,0,0
 2215,Scientist/Engineer V - BMC3 (TS/SCI) DODP3,65282,117128,Arlington,VA,E3 Federal Solutions,Business Services,4.5,0,1,0
 2216,Senior Research Scientist,60320,132114,Silver Spring,MD,Icon,Biotech & Pharmaceuticals,3.4,0,1,0
@@ -2215,7 +2215,7 @@
 2255,Data Engineer / A0lytics,99793,117643,Springfield,VA,Blackspoke,Government,5,0,1,0
 2256,Data Engineer,70353,77647,Vien0,VA,Jacobs,Business Services,3.6,1,0,0
 2257,Big Data- Software Developer-Mid level,84424,120012,College Park,MD,"Clarity Innovation, LLC",Business Services,5,0,0,0
-2258,"Principal Program Ma0ger, Fi0nce Operations Data A0lytics",50061,102101,Arlington,VA,Amazon,Information Technology,3.9,0,0,0
+2258,"Principal Program Manager, Fi0nce Operations Data A0lytics",50061,102101,Arlington,VA,Amazon,Information Technology,3.9,0,0,0
 2259,"General Engineer, Electronics Engineer, Computer Engineer, Aerospace Engineer or Computer Scientist",56143,96056,Washington,DC,"Department of Commerce, Office of Inspector General",Government,2.5,1,0,0
 2260,"Research Scientist, Talent Assessment",101568,178651,Arlington,VA,Amazon,Information Technology,3.9,0,0,0
 2261,SAS/SQL Data A0lyst,54955,101171,Alexandria,VA,"Panum Group, LLC",Information Technology,4.1,1,1,0
@@ -2311,12 +2311,12 @@
 2351,AQL Scientist - GMP Testing Lab,32718,72977,Gaithersburg,MD,Eurofins Scientific,Biotech & Pharmaceuticals,3.2,1,0,0
 2352,SAR Imagery Scientist,0,0,Chantilly,VA,"Apogee Integration, LLC",Aerospace & Defense,4.4,1,1,0
 2353,Medical Imaging Deep Learning Research Scientist,79393,101932,Bethesda,MD,Ariadne,0,3,0,0,1
-2354,Senior Ma0ger Data Science- Model Risk,63010,126693,McLean,VA,Capital One,Fi0nce,3.8,1,1,1
+2354,Senior Manager Data Science- Model Risk,63010,126693,McLean,VA,Capital One,Fi0nce,3.8,1,1,1
 2355,Data Engineer(Heads Up),0,0,Reston,VA,"Iconma, L.L.C.",Business Services,4.1,0,0,0
 2356,Data Engineer (Apache Spark),90748,115938,Reston,VA,Acuity INC,Business Services,3.7,1,1,0
 2357,Big Data Engineer/Developer Senior,0,0,Mc Lean,VA,Randstad,Business Services,3.7,0,0,0
 2358,Cyber Research Scientist,62695,94601,Silver Spring,MD,Perspecta,Aerospace & Defense,3,1,1,1
-2359,Sr Ma0ger - Data Acquisition & Partnerships,44696,96160,McLean,VA,ID.me,Information Technology,3.3,1,0,0
+2359,Sr Manager - Data Acquisition & Partnerships,44696,96160,McLean,VA,ID.me,Information Technology,3.3,1,0,0
 2360,Diagnostics and Immunology Research Scientist III - WRAIR,92369,127231,Silver Spring,MD,Odyssey Systems,Business Services,3.9,0,0,1
 2361,Sr. Immunologist / Research Scientist II - WRAIR,147291,215349,Silver Spring,MD,Odyssey Systems,Business Services,3.9,0,0,1
 2362,Molecular Genetics Research Scientist II - WRAIR,132266,183739,Silver Spring,MD,Odyssey Systems,Business Services,3.9,0,0,1
@@ -2388,7 +2388,7 @@
 2428,Behavioral Scientist (Program Director in Geography/Anthropology),0,0,Alexandria,VA,US Government Other Agencies and Independent Organizations,0,0,1,0,1
 2429,Interdiscipli0ry General Engineer/Physical Scientist,48804,84962,Reston,VA,Department of Defense,Government,3.3,1,1,0
 2430,123 - Big Data Engineer,108661,121684,Alexandria,VA,Connvertex Technologies,Information Technology,3.7,1,1,0
-2431,Data Platform Engineering Ma0ger,59246,102681,McLean,VA,Gannett,Media,3,1,1,0
+2431,Data Platform Engineering Manager,59246,102681,McLean,VA,Gannett,Media,3,1,1,0
 2432,Animal Models Scientist I - WRAIR,115195,155500,Silver Spring,MD,Odyssey Systems,Business Services,3.9,0,0,1
 2433,Interdiscipli0ry General Engineer/Physical Scientist,51677,90573,Reston,VA,Defense Threat Reduction Agency,Government,3.4,1,1,0
 2434,Environmental Scientist (Mid to Senior Level),57410,88016,Chantilly,VA,"Tetra Tech, Inc.",Business Services,3.9,1,1,0
@@ -2398,7 +2398,7 @@
 2438,Sig0l and Information Processing Research Scientist,77955,105584,Reston,VA,"Metron, Inc.",Business Services,3.4,0,1,1
 2439,"Sr Scientist, Clinical Research",93247,108010,Gaithersburg,MD,Emergent BioSolutions,Biotech & Pharmaceuticals,3,1,1,1
 2440,"Scientist, Biostatistics - Proteomics & Metabolomics",56613,117102,Gaithersburg,MD,AstraZeneca,Biotech & Pharmaceuticals,3.9,0,0,0
-2441,"Program Ma0ger, Research Data Repository and Neurosciences",51477,119471,Rockville,MD,Gryphon Technologies,Aerospace & Defense,3.2,0,0,1
+2441,"Program Manager, Research Data Repository and Neurosciences",51477,119471,Rockville,MD,Gryphon Technologies,Aerospace & Defense,3.2,0,0,1
 2442,Remote Sensing Scientist / Engineer,121526,152408,Chantilly,VA,The Aerospace Corporation,Aerospace & Defense,3.8,1,1,0
 2443,"Assoc Scientist, Quality",78307,90956,Rockville,MD,Meso Scale Discovery,Biotech & Pharmaceuticals,2.4,1,1,0
 2444,Data A0lytics Engineer,67260,114066,Chantilly,VA,The Aerospace Corporation,Aerospace & Defense,3.8,1,1,0
@@ -2420,7 +2420,7 @@
 2460,"Scientist II, Flow Cytometry",57642,131372,Rockville,MD,Champions Oncology,Biotech & Pharmaceuticals,2.9,0,0,0
 2461,Scientist - Protein Purification,58282,85009,Rockville,MD,Pharmaceutical Product Development,Biotech & Pharmaceuticals,3.6,1,1,0
 2462,Sr. Big Data Engineer,106840,122808,Vien0,VA,Metistream,0,0,1,1,0
-2463,Medical Data Review Ma0ger RRG,77496,103937,Rockville,MD,IQVIA,Biotech & Pharmaceuticals,3.6,1,1,0
+2463,Medical Data Review Manager RRG,77496,103937,Rockville,MD,IQVIA,Biotech & Pharmaceuticals,3.6,1,1,0
 2464,Big Data GIS Technician,29516,45814,Sterling,VA,BAE Systems USA,Aerospace & Defense,3.6,1,0,0
 2465,"Data Engineer, Associate Principal",73494,82162,Vien0,VA,Alion Science &amp;amp; Technology,Business Services,3.7,1,0,0
 2466,"Data Engineer, Sr",97068,111663,Vien0,VA,Alion Science &amp;amp; Technology,Business Services,3.7,1,0,0
@@ -2434,7 +2434,7 @@
 2474,General Scientist Administrator - Patient-Centered Care Researcher,57119,120362,Rockville,MD,Agency for Healthcare Research and Quality,Government,3.4,1,1,0
 2475,Big Data Engineering Lead,0,0,Fort Meade,MD,"Credence Ma0gement Solutions, LLC",Government,4.5,1,1,0
 2476,Data Exploitation Practice Lead,0,0,McLean,VA,steampunk,Information Technology,4.5,1,1,1
-2477,Sr. Ma0ger Data Engineer,110852,124507,McLean,VA,Capital One,Fi0nce,3.8,1,1,0
+2477,Sr. Manager Data Engineer,110852,124507,McLean,VA,Capital One,Fi0nce,3.8,1,1,0
 2478,Big Data Engineer Big Data Developer,0,0,Rockville,MD,quantumvision,0,0,0,0,0
 2479,Lead Data Engineer with Security Clearance,71750,125877,Chantilly,VA,"Moseley Technical Services, Inc.",Information Technology,4.3,1,1,1
 2480,Data Engineer - Card Technology,96672,107942,McLean,VA,Capital One,Fi0nce,3.8,1,0,0
@@ -2487,7 +2487,7 @@
 2527,Lead Data Engineer -TS/SCI security,0,0,Chantilly,VA,Pacer IT - Technology Opportunities,0,0,1,1,1
 2528,Computer Scientist Level 1,96508,143467,Fort Meade,MD,CACI Inter0tio0l,Aerospace & Defense,3.5,0,0,0
 2529,Computer Scientist - Software Engineer/Cyber Developer - Entry to Experienced,70898,88176,Fort Meade,MD,0tio0l Security Agency,Government,3.8,1,1,0
-2530,Experienced Bioa0lytical CRO Project Ma0ger (Principal Investigator / Scientist),99667,125061,Gaithersburg,MD,Smithers Group,Business Services,2.7,1,1,0
+2530,Experienced Bioa0lytical CRO Project Manager (Principal Investigator / Scientist),99667,125061,Gaithersburg,MD,Smithers Group,Business Services,2.7,1,1,0
 2531,Associate Scientist I,0,0,Sterling,VA,Microbac,Biotech & Pharmaceuticals,2.5,1,1,0
 2532,Big data Engineer,68091,87070,Reston,VA,Infotree Service Inc,Business Services,3.6,0,0,0
 2533,Lead Data Engineer,0,0,Chantilly,VA,High Point Placements,0,0,0,0,0
