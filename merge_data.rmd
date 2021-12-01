@@ -1,0 +1,154 @@
+---
+title: "Merge Datasets"
+author: "Eric Lehmphul"
+date: "11/30/2021"
+output: html_document
+---
+
+# Read in Data
+
+```{r}
+original.data <- read.csv("unique_job_postings.csv")
+ny.data <- read.csv("glassdoor_ny_datascience.csv")
+sf.data <- read.csv("https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/Data_Job_SF.csv")
+tx.data <- read.csv("https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/Data_Job_TX.csv")
+wa.data <- read.csv("https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/Data_Job_WA.csv")
+```
+
+
+
+```{r}
+library(tidyr)
+data1 <- separate(data = ny.data, col = job_location, into = c("city", "state"), sep = ", ")
+```
+
+```{r}
+new.data <- rbind(original.data, data1)
+
+new.data <- unique(new.data[,-1])
+```
+
+
+
+```{r}
+names(new.data)
+names(sf.data)
+```
+
+```{r}
+colnames(sf.data) <- c("job_title", "company_name", "state", "city", "min_salary", "max_salary", "job_description", "company_industry", "company_rating", "date_posted", "valid_until", "job_type")
+colnames(tx.data) <- c("job_title", "company_name", "state", "city", "min_salary", "max_salary", "job_description", "company_industry", "company_rating", "date_posted", "valid_until", "job_type")
+colnames(wa.data) <- c("job_title", "company_name", "state", "city", "min_salary", "max_salary", "job_description", "company_industry", "company_rating", "date_posted", "valid_until", "job_type")
+```
+
+
+```{r}
+new.data <- separate(data = new.data, col = job_salary, into = c("min_salary", "max_salary"), sep = " - ")
+```
+
+```{r}
+new.data$max_salary[which(is.na(new.data$max_salary))] <- NA
+new.data$max_salary[which(new.data$max_salary == "Not Provided")] <- NA
+new.data$min_salary[which(new.data$min_salary == "Not Provided")] <- NA
+```
+
+
+```{r}
+library(stringr)
+new.data$min_salary <- substring(new.data$min_salary, 2)
+new.data$min_salary <- str_remove_all(new.data$min_salary, ",")
+new.data$max_salary <- substring(new.data$max_salary, 2)
+new.data$max_salary <- str_remove_all(new.data$max_salary, ",")
+```
+
+
+```{r}
+new.data$min_salary <- as.integer(new.data$min_salary)
+new.data$max_salary <- as.integer(new.data$max_salary)
+```
+
+```{r}
+names(new.data)
+new.data <- new.data[-8]
+names(new.data)
+```
+
+```{r}
+colnames(new.data)[8] <- "company_industry"
+names(new.data)
+```
+
+```{r}
+new.data$company_industry[3] <- "Business Serivices"
+new.data$company_industry[71] <- "Business Serivices"
+new.data$company_industry[72] <- NA
+new.data$company_industry[91] <- "Business Serivices"
+new.data$company_industry[100] <- NA
+new.data$company_industry[116] <- NA
+new.data$company_industry[117] <- "Business Serivices"
+new.data$company_industry[141] <- "Business Serivices"
+```
+
+
+```{r}
+new.data$company_rating <- as.character(new.data$company_rating)
+new.data$company_rating[new.data$company_rating == "0"] <- NA
+new.data$company_rating <- as.numeric(new.data$company_rating)
+```
+
+
+```{r}
+new.data <- new.data[,-c(10:12)]
+```
+
+
+```{r}
+sf.data <- sf.data[,-c(10:12)]
+tx.data <- tx.data[,-c(10:12)]
+wa.data <- wa.data[,-c(10:12)]
+```
+
+```{r}
+final.data <- rbind(new.data, sf.data, tx.data, wa.data)
+```
+
+```{r}
+final.data$min_salary[final.data$min_salary == -1] <- NA
+final.data$max_salary[final.data$max_salary == -1] <- NA
+```
+
+```{r}
+final.data$company_industry[final.data$company_industry == ""] <- NA
+```
+
+```{r}
+final.data$city[final.data$city == ""] <- NA
+final.data$state[final.data$state == ""] <- NA
+final.data$company_name[final.data$company_name == ""] <- NA
+final.data$city[is.na(final.data$city)] <- "Not Provided"
+final.data$state[is.na(final.data$state)] <- "Not Provided"
+final.data$company_name[is.na(final.data$company_name)] <- "Not Provided"
+```
+
+
+# Get Education for all job postings
+
+
+```{r}
+  # get true/false values for these key words 
+  bachelors <- grepl("Bachelor|bachelor|BS|B.S.", ignore.case = F, final.data$job_description)
+  masters <- grepl("Master|Graduate|master|MS|M.S.", ignore.case = F, final.data$job_description)
+  phd <- grepl("Phd|doctorate|Postgraduate|Ph.D", ignore.case = T, final.data$job_description)
+  
+  # combine into a single list
+  education <- cbind(bachelors, masters, phd)
+  education <- as.data.frame(ifelse(education == TRUE, 1, 0))
+   final.data <- cbind(final.data, education)
+```
+
+
+# Export to .csv
+
+```{r}
+write.csv(final.data, "job_posting.csv")
+```
