@@ -1,6 +1,5 @@
 ,job_title,min_salary,max_salary,city,state,company_name,company_industry,company_rating,bachelors,masters,phd
 1,Data Scientist,71310,122975,Charlotte,NC,Polypore International,Manufacturing,4.2,1,0,0
-2,Data Scientist,NA,NA,Not Provided,MA,Van Pool Transportation,Transportation & Logistics,3.7,1,1,0
 3,Data Scientist,69795,111477,Norfolk,VA,Booz Allen Hamilton,Business Serivices,4.2,1,1,0
 4,Senior Data Scientist,75217,121211,Beachwood,OH,Penske,Transportation & Logistics,3.6,0,1,1
 5,Data Scientist,74839,112212,Newton,MA,Paytronix Systems,Information Technology,3.3,1,0,0
