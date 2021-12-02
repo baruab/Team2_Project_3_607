@@ -12,8 +12,8 @@ sel_glassdoor_df$job_title <- trimws(sel_glassdoor_df$job_title)
 ###########################################################################
 
 # Load the data from csv
-#url<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
-#survey_tib <- read.csv(file=url(url), sep=",")
+url<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
+survey_tib <- read.csv(file=url(url), sep=",")
 
 df = data.frame(id =c('Q11','Q12','Q13','Q14','Q15','Q16','Q17','Q18','Q19','Q20','Q21','Q22','Q23','Q24','Q25','Q26','Q27','Q28','Q29','Q30','Q31','Q32','Q33','Q34','Q35','Q36','Q37','Q38','Q39','Q40','Q41','Q42','Q43','Q44','Q45','Q46','Q47','Q48','Q49','Q50'),
                 desc = c( " Q11	Select any activities that make up an important part of your role at work",
@@ -86,8 +86,49 @@ datasciencetools<- function(ds,question){
     print("Choose correct question code")
   }
 }
+############################################################################
+# Create the data frame.
+resume_url_df <- data.frame(
+  name = c("https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny",
+           "https://www.postjobfree.com/resume/ador9o/data-scientist-san-francisco-ca"),
+  
+  stringsAsFactors = FALSE
+)
 
 
+url<-"https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny"
+#url<-"https://www.postjobfree.com/resume/ador9o/data-scientist-san-francisco-ca"
+
+resume<-function(obj){
+  key_clean<-c( "jupyter/ipython", "jupyter",  "rstudio",   "pycharm",  "visual studio code",  "nteract", "atom", "matlab", "visual studio",   "notepad++","sublime text", "vim", "intellij", "spyder", "kaggle kernels", "google colab", "azure notebook",  "domino datalab","google cloud datalab", "paperspace", "floydhub", "crestle", "jupyterhub/binder", "google cloud platform (gcp)",   "amazon web services (aws)",   "microsoft azure",   "ibm cloud",   "alibaba cloud", "python", "r","sql","bash","java", "javascript/typescript", "visual basic/vba", "c/c++", "scala","go", "c#/.net", "php",  "ruby", "sas/stata",  "scikit-learn",  "tensorflow",  "keras", "pytorch","spark mllib", "h20", "fastai", "mxnet", "caret",  "xgboost", "mlr", "prophet", "randomforest", "lightgbm", "cntk", "caffe", "ggplot2",  "matplotlib", "altair", "shiny", "d3", "plotly", "bokeh", "seaborn", "geoplotlib", "leaflet",  "lattice",  "aws elastic compute cloud (ec2)",  "google compute engine", "aws elastic beanstalk", "google app engine", "google kubernetes engine", "aws lambda", "google cloud functions","aws batch",  "azure virtual machines", "azure container service",  "azure functions",  "azure event grid",  "azure batch", "azure kubernetes service", "ibm cloud virtual servers", "ibm cloud container registry",   "ibm cloud kubernetes service", "ibm cloud foundry",  "amazon transcribe", "google cloud speech-to-text api",  "amazon rekognition", "google cloud vision api", "amazon comprehend", "google cloud natural language api", "amazon translate","google cloud translation api", "amazon lex", "google dialogflow enterprise edition",  "amazon rekognition video", "google cloud video intelligence api",  "google cloud automl", "amazon sagemaker","google cloud machine learning engine",  "datarobot",   "h20 driverless ai", "sas", "dataiku",  "rapidminer",  "instabase", "algorithmia", "dataversity", "cloudera", "azure machine learning studio", "azure machine learning workbench", "azure cortana intelligence suite", "azure bing speech api",  "azure speaker recognition api","azure computer vision api",  "azure face api", "azure video api", "ibm watson studio", "ibm watson knowledge catalog",  "ibm watson assistant", "ibm watson discovery", "ibm watson text to speech", "ibm watson visual recognition",  "ibm watson machine learning", "azure cognitive services",  "aws relational database service", "aws aurora",  "google cloud sql","google cloud spanner", "aws dynamodb",  "google cloud datastore", "google cloud bigtable", "aws simpledb", "microsoft sql server", "mysql","postgressql", "sqlite",  "oracle database","ingres", "microsoft access", "nexusdb",  "sap iq", "google fusion tables", "azure database for mysql",   "azure cosmos db", "azure sql database","azure database for postgresql",  "postgresql", "ibm cloud compose",  "ibm cloud compose for mysql",  "ibm cloud compose for postgresql", "ibm cloud db2",  "aws elastic mapreduce", "google cloud dataproc", "google cloud dataflow",   "google cloud dataprep", "aws kinesis", "google cloud pub/sub", "aws athena", "aws redshift", "google bigquery", "teradata",  "microsoft analysis services",  "oracle exadata",  "oracle warehouse builder", "snowflake","databricks",     "azure sql data warehouse",  "azure hdinsight", "azure stream analytics","ibm infosphere datastorage","ibm cloud analytics engine", "ibm cloud streaming analytics","audio data", "categorical data", "genetic data", "geospatial data", "image data", "numerical data", "sensor data","tabular data", "text data", "time series data", "video data", "government websites", "university research group websites", "non-profit research group websites", "dataset aggregator/platform (socrata, kaggle public datasets platform, etc.)", "i collect my own data (web-scraping, etc.)",  "publicly released data from private companies", "google search",  "google dataset search", "github","git")
+  obj <-as_tibble(obj) %>%
+    mutate(resume = row_number())
+  wd<-obj %>% unnest_tokens(word, value,token = stringr::str_split, pattern = "[,;]")
+  #wd
+  pt<-wd$word
+  tools<-as_tibble(pt)
+  res_tools<-tools%>%mutate(tool = trimws(str_replace_all(str_replace_all(unlist(tools),"[&():>]",""),"and","")))
+  resume_tools<-trimws(gsub(".*:","",res_tools$value))
+  resume_tools<-trimws(gsub("[.*:]","",resume_tools))
+  resume_tools<-trimws(gsub("and","",resume_tools))
+  resume_tools<-str_replace_all(resume_tools,"[()]","")
+  resume_tools<-str_replace_all(resume_tools,"aws","amazon web services (aws)")
+  resume_tools<-str_replace_all(resume_tools,"r shiny","shiny")
+  resume_tools<-unique(str_replace_all(resume_tools,"r-programing","r"))
+  df = list(ResumeTools=resume_tools, DataSciTools=key_clean)
+  attributes(df) = list(names = names(df),
+                        row.names=1:max(length(resume_tools), length(key_clean)), class='data.frame')
+  df<-df%>%
+    dplyr::mutate(flag=as.integer(df$DataSciTools %in% df$ResumeTools),TotalTool=sum(flag))
+  print(unique(df$TotalTool))
+  t<-subset(df,flag==1)%>%select(DataSciTools)
+  print(t)
+  resume_df <- df%>% select(c(DataSciTools,flag))
+  res<-resume_df%>%
+    pivot_wider(names_from = DataSciTools, values_from = flag)
+ # res_view <- res %>% ggplot(aes(res))
+  return (res)
+}
 
 
 ###########################################################################
@@ -188,6 +229,18 @@ function(input, output, session) {
                 selected = "")
   })
 
+  output$resumeUrlOutput <- renderUI({
+    selectInput("resumeUrlInput", "Resume URL",
+                sort(resume_url_df$name ),
+                selected = "")
+  })
+  
+  newman <- reactive({
+      web <- read_html(input$resumeUrlInput)
+      raw_resume<-web %>%html_nodes(".normalText")%>%html_text()
+      resume(raw_resume)
+  })
+  
   
   filtered <- reactive({ 
     if (is.null(input$jobTitleInput)) {
@@ -198,6 +251,8 @@ function(input, output, session) {
       job_title == trimws(input$jobTitleInput),
       city == trimws(input$jobLocationInput)
     )
+    
+ 
   })
   
   
@@ -229,9 +284,26 @@ function(input, output, session) {
       job_title == trimws(input$jobTitleInput))
   })
   
+  
+  
+  ### Table tab ####
+  output$resumeKeywordPlot <-  renderTable({
+    resume(read_html(input$resumeUrlInput) %>%html_nodes(".normalText")%>%html_text())
+  })
+    
+    #DT::renderDT({
+    #datatable(
+    #  res,
+    #  rownames = FALSE
+    #)
+  #})
+    
+    
+  
+  
   ### Graph tab ####
   output$graph_video <- renderUI({ 
-    tags$video(id="video2", type = "video/mp4",src = "graph_video.mp4",  width = "640px", height = "480px", controls = "controls") 
+    tags$video(id="video2", type = "video/mp4",src = "graph_video.mp4",  width = "1080px", height = "480px", controls = "controls") 
   })
   
   #### Survey Q & A ##########
