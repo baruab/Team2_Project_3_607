@@ -9,3 +9,8 @@ library(stringr)
 library(tidyverse)
 library(tidyr)
 library(readr)
+
+library(tidytext)
+library(httr)
+library(rvest)
+
