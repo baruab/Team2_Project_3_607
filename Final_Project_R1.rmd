@@ -1,0 +1,152 @@
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(httr)
+library(rvest)
+library(stringr)
+library(readr)
+library(tm)
+library(slam)
+library(dplyr)
+library(tidytext)
+library(tidyr)
+library(dplyr)
+library(textstem)
+library(lsa)
+library(data.table)
+```
+
+
+```{r}
+library(readr)
+urlfile<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/glassdoor_datascience.csv"
+jobs<-read_csv(url(urlfile))
+
+resume<-"
+
+Seattle, Washington 614-***-**** no sponsorship required adklxr@r.postjobfree.com
+
+w www.linkedin.com/in/liuyuan1129 https://github.com/yuanyvette1129 SKILLS
+
+Programming Languages: Python, SQL, SAS certified
+
+Technologies: - Apache Spark, MapReduce, Hadoop, Databricks, Google Colab, Git, Tableau
+
+- Machine Learning: Random Forest, Gradient Boosted Trees, Logistic Regression, Lasso, Ridge, PCA, KNN, NLP, Clustering, Anomaly Detection, Recommendation System
+
+- Statistics: A/B Testing, Experimental Design, Econometric Models, Time Series Forecasting EXPERIENCE
+
+Data Science Fellow, Insight, Seattle WA May 2020 - Present
+
+● Consulted for a mobile game company (A Thinking Ape) to monitor shard health and improve game monetization
+
+● Preprocessed over 1.2 million game behavior data and identified 16 key gameplay features from over 90 features using filter and embedded feature selection techniques
+
+● Built a random forest model that predicts player’s LTV by day 60 and identified low-performing shards for the community specialist team for early intervention
+
+Research Assistant, George Washington Institute of Public Policy, Washington D.C. Sep 2015 - May 2020
+
+● Collected income data from the Census of Population and visualized to understand the geography of U.S. county-level income inequality from 1950 to 2010
+
+● Empirically evaluated the employment impacts of Florida county recycling programs based on fixed effects regression model and estimated that a 1 percentage point increase in county recycling rate leads to a 0.4% job growth in solid waste and recycling industry
+
+Research Analyst, Ohio Civil Service Employee Association, Westerville, Ohio 2014 – 2015
+
+● Provided data support for successful negotiation of a $1.5 million contract with County Job and Family Services
+
+● Prepared charts using Tableau about wintertime slips and falls within Department of Rehabilitation and Corrections to help analyze and develop recommendations for injury reduction PROJECTS
+
+User Segmentation and Churn Prediction based on 1.6 million Merchant Transaction Activities Feb 2021
+
+● Identified 4 types of businesses using RFM clustering, to facilitate customized action plans to different segments
+
+● Defined a churned merchant as not make a transaction after 30 days of their first transaction, and self-labeled merchants into churn/no churn
+
+● Built a Random Forest model to predict which active merchants are likely to churn in the near future, with a F1 score= 0.45; found that the total transaction amount in a month is the most predictive of churning Financial Anomaly Detection and Risk Analysis in Python August 2020
+
+● Developed a machine learning model and built an alert system to predict and prevent fraudulent activities
+
+● Performed exploratory data analysis on 138K+ transactions and preprocessed data by matching IP address to country, feature engineering, encoding categorical features, and handling imbalance labeled data by SMOTE
+
+● Applied distribution-based modeling and supervised machine learning algorithms, and selected random forest model as the final model (best F1: 0.67)
+
+● Found that more than 50% of fraud activities occurred 1 second after sign up and the more a device or an IP is shared, the more likely to be classified as at risk EDUCATION
+
+George Washington University 2015 - Present
+
+Ph.D. candidate (ABD), Public Policy and Public Administration Ohio State University 2012 - 2014
+
+Master of Public Administration & Graduate Minor in Statistics Laioffer 2019 - 2020
+
+Artificial Intelligence & Data Engineering Certificate"
+
+```
+
+
+```{r}
+##Multiple Job postings at once (Corpus)
+#One row of posting
+postings<-10
+des_all<-subset(jobs,select=c(3))
+des_all<-des_all[1:postings,]
+company_names<-jobs[1:postings,6]
+salary<-jobs[1:postings,4]
+location<-jobs[1:postings,5]
+title<-jobs[1:postings,2]
+industry<-jobs[1:postings,7]
+
+#adding resume text as doc_id 1
+des_all<-rbind(des_all,resume)
+
+des_all$job_description<-des_all$job_description%>%
+  str_replace_all(pattern="\n",replacement=" ")%>%
+  str_replace_all(pattern="www+|com|@\\S+|#\\S+|http|\\*|\\s[A-Z]\\s|\\s[a-z]\\s|\\d|�+",replacement=" ")
+des_all$job_description<-tolower(des_all$job_description)
+#des_all$job_description<-removeNumbers(des_all$job_description)
+des_all$job_description<-removePunctuation(des_all$job_description)
+#des_all$job_description<-stripWhitespace(des_all$job_description)
+des_all$job_description<-removeWords(des_all$job_description,stopwords("en"))
+des_all$job_description<-sapply(des_all$job_description,lemmatize_strings)
+
+des_all_df<-data.frame(
+  doc_id=1:(postings+1),
+  text=des_all$job_description
+)
+
+Corpus=VCorpus(DataframeSource(des_all_df))
+
+cr_DTM<-DocumentTermMatrix(Corpus)
+tf<-DocumentTermMatrix(Corpus,control=list(weighting=weightTf))
+tfidf<-DocumentTermMatrix(Corpus,control=list(weighting=weightTfIdf))
+#all(findFreqTerms(tf)==findFreqTerms(tfidf))
+#findFreqTerms(tf,lowfreq = 1)
+#findFreqTerms(tfidf,lowfreq = 0.33)
+
+#inspect(tf)
+inspect(tfidf)
+
+tf_df<-as.matrix(tf)
+tfidf_df<-as.matrix(tfidf)
+
+```
+
+
+```{r}
+#test cosine
+tfidf_a<-as.matrix(tfidf)
+tfidf_a<-transpose(data.frame(tfidf_a))
+tfidf_a<-as.matrix(tfidf_a)
+
+cos_df<-data.frame(cosine(tfidf_a))
+resume_similarity<-cos_df[(postings+1),]
+colnames(resume_similarity)<-transpose(company_names)
+resume_similarity
+
+#Penske has greatest tfidf V4
+imp_terms<-subset(tfidf_df,select=c(4,11))
+imp_terms<-tfidf_df[4]
+
+```
+
+
