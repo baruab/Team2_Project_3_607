@@ -87,8 +87,9 @@ Artificial Intelligence & Data Engineering Certificate"
 ```{r}
 ##Multiple Job postings at once (Corpus)
 #One row of posting
-postings<-10
+postings<-30
 des_all<-subset(jobs,select=c(3))
+#des_all<-data.frame(jobs$job_description)
 des_all<-des_all[1:postings,]
 company_names<-jobs[1:postings,6]
 salary<-jobs[1:postings,4]
@@ -126,11 +127,11 @@ tfidf<-DocumentTermMatrix(Corpus,control=list(weighting=weightTfIdf))
 #inspect(tf)
 inspect(tfidf)
 
-tf_df<-as.matrix(tf)
-tfidf_df<-as.matrix(tfidf)
+#tf_df<-as.matrix(tf)
+#tfidf_df<-as.matrix(tfidf)
+
 
 ```
-
 
 ```{r}
 #test cosine
@@ -140,13 +141,22 @@ tfidf_a<-as.matrix(tfidf_a)
 
 cos_df<-data.frame(cosine(tfidf_a))
 resume_similarity<-cos_df[(postings+1),]
-colnames(resume_similarity)<-transpose(company_names)
-resume_similarity
+#resume_similarity
+list<-names(resume_similarity)<-NULL
+list<-unlist(c(resume_similarity))
+order<-order(list,decreasing=TRUE)
+order<-order[-c(1)]
+doc_ID<-data.frame(order)
 
-#Penske has greatest tfidf V4
-imp_terms<-subset(tfidf_df,select=c(4,11))
-imp_terms<-tfidf_df[4]
+rec_df<-doc_ID
+colnames(rec_df)<-c("doc_ID")
 
+rec_df<-rec_df%>%
+  mutate(title=jobs[order,2])%>%
+  mutate(industry=jobs[order,7])%>%
+  mutate(company_names=jobs[order,6])%>%
+  mutate(ratings=jobs[order,9])
+  
 ```
 
 
