@@ -2,7 +2,8 @@
 #glassdoorfile<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/glassdoor_datascience.csv"
 #glassdoorfile<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/glassdoor_datascience_updated.csv"
 
-glassdoorfile<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/job_posting_updated.csv"
+# glassdoorfile<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/job_posting_updated.csv"
+glassdoorfile<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/job_posting.csv"
 glassdoor_raw<-read_csv(url(glassdoorfile))
 glassdoor_df  <- as.data.frame(glassdoor_raw)
 
@@ -88,9 +89,21 @@ datasciencetools<- function(ds,question){
 }
 ############################################################################
 # Create the data frame.
+
+
+#Read in csv
+skill_income <- read.csv("https://raw.githubusercontent.com/catfoodlover/Data607/main/skills_income.csv", stringsAsFactors = FALSE)
+
+
+
 resume_url_df <- data.frame(
   name = c("https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny",
-           "https://www.postjobfree.com/resume/ador9o/data-scientist-san-francisco-ca"),
+           "https://www.postjobfree.com/resume/adktqz/senior-data-scientist-brooklyn-ny",
+           "https://www.postjobfree.com/resume/adk07o/data-science-new-york-ny",
+           "https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny",
+           "https://www.postjobfree.com/resume/adost3/data-scientist-new-york-ny",
+           "https://www.postjobfree.com/resume/adonl3/data-scientist-charlotte-nc",
+           "https://www.postjobfree.com/resume/ado61j/data-scientist-arlington-va"),
   
   stringsAsFactors = FALSE
 )
@@ -116,18 +129,28 @@ resume<-function(obj){
   resume_tools<-str_replace_all(resume_tools,"r shiny","shiny")
   resume_tools<-unique(str_replace_all(resume_tools,"r-programing","r"))
   df = list(ResumeTools=resume_tools, DataSciTools=key_clean)
+  
   attributes(df) = list(names = names(df),
                         row.names=1:max(length(resume_tools), length(key_clean)), class='data.frame')
+  
   df<-df%>%
     dplyr::mutate(flag=as.integer(df$DataSciTools %in% df$ResumeTools),TotalTool=sum(flag))
   print(unique(df$TotalTool))
-  t<-subset(df,flag==1)%>%select(DataSciTools)
-  print(t)
-  resume_df <- df%>% select(c(DataSciTools,flag))
-  res<-resume_df%>%
-    pivot_wider(names_from = DataSciTools, values_from = flag)
- # res_view <- res %>% ggplot(aes(res))
-  return (res)
+  
+  vec<-c(unique(df$TotalTool), length(key_clean))
+#  barplot(vec)
+  
+#  t<-subset(df,flag==1)%>%select(DataSciTools)
+  t <- subset(df, flag == 1) %>% select(DataSciTools) %>% as.data.frame()
+  row.names(t) <- NULL
+# print(t)
+#  resume_df <- df%>% select(c(DataSciTools,flag))
+#  res<-resume_df%>%
+#    pivot_wider(names_from = DataSciTools, values_from = flag)
+# res_view <- res %>% ggplot(aes(res))
+#  return (res)
+  return(t)
+  
 }
 
 
@@ -160,14 +183,10 @@ function(input, output, session) {
       shinyjs::hide("register_panel")
 
       if (current_user$emailVerified == TRUE) {
-      
        shinyjs::show("main")
-           
-      
       } else {
         shinyjs::show("verify_email_view")
       }
-
     }
 
   }, ignoreNULL = FALSE)
@@ -231,7 +250,8 @@ function(input, output, session) {
 
   output$resumeUrlOutput <- renderUI({
     selectInput("resumeUrlInput", "Resume URL",
-                sort(resume_url_df$name ),
+                sort(resume_url_df$name ), 
+                width="80%",
                 selected = "")
   })
   
@@ -239,20 +259,6 @@ function(input, output, session) {
       web <- read_html(input$resumeUrlInput)
       raw_resume<-web %>%html_nodes(".normalText")%>%html_text()
       resume(raw_resume)
-  })
-  
-  
-  filtered <- reactive({ 
-    if (is.null(input$jobTitleInput)) {
-      return(NULL)
-    }
-    
-    sel_glassdoor_df  %>% filter(
-      job_title == trimws(input$jobTitleInput),
-      city == trimws(input$jobLocationInput)
-    )
-    
- 
   })
   
   
@@ -286,21 +292,13 @@ function(input, output, session) {
   
   
   
-  ### Table tab ####
-  output$resumeKeywordPlot <-  renderTable({
-    resume(read_html(input$resumeUrlInput) %>%html_nodes(".normalText")%>%html_text())
+  ### Resume Table tab ####
+  output$resume_table <-  DT::renderDataTable({
+ #   res <- resume(read_html(input$resumeUrlInput) %>%html_nodes(".normalText")%>%html_text())
+ #   DT::datatable(res)
+    DT::datatable(newman())
   })
-    
-    #DT::renderDT({
-    #datatable(
-    #  res,
-    #  rownames = FALSE
-    #)
-  #})
-    
-    
-  
-  
+
   ### Graph tab ####
   output$graph_video <- renderUI({ 
     tags$video(id="video2", type = "video/mp4",src = "graph_video.mp4",  width = "1080px", height = "480px", controls = "controls") 
@@ -311,7 +309,7 @@ function(input, output, session) {
   
   output$questionOutput <- renderUI({
     selectInput("questionInput", "Question",
-                setNames(df$id, df$desc) ,
+                setNames(df$id, df$desc), width="70%",
                 selected = NULL)
   }) 
   
@@ -320,5 +318,297 @@ function(input, output, session) {
    
   })
   
+  
+  # image2 sends pre-rendered images
+  output$image1 <- renderUI({
+    
+    if (is.null(input$neo4j_pics))
+      return(NULL)
+    
+    if (input$neo4j_pics == "all_rels") {
+      tags$img(src= "images/AutoDesk_Relationships.png")
+    } else if (input$neo4j_pics == "company_city") {
+      tags$img(src= "images/COMPANY_OFFICE_IN.png")
+    } else if (input$neo4j_pics == "industry_companies") {
+      tags$img(src= "images/INDUSTRY_COMPANY_MATCH.jpg")
+    }
+    })
+    
+
+  # image2 sends pre-rendered images
+  output$image2 <- renderUI({
+    if (is.null(input$picture))
+      return(NULL)
+    
+    if (input$picture == "sf_jobs") {
+        tags$img(src= "images/sf_jobs.png")
+    } else if (input$picture == "rc_jobs") {
+      tags$img(src= "images/rc_jobs.png")
+    }})
   #################
+  
+  
+  show_plot <- reactive({
+#    inFile <- input$target_upload
+#    if (is.null(inFile))
+#      return(NULL)
+    
+    resume2 <- function(obj){
+      key_clean <-
+        c(
+          "jupyter/ipython",
+          "jupyter",
+          "rstudio",
+          "pycharm",
+          "visual studio code",
+          "nteract",
+          "atom",
+          "matlab",
+          "visual studio",
+          "notepad++",
+          "sublime text",
+          "vim",
+          "intellij",
+          "spyder",
+          "kaggle kernels",
+          "google colab",
+          "azure notebook",
+          "domino datalab",
+          "google cloud datalab",
+          "paperspace",
+          "floydhub",
+          "crestle",
+          "jupyterhub/binder",
+          "google cloud platform (gcp)",
+          "amazon web services (aws)",
+          "microsoft azure",
+          "ibm cloud",
+          "alibaba cloud",
+          "python",
+          "r",
+          "sql",
+          "bash",
+          "java",
+          "javascript/typescript",
+          "visual basic/vba",
+          "c/c++",
+          "scala",
+          "go",
+          "c#/.net",
+          "php",
+          "ruby",
+          "sas/stata",
+          "scikit-learn",
+          "tensorflow",
+          "keras",
+          "pytorch",
+          "spark mllib",
+          "h20",
+          "fastai",
+          "mxnet",
+          "caret",
+          "xgboost",
+          "mlr",
+          "prophet",
+          "randomforest",
+          "lightgbm",
+          "cntk",
+          "caffe",
+          "ggplot2",
+          "matplotlib",
+          "altair",
+          "shiny",
+          "d3",
+          "plotly",
+          "bokeh",
+          "seaborn",
+          "geoplotlib",
+          "leaflet",
+          "lattice",
+          "aws elastic compute cloud (ec2)",
+          "google compute engine",
+          "aws elastic beanstalk",
+          "google app engine",
+          "google kubernetes engine",
+          "aws lambda",
+          "google cloud functions",
+          "aws batch",
+          "azure virtual machines",
+          "azure container service",
+          "azure functions",
+          "azure event grid",
+          "azure batch",
+          "azure kubernetes service",
+          "ibm cloud virtual servers",
+          "ibm cloud container registry",
+          "ibm cloud kubernetes service",
+          "ibm cloud foundry",
+          "amazon transcribe",
+          "google cloud speech-to-text api",
+          "amazon rekognition",
+          "google cloud vision api",
+          "amazon comprehend",
+          "google cloud natural language api",
+          "amazon translate",
+          "google cloud translation api",
+          "amazon lex",
+          "google dialogflow enterprise edition",
+          "amazon rekognition video",
+          "google cloud video intelligence api",
+          "google cloud automl",
+          "amazon sagemaker",
+          "google cloud machine learning engine",
+          "datarobot",
+          "h20 driverless ai",
+          "sas",
+          "dataiku",
+          "rapidminer",
+          "instabase",
+          "algorithmia",
+          "dataversity",
+          "cloudera",
+          "azure machine learning studio",
+          "azure machine learning workbench",
+          "azure cortana intelligence suite",
+          "azure bing speech api",
+          "azure speaker recognition api",
+          "azure computer vision api",
+          "azure face api",
+          "azure video api",
+          "ibm watson studio",
+          "ibm watson knowledge catalog",
+          "ibm watson assistant",
+          "ibm watson discovery",
+          "ibm watson text to speech",
+          "ibm watson visual recognition",
+          "ibm watson machine learning",
+          "azure cognitive services",
+          "aws relational database service",
+          "aws aurora",
+          "google cloud sql",
+          "google cloud spanner",
+          "aws dynamodb",
+          "google cloud datastore",
+          "google cloud bigtable",
+          "aws simpledb",
+          "microsoft sql server",
+          "mysql",
+          "postgressql",
+          "sqlite",
+          "oracle database",
+          "ingres",
+          "microsoft access",
+          "nexusdb",
+          "sap iq",
+          "google fusion tables",
+          "azure database for mysql",
+          "azure cosmos db",
+          "azure sql database",
+          "azure database for postgresql",
+          "postgresql",
+          "ibm cloud compose",
+          "ibm cloud compose for mysql",
+          "ibm cloud compose for postgresql",
+          "ibm cloud db2",
+          "aws elastic mapreduce",
+          "google cloud dataproc",
+          "google cloud dataflow",
+          "google cloud dataprep",
+          "aws kinesis",
+          "google cloud pub/sub",
+          "aws athena",
+          "aws redshift",
+          "google bigquery",
+          "teradata",
+          "microsoft analysis services",
+          "oracle exadata",
+          "oracle warehouse builder",
+          "snowflake",
+          "databricks",
+          "azure sql data warehouse",
+          "azure hdinsight",
+          "azure stream analytics",
+          "ibm infosphere datastorage",
+          "ibm cloud analytics engine",
+          "ibm cloud streaming analytics",
+          "audio data",
+          "categorical data",
+          "genetic data",
+          "geospatial data",
+          "image data",
+          "numerical data",
+          "sensor data",
+          "tabular data",
+          "text data",
+          "time series data",
+          "video data",
+          "government websites",
+          "university research group websites",
+          "non-profit research group websites",
+          "dataset aggregator/platform (socrata, kaggle public datasets platform, etc.)",
+          "i collect my own data (web-scraping, etc.)",
+          "publicly released data from private companies",
+          "google search",
+          "google dataset search",
+          "github",
+          "git"
+        )
+      obj <- as_tibble(obj) %>%
+        mutate(resume = row_number())
+      wd <-
+        obj %>% unnest_tokens(word,
+                              value,
+                              token = stringr::str_split,
+                              pattern = "[,;]")
+      pt <- wd$word
+      tools <- as_tibble(pt)
+      res_tools <-
+        tools %>% mutate(tool = trimws(str_replace_all(
+          str_replace_all(unlist(tools), "[&():>]", ""), "and", ""
+        )))
+      resume_tools <- trimws(gsub(".*:", "", res_tools$value))
+      resume_tools <- trimws(gsub("[.*:]", "", resume_tools))
+      resume_tools <- trimws(gsub("and", "", resume_tools))
+      resume_tools <- str_replace_all(resume_tools, "[()]", "")
+      resume_tools <-
+        str_replace_all(resume_tools, "aws", "amazon web services (aws)")
+      resume_tools <- str_replace_all(resume_tools, "r shiny", "shiny")
+      resume_tools <-
+        unique(str_replace_all(resume_tools, "r-programing", "r"))
+      df = list(ResumeTools = resume_tools, DataSciTools = key_clean)
+      attributes(df) = list(
+        names = names(df),
+        row.names = 1:max(length(resume_tools), length(key_clean)),
+        class = 'data.frame'
+      )
+      df <- df %>%
+        dplyr::mutate(
+          flag = as.integer(df$DataSciTools %in% df$ResumeTools),
+          TotalTool = sum(flag)
+        )
+      t <- df$TotalTool %>% unique()
+      return(t)
+    }
+    
+#    obj <- read.csv(inFile$datapath)
+#    obj <- unlist(obj[2])
+    web <- read_html(input$resumeUrlInput)
+    raw_resume<-web %>%html_nodes(".normalText")%>%html_text()
+    
+    obj <- resume2(raw_resume)
+    salary <- 123887.3 + 721.8*obj
+    title <- paste0('With ',obj,' skills expect to make $',salary)
+    return(ggplot2::ggplot(skill_income, aes(x = num_skills, y = income)) +
+             geom_point() +
+             geom_smooth(method = 'lm') +
+             geom_point(aes(x = obj, y = (123887.3 + 721.8 * obj)), colour =
+                          "red") +
+             labs(title = title) +
+             theme(plot.title = element_text(face = "bold")))
+  })
+  
+  output$plot <- renderPlot({
+    show_plot()
+  })
+  
 }
