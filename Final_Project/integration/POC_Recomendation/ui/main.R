@@ -19,13 +19,16 @@ hidden(fluidRow(
          
           sidebarMenu(
             menuItem("Dashboard", tabName = "dashboard", icon=icon("line-chart"), selected=TRUE),
-            menuItem("Data Extraction", tabName = "dataExtraction", icon=icon("table")),
+            menuItem("Resume Data Extraction", tabName = "dataExtraction", icon=icon("table")),
+            menuItem("Data Visualization", tabName = "dataVisualization", icon=icon("table")),
+            menuItem("Neo4J Graph", tabName = "neo4jGraph", icon=icon("table")),
             menuItem("Survey Q&A", tabName = "survey_qa", icon=icon("mortar-board")),
-            menuItem("Codes",  icon = icon("file-text-o"),
+            menuItem("Source Code",  icon = icon("file-text-o"),
                      menuSubItem("global.R", tabName = "global", icon = icon("angle-right")),
                      menuSubItem("ui.R", tabName = "ui", icon = icon("angle-right")),
                      menuSubItem("server.R", tabName = "server", icon = icon("angle-right")),
-                     menuSubItem("main.R", tabName = "mainUI", icon = icon("angle-right"))
+                     menuSubItem("main.R", tabName = "mainUI", icon = icon("angle-right")),
+                     menuSubItem("neo4j_data_schema.txt", tabName = "neo4jSchema", icon = icon("angle-right"))
             ),
             menuItem("About", tabName = "about", icon = icon("question"))
           )
@@ -67,14 +70,32 @@ hidden(fluidRow(
                    
                     plotOutput("qaPlot")
             ),
-            
+            tabItem("neo4jGraph",
+                    fluidRow(
+                      column(2, wellPanel(
+                        radioButtons("neo4j_pics", "Industry/Companies/Jobs:",
+                                     c("all_rels", "company_city","industry_companies")),
+                        radioButtons("picture", "Jobs/Companies By City:",
+                                     c("sf_jobs", "rc_jobs"))
+                      )),
+                      column(6,
+                             uiOutput("image1"),
+                             uiOutput("image2")
+                      )
+                    )
+            ),
             tabItem("dataExtraction",
                     fluidRow(
                       column(12,
                              uiOutput("resumeUrlOutput")   
                       )),
-                    
-                    plotOutput("resumeKeywordPlot")
+                    tabsetPanel(
+                      tabPanel(title = "Skills Table",
+                               DT::dataTableOutput("resume_table")
+                      ),tabPanel(title = "Skills Plot",
+                                 plotOutput("plot")
+                      )
+                    )
             ),
             #############################################################
             tabItem(tabName = "global",
@@ -106,6 +127,22 @@ hidden(fluidRow(
                          pre(includeText("ui/main.R"))
                     )
             ),
+            tabItem(tabName = "neo4jSchema",
+                    box( width = NULL, status = "primary", solidHeader = TRUE, title="Neo4J Schema",
+                         downloadButton('downloadData5', 'Download'),
+                         br(),br(),
+                         pre(includeText("neo4j_data_schema.txt"))
+                    )
+            ),
+            tabItem(tabName = "dataVisualization",
+                    fluidPage(
+                      tags$iframe(src = "Final_Project_Visualizations.html",
+                                  width = '100%', height = '800px', 
+                                  frameborder = 0, scrolling = 'auto'
+                      )
+                    )
+            ),
+            
             tabItem(tabName = "about",
                     fluidPage(
                       
