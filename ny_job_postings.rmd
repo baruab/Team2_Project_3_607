@@ -1,0 +1,299 @@
+---
+title: "Scape New York City (25 mile radius) Data"
+author: "Eric Lehmphul"
+date: "11/30/2021"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(xml2)
+```
+
+## Functions to scrape desired data
+
+### Job Description
+
+```{r}
+get_description <- function(job_link){
+  job_page <- read_html(job_link)
+  job_description <- job_page  %>% 
+                      html_nodes(".ecgq1xb4") %>% html_text()
+  
+  return(job_description)
+}
+```
+
+### Company Name
+
+```{r}
+get_company_name <- function(page){
+  company <- page  %>% 
+              html_nodes(".company span") %>% html_text()
+  
+  return(company)
+}
+```
+
+
+### Location
+
+```{r}
+get_job_location <- function(page){
+  location <- page  %>% 
+              html_nodes(".location span") %>% html_text()
+  
+  return(location)
+}
+```
+
+
+### Salary
+
+```{r}
+get_salary <- function(job_link){
+  job_page <- read_html(job_link)
+  job_salary<- job_page  %>% 
+                        html_nodes(".e11nt52q2 .e1v3ed7e1") %>% html_text()
+  
+  return(job_salary)
+}
+```
+
+
+
+### Average Company Rating
+
+```{r}
+get_rating <- function(job_link){
+  job_page <- read_html(job_link)
+  rating <- job_page  %>% 
+                        html_nodes(".e11nt52q4") %>% html_text()
+  
+  return(rating)
+}
+```
+
+### Industry of Company
+
+```{r}
+get_industry <- function(job_link){
+  a <- readLines(job_link)
+  value <- grep("industry",a)
+  industry <- str_extract(a[value], "industryName\":\"(.*?)\"") %>%
+    str_remove("industryName\":") %>%
+    str_remove_all("\"")
+    
+  return(industry)
+}
+```
+
+
+```{r}
+# a <- readLines(job_link[1])
+# 
+# value <- grep("industry",a)
+# 
+# # a[value]
+# 
+# industry <- str_extract(a[value], "industryName\":\"(.*?)\"") %>%
+#   str_remove("industryName\":") %>%
+#   str_remove_all("\"")
+```
+
+
+### Sector of Company
+
+
+Use similar approach to industry. look at source code of webpage and extract the words before the sector: sectorName
+
+```{r}
+get_sector <- function(job_link){
+  a <- readLines(job_link)
+  value <- grep("sector",a)
+  sector <- str_extract(a[value], "sectorName\":\"(.*?)\"") %>%
+    str_remove("sectorName\":") %>%
+    str_remove_all("\"")
+    
+  return(sector)
+}
+```
+
+### Job Title
+
+```{r}
+get_title <- function(page){
+  title <- page  %>% 
+                html_nodes(".job_title") %>% html_text()
+  
+  return(title)
+}
+```
+
+
+### Company Reviews
+
+```{r}
+get_reviews <- function(job_link){
+  job_page <- read_html(job_link)
+  review <- job_page  %>% 
+                        html_nodes(".ea78plz5") %>% html_text()
+  
+  return(review)
+}
+```
+
+
+## Can be applied after scraping on the job description
+
+### Education
+
+
+```{r}
+get_educaion_level <- function(dataset){
+  # store descriptions
+  description <- dataset$job_descripion
+  
+  # get true/false values for these key words 
+  bachelors <- grepl("Bachelor", ignore.case = T, job_description)
+  masters <- grepl("Master", ignore.case = T, job_description)
+  phd <- grepl("Phd|doctorate", ignore.case = T, job_description)
+  
+  # combine into a single list
+  education <- cbind(bachelors, masters, phd)
+  
+  # convert TRUE to 1 and FALSE to 0
+  education <- as.data.frame(ifelse(education == TRUE, 1, 0))
+  
+  # add education columns
+  new.data <- cbind(dataset, education)
+}
+```
+
+
+
+
+# Run Scraper to acquire full dataset
+
+```{r, warning=FALSE}
+# initialize dataframe
+scraped.data <- 0
+
+for(page_result in 1:10){
+
+url = paste0("https://www.glassdoor.com/Job/new-york-data-scientist-jobs-SRCH_IL.0,8_IC1132348_KO9,23_IP", page_result, ".htm")
+  
+page <- read_html(url)
+
+job_link <- page  %>% 
+  html_nodes(".jobLink") %>% html_attr("href") %>%
+  paste("https://www.glassdoor.com", ., sep = "")
+
+job_link <- unique(job_link)
+
+# Normal function calls
+
+company_name <- get_company_name(page)
+job_location <- get_job_location(page)
+job_title <- get_title(page)
+
+# sapply function calls
+
+job_description <- sapply(job_link, FUN = get_description)
+company_industry <- sapply(job_link, FUN = get_industry)
+company_sector <- sapply(job_link, FUN = get_sector)
+company_rating <- sapply(job_link, FUN = get_rating)
+job_salary <- sapply(job_link, FUN = get_salary)
+
+
+dataset <- cbind(job_title, job_description, job_salary, job_location, company_name, company_industry, company_sector, company_rating)
+
+scraped.data <- rbind(scraped.data, dataset)
+
+print(paste("Page:", page_result))
+}
+```
+
+Make data into a data frame and eliminate first row because it is a null row.
+
+```{r}
+final.data <- as.data.frame(scraped.data)
+final.data <- final.data[-1,]
+```
+
+Add education qualifications in by scanning for key words in the job description. (bachelors, masters, phd| doctorate)
+
+```{r}
+final.data <- get_educaion_level(final.data)
+```
+
+
+```{r}
+# clean up data 
+
+# Rating
+
+final.data$company_rating <- str_extract(final.data$company_rating, '\\d*\\.?\\d+')
+
+
+
+# Salary
+
+final.data$job_salary <- gsub(" \\..*", "", final.data$job_salary)
+```
+
+
+```{r}
+# Change lists to proper data type
+
+final.data <- as.data.frame(final.data)
+
+final.data$job_title <- as.character(final.data$job_title)
+final.data$job_description <- as.character(final.data$job_description)
+final.data$job_salary <- as.character(final.data$job_salary)
+final.data$job_location <- as.character(final.data$job_location)
+final.data$company_name <- as.character(final.data$company_name)
+final.data$company_industry <- as.character(final.data$company_industry)
+final.data$company_sector <- as.character(final.data$company_sector)
+final.data$company_rating <- as.character(final.data$company_rating)
+```
+
+```{r}
+final.data$company_rating <- as.numeric(final.data$company_rating)
+```
+
+
+```{r}
+final.data$company_industry[final.data$company_industry == "Industry"] <- "NA"
+final.data$company_sector[final.data$company_sector == "Sector"] <- "NA"
+```
+
+```{r}
+library(textclean)
+
+final.data$job_description <- final.data$job_description %>%
+  replace_non_ascii() %>%
+  replace_curly_quote() %>%
+  str_replace_all("[^[:graph:]]", " ") %>%
+  str_replace_all("’", "") %>%
+  str_replace_all("·", " ") %>%
+  str_replace_all("‘", "") %>%
+  str_replace_all("�", " ") %>%
+  str_replace_all("—", "") %>%
+  str_replace_all("   ", " ")
+```
+
+
+```{r}
+library(dplyr)
+
+data1 <- distinct(final.data)
+```
+
+
+# Export to .csv to share with team
+
+```{r}
+write.csv(data1, "glassdoor_ny_datascience.csv")
+```
