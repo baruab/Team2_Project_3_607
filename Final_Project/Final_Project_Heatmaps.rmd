@@ -1,0 +1,549 @@
+---
+title: "Data Visualizations: Heatmaps"
+author: "Eric Lehmphul"
+date: "12/2/2021"
+output:
+  rmdformats::readthedown:
+    code_folding: hide
+  'rmdformats::readthedown:': default
+---
+
+```{r,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(plotly)
+library(scales) 
+```
+
+
+```{r}
+options(scipen=10000)
+```
+
+```{r}
+job.data <- read.csv("https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/job_posting.csv")
+```
+
+```{r}
+job.data <- job.data[!is.na(job.data$company_industry),]
+job.data <- job.data[job.data$company_industry != "Business Serivices",]
+job.data$company_industry <- factor(job.data$company_industry)
+```
+
+```{r}
+job.data <- job.data[!is.na(job.data$min_salary),]
+```
+
+```{r}
+job.data$avg_salary <- (job.data$min_salary + job.data$max_salary)/2
+
+job.data <- job.data[!is.na(job.data$company_rating),]
+
+job.data$state <- factor(job.data$state)
+```
+
+```{r}
+level.i <- levels(job.data$company_industry)
+level.s <- levels(job.data$state)
+```
+
+# Industry and State
+
+## Heatmap - Average Salary based on Industry and State
+
+```{r}
+# prep for hm1
+
+avg.salary <- 0
+state <- 0
+company.industry <- 0
+
+heatmap.data <- data.frame(company.industry, state, avg.salary)
+
+for(i in 1:length(level.i)){
+  ind1 <- job.data %>%
+  filter(company_industry == level.i[i]) 
+  
+  
+  for (j in 1:length(level.s)){
+    
+    ind2 <- ind1 %>%
+  filter(state == level.s[j])
+
+company.industry <- level.i[i]
+avg.salary <- sum(ind2$avg_salary) / nrow(ind2)
+state <- level.s[j]
+
+
+df1 <- data.frame(company.industry, state, avg.salary)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 1
+
+# Industry and state with regards avg salary
+
+hm1 <- ggplot(heatmap.data, aes(state, company.industry)) +
+  geom_tile(aes(fill = avg.salary)) + 
+  scale_fill_gradient(low = "light green", high = "dark green", name = "Average Salary", labels = comma) +
+  ggtitle("Average Salary based on Industry and State") +
+  ylab("Company Industry") +
+  xlab("State") +
+  theme(axis.text.x = element_text(angle = 90))
+
+
+ggplotly(hm1)
+```
+
+## Heatmap - Average Company Rating based on Industry and State
+
+```{r}
+# prep for hm2
+
+company.rating <- 0
+state <- 0
+company.industry <- 0
+
+heatmap.data <- data.frame(company.industry, state, company.rating)
+
+for(i in 1:length(level.i)){
+  ind1 <- job.data %>%
+  filter(company_industry == level.i[i]) 
+  
+  
+  for (j in 1:length(level.s)){
+    
+    ind2 <- ind1 %>%
+  filter(state == level.s[j])
+
+company.industry <- level.i[i]
+company.rating <- sum(ind2$company_rating) / nrow(ind2)
+state <- level.s[j]
+
+
+df1 <- data.frame(company.industry, state, company.rating)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+```{r}
+# Heatmap 2
+
+# Industry and state with regards company rating
+
+hm2 <- ggplot(heatmap.data, aes(state, company.industry)) +
+  geom_tile(aes(fill = company.rating)) + 
+  scale_fill_gradient(low = "red", high = "green", name = "Company Rating", labels = comma) +
+  ggtitle("Average Company Rating based on Industry and State") +
+  xlab("State") +
+  ylab("Company Industry") +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm2)
+```
+
+## Heatmap - Percent of jobs that require a Bachelor's Degree based on Industry and State
+
+```{r}
+# prep for hm3
+
+education <- 0
+state <- 0
+company.industry <- 0
+
+heatmap.data <- data.frame(company.industry, state, education)
+
+for(i in 1:length(level.i)){
+  ind1 <- job.data %>%
+  filter(company_industry == level.i[i]) 
+  
+  
+  for (j in 1:length(level.s)){
+    
+    ind2 <- ind1 %>%
+  filter(state == level.s[j])
+
+company.industry <- level.i[i]
+education <- sum(ind2$bachelors) / nrow(ind2)
+state <- level.s[j]
+
+
+df1 <- data.frame(company.industry, state, education)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 3
+
+# Industry and education with regards avg salary
+
+hm3 <- ggplot(heatmap.data, aes(state, company.industry)) +
+  geom_tile(aes(fill = education)) + 
+  scale_fill_gradient(low = "light blue", high = "dark blue", name = "Bachelor's Degree", labels = comma) +
+  ggtitle("Percent of job that require a Bachelor's Degree
+          based on Industry and State") +
+  xlab("State") +
+  ylab("Company Industry") +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm3)
+```
+
+## Heatmap - Percent of jobs that require a Master's Degree based on Industry and State
+
+```{r}
+# prep for hm4
+
+education <- 0
+state <- 0
+company.industry <- 0
+
+heatmap.data <- data.frame(company.industry, state, education)
+
+for(i in 1:length(level.i)){
+  ind1 <- job.data %>%
+  filter(company_industry == level.i[i]) 
+  
+  
+  for (j in 1:length(level.s)){
+    
+    ind2 <- ind1 %>%
+  filter(state == level.s[j])
+
+company.industry <- level.i[i]
+education <- sum(ind2$masters) / nrow(ind2)
+state <- level.s[j]
+
+
+df1 <- data.frame(company.industry, state, education)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 4
+
+# Industry and education with regards avg salary
+
+hm4 <- ggplot(heatmap.data, aes(state, company.industry)) +
+  geom_tile(aes(fill = education)) + 
+  scale_fill_gradient(low = "light blue", high = "dark blue", name = "Master's Degree", labels = comma) +
+  ggtitle("Percent of job that require a Master's Degree
+          based on Industry and State") +
+  xlab("State") +
+  ylab("Company Industry") +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm4)
+```
+
+
+## Heatmap - Percent of jobs that require a PhD based on Industry and State
+
+```{r}
+# prep for hm5
+
+education <- 0
+state <- 0
+company.industry <- 0
+
+heatmap.data <- data.frame(company.industry, state, education)
+
+for(i in 1:length(level.i)){
+  ind1 <- job.data %>%
+  filter(company_industry == level.i[i]) 
+  
+  
+  for (j in 1:length(level.s)){
+    
+    ind2 <- ind1 %>%
+  filter(state == level.s[j])
+
+company.industry <- level.i[i]
+education <- sum(ind2$phd) / nrow(ind2)
+state <- level.s[j]
+
+
+df1 <- data.frame(company.industry, state, education)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 5
+
+# Industry and education with regards avg salary
+
+hm4 <- ggplot(heatmap.data, aes(state, company.industry)) +
+  geom_tile(aes(fill = education)) + 
+  scale_fill_gradient(low = "light blue", high = "dark blue", name = "PhD", labels = comma) +
+  ggtitle("Percent of job that require a PhD
+          based on Industry and State") +
+  xlab("State") +
+  ylab("Company Industry") +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm4)
+```
+
+
+```{r}
+job.data$education[job.data$bachelors == 1 & job.data$masters == 1 & job.data$phd == 1] <- "B, M, PhD"
+job.data$education[job.data$bachelors == 1 & job.data$masters == 1 & job.data$phd == 0] <- "B or M"
+job.data$education[job.data$bachelors == 0 & job.data$masters == 1 & job.data$phd == 1] <- "M or PhD"
+job.data$education[job.data$bachelors == 0 & job.data$masters == 1 & job.data$phd == 0] <- "M"
+job.data$education[job.data$bachelors == 1 & job.data$masters == 0 & job.data$phd == 0] <- "B"
+job.data$education[job.data$bachelors == 0 & job.data$masters == 0 & job.data$phd == 1] <- "PhD"
+job.data$education[job.data$bachelors == 0 & job.data$masters == 0 & job.data$phd == 0] <- "No edu"
+
+job.data$education <- factor(job.data$education)
+level.e <- levels(job.data$education)
+```
+
+# Education Level and Industry / Education Level and State
+
+## Heatmap - Average Salary based on Industry and Education Level
+
+```{r}
+# prep for hm6
+
+avg.salary <- 0
+education <- 0
+company.industry <- 0
+
+heatmap.data <- data.frame(company.industry, education, avg.salary)
+
+for(i in 1:length(level.i)){
+  ind1 <- job.data %>%
+  filter(company_industry == level.i[i]) 
+  
+  
+  for (j in 1:length(level.e)){
+    
+    ind2 <- ind1 %>%
+  filter(education == level.e[j])
+
+company.industry <- level.i[i]
+avg.salary <- sum(ind2$avg_salary) / nrow(ind2)
+education <- level.e[j]
+
+
+df1 <- data.frame(company.industry, education, avg.salary)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 6
+
+# Industry and education with regards avg salary
+
+hm5 <- ggplot(heatmap.data, aes(education, company.industry)) +
+  geom_tile(aes(fill = avg.salary)) + 
+  scale_fill_gradient(low = "light green", high = "dark green", name = "Average Salary", labels = comma) +
+  ggtitle("Average Salary based on Industry and Education") +
+  xlab("Education Level") +
+  ylab("Company Industry") + 
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm5)
+```
+
+## Heatmap - Average Salary based on State and Education Level
+
+```{r}
+# prep for hm6
+
+avg.salary <- 0
+education <- 0
+state <- 0
+
+heatmap.data <- data.frame(state, education, avg.salary)
+
+for(i in 1:length(level.s)){
+  ind1 <- job.data %>%
+  filter(state == level.s[i]) 
+  
+  
+  for (j in 1:length(level.e)){
+    
+    ind2 <- ind1 %>%
+  filter(education == level.e[j])
+
+state <- level.s[i]
+avg.salary <- sum(ind2$avg_salary) / nrow(ind2)
+education <- level.e[j]
+
+
+df1 <- data.frame(state, education, avg.salary)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 6
+
+# Industry and education with regards avg salary
+
+hm6 <- ggplot(heatmap.data, aes(education, state)) +
+  geom_tile(aes(fill = avg.salary)) + 
+  scale_fill_gradient(low = "light green", high = "dark green", name = "Average Salary", labels = comma) +
+  ggtitle("Average Salary based on State and Education") +
+  xlab("Education Level") +
+  ylab("State") +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm6)
+```
+
+
+## Heatmap - Average Company Rating based on Industry and Education Level
+
+```{r}
+# prep for hm6
+
+rating <- 0
+education <- 0
+company.industry <- 0
+
+heatmap.data <- data.frame(company.industry, education, rating)
+
+for(i in 1:length(level.i)){
+  ind1 <- job.data %>%
+  filter(company_industry == level.i[i]) 
+  
+  
+  for (j in 1:length(level.e)){
+    
+    ind2 <- ind1 %>%
+  filter(education == level.e[j])
+
+company.industry <- level.i[i]
+rating <- sum(ind2$company_rating) / nrow(ind2)
+education <- level.e[j]
+
+
+df1 <- data.frame(company.industry, education, rating)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 6
+
+# Industry and education with regards avg salary
+
+hm5 <- ggplot(heatmap.data, aes(education, company.industry)) +
+  geom_tile(aes(fill = rating)) + 
+  scale_fill_gradient(low = "red", high = "green", name = "Company Rating", labels = comma) +
+  ggtitle("Company Rating based on Industry and Education") +
+  xlab("Education Level") +
+  ylab("Company Industry") +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm5)
+```
+
+
+## Heatmap - Average Company Rating based on State and Education Level
+
+```{r}
+# prep for hm6
+
+rating <- 0
+education <- 0
+state <- 0
+
+heatmap.data <- data.frame(state, education, rating)
+
+for(i in 1:length(level.s)){
+  ind1 <- job.data %>%
+  filter(state == level.s[i]) 
+  
+  
+  for (j in 1:length(level.e)){
+    
+    ind2 <- ind1 %>%
+  filter(education == level.e[j])
+
+state <- level.s[i]
+rating <- sum(ind2$company_rating) / nrow(ind2)
+education <- level.e[j]
+
+
+df1 <- data.frame(state, education, rating)
+
+heatmap.data <-rbind(heatmap.data, df1)
+  }
+
+}
+
+heatmap.data <- heatmap.data[-1,]
+```
+
+
+```{r}
+# Heatmap 6
+
+# Industry and education with regards avg salary
+
+hm6 <- ggplot(heatmap.data, aes(education, state)) +
+  geom_tile(aes(fill = rating)) + 
+  scale_fill_gradient(low = "red", high = "green", name = "Average Salary", labels = comma) +
+  ggtitle("Average Company Rating based on State and Education") +
+  xlab("Education Level") +
+  ylab("State") +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplotly(hm6)
+```
+
