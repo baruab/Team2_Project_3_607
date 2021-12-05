@@ -1,0 +1,41 @@
+---
+title: "Remove non-unique rows and cleaned up job_location and job_salary columns"
+author: "Eric Lehmphul"
+date: "11/29/2021"
+output: html_document
+---
+
+```{r}
+a <- read.csv("https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/glassdoor_datascience_updated.csv")
+
+a <- a[4:14]
+```
+
+
+
+```{r}
+library(dplyr)
+
+data <- distinct(a)
+```
+
+
+```{r}
+library(tidyr)
+data1 <- separate(data = data, col = job_location, into = c("city", "state"), sep = ", ")
+```
+
+```{r}
+data1$job_salary[c(2, 7, 8, 13, 14, 18, 23, 24, 26, 27, 29, 36, 37, 39, 40, 41, 42, 43, 44, 45, 46, 48:54, 57, 58, 59, 61:63)] <- "Not Provided"
+data1$city[2] <- "Not Provided"
+data1$state[2] <- "MA"
+data1$state[data1$city == "Remote"] <- "Remote"
+data1$city[23] <- "St. Louis"
+data1$state[23] <- "MI"
+data1$state[57] <- "United States"
+```
+
+
+```{r}
+write.csv(data1, "unique_job_postings.csv")
+```
