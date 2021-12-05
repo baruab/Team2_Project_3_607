@@ -1,0 +1,91 @@
+
+CREATE CONSTRAINT ON (c:Company) ASSERT c.name IS UNIQUE;
+CREATE CONSTRAINT ON (j:Job) ASSERT j.name IS UNIQUE;
+CREATE CONSTRAINT ON (l:City) ASSERT l.name IS UNIQUE;
+CREATE CONSTRAINT ON (i:Industry) ASSERT i.name IS UNIQUE;
+
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/Data_Job_SF.csv' AS row
+WITH row, SPLIT(row.Date_Posted,'/') AS date
+MERGE (job:Job {name:row.Job_title, title: row.Job_title, max_salary: row.Max_Salary})
+
+MERGE (company:Company { name: row.Company } )
+MERGE (city:City { name: row.City } )
+MERGE (industry:Industry { name:   coalesce(row.Industry, 'Unknown') } )
+
+CREATE (job)-[:WORKS_FOR]->(company)
+CREATE (company)-[:OFFICE_IN]->(city)
+CREATE (job)-[:LOCATION]->(city)
+CREATE (company)-[:IS_IN]->(industry);
+
+==============================================
+
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/Data_Job_WA.csv' AS row
+WITH row, SPLIT(row.Date_Posted,'/') AS date
+MERGE (job:Job {name:row.Job_title, title: row.Job_title, max_salary: row.Max_Salary})
+
+MERGE (company:Company { name: row.Company } )
+MERGE (city:City { name: row.City } )
+MERGE (industry:Industry { name:   coalesce(row.Industry, 'Unknown') } )
+
+CREATE (job)-[:WORKS_FOR]->(company)
+CREATE (company)-[:OFFICE_IN]->(city)
+CREATE (job)-[:LOCATION]->(city)
+CREATE (company)-[:IS_IN]->(industry);
+
+====================================================
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/Data_Job_TX.csv' AS row
+WITH row, SPLIT(row.Date_Posted,'/') AS date
+MERGE (job:Job {name:row.Job_title, title: row.Job_title, max_salary: row.Max_Salary})
+
+MERGE (company:Company { name: row.Company } )
+MERGE (city:City { name: coalesce(row.City, 'Unknown') } )
+MERGE (industry:Industry { name:   coalesce(row.Industry, 'Unknown') } )
+
+CREATE (job)-[:WORKS_FOR]->(company)
+CREATE (company)-[:OFFICE_IN]->(city)
+CREATE (job)-[:LOCATION]->(city)
+CREATE (company)-[:IS_IN]->(industry);
+
+===============================================================
+
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/glassdoor_datascience.csv' AS row
+MERGE (job:Job {name:row.job_title, title: row.job_description, max_salary: row.job_salary})
+
+MERGE (company:Company { name: coalesce(row.company_name , 'Unknown')  } )
+MERGE (city:City { name: coalesce(row.job_location, 'Unknown') } )
+MERGE (industry:Industry { name:   coalesce(row.company_industry, 'Unknown') } )
+
+CREATE (job)-[:WORKS_FOR]->(company)
+CREATE (company)-[:OFFICE_IN]->(city)
+CREATE (job)-[:LOCATION]->(city)
+CREATE (company)-[:IS_IN]->(industry);
+
+
+
+===============================================================================
+
+https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/Data_Job/Cleaned_DS_Jobs.csv
+
+
+================
+MERGE (job:Job {name:row.job_title, title: row.job_title, max_salary: row.max_salary})
+===========
+CREATE CONSTRAINT ON (c:Company) ASSERT c.name IS UNIQUE;
+CREATE CONSTRAINT ON (j:Job) ASSERT j.name IS UNIQUE;
+
+CREATE CONSTRAINT ON (l:City) ASSERT l.name IS UNIQUE;
+CREATE CONSTRAINT ON (s:State) ASSERT s.name IS UNIQUE;
+CREATE CONSTRAINT ON (i:Industry) ASSERT i.name IS UNIQUE;
+
+
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/job_posting_updated.csv' AS row
+MERGE (job:Job {name:row.job_title, title: row.job_title, max_salary: row.max_salary})
+MERGE (company:Company { name:  coalesce(row.company_name , 'Unknown')  } )
+MERGE (city:City { name: coalesce(row.city , 'Unknown')  } )
+MERGE (state:State { name: coalesce(row.state , 'Unknown')  } )
+MERGE (industry:Industry { name: coalesce(row.Industry, 'Unknown') } )
+
+CREATE (job)-[:IN]->(company)
+CREATE (company)-[:LOCATED_IN]->(city)
+CREATE (city)-[:IS_IN]->(state)
+CREATE (company)-[:INDUSTRY]->(industry);
