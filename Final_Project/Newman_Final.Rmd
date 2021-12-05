@@ -1,0 +1,108 @@
+---
+title: "JobDescription Part"
+author: "Nnaemeka Okereafor"
+date: "12/5/2021"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(wordcloud)
+library(tidyverse)
+library(tidytext)
+library(httr)
+library(rvest)
+library(stringr)
+library(readr)
+```
+
+
+### Job Description Link
+
+```{r}
+url<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/glassdoor_datascience.csv"
+df<-read.csv(file=url(url), sep=",")
+names(df)
+```
+
+### Resume Link
+
+```{r}
+#url_res<-"https://www.postjobfree.com/resume/adktqz/senior-data-scientist-brooklyn-ny"
+#url_res<-"https://www.postjobfree.com/resume/adk07o/data-science-new-york-ny"
+#url_res<-"https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny"
+#url_res<-"https://www.postjobfree.com/resume/adost3/data-scientist-new-york-ny"
+url_res<-"https://www.postjobfree.com/resume/adonl3/data-scientist-charlotte-nc"
+#url_res<-"https://www.postjobfree.com/resume/ado61j/data-scientist-arlington-va"
+#url_res<-"https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny"
+web<- read_html(url_res)
+df_res<-web %>%html_nodes(".normalText")%>%html_text()
+``` 
+
+
+### Function To match skills
+
+```{r message=FALSE}
+skills<-function(desc,resu){
+#Job Description
+  all_res<-NULL
+  desc_link<-rep(NA, length(desc))
+  indx<-rep(NA,length(desc))
+  for (j in 1:length(desc)){
+    indx[j]<-j
+    desc_link <-as_tibble(desc[j]) %>%
+    mutate(JobNumber = row_number())
+    wd<-desc_link %>% unnest_tokens(word, value)%>%anti_join(stop_words)
+    wu_unique <- unique(wd)%>%filter(!(word %in% seq(0,1000))) 
+    wu_unique<-wu_unique$word
+    #Resume workup
+    res0 <-as_tibble(resu) %>%
+      mutate(resume = row_number())
+    wd_res<-res0 %>% unnest_tokens(word, value)%>%anti_join(stop_words)
+    res_unique <- unique(wd_res)%>%filter(!(word %in% seq(0,1000)))
+    res_tib<-res_unique$word
+    df1 <- list(ResumeTools=res_tib, JobDescripTools=wu_unique)
+    attributes(df1) <- list(names = names(df1), row.names=1:max(length(res_tib), length(wu_unique)), class='data.frame')
+    df1<-df1%>%
+      mutate(flag=as.integer(df1$ResumeTools %in% df1$JobDescripTools),TotalTool=sum(flag))
+    print(unique(df1$TotalTool))
+    #t<-subset(df1,flag==1)%>%select(ResumeTools)
+    #print(t)
+    resume_df <- df1%>% select(ResumeTools,flag)
+    res<-resume_df%>%
+      pivot_wider(names_from = ResumeTools, values_from = flag)
+    all_res<-rbind(all_res,res)
+    
+ 
+  }
+  
+   size<-max(length(res_tib),length(wu_unique))
+   all_res$Index<-indx
+   all_res$SimilarityCount <- rowSums(all_res[,1:size],na.rm=TRUE)
+   all_res$SimilarityRate<-(all_res$SimilarityCount/size)
+   print(all_res)
+   #print(all_res$SimilarityCount)
+  
+   select_res<-all_res%>%
+     select_if(names(all_res) %in% c("Index","jupyter",  "rstudio",   "pycharm",  "visual","studio","code",  "nteract", "atom", "matlab", "visual studio","notepad++","notepad","sublime", "text", "mysql", "machine", "learning", "python", "sql", "r", "statistical", "modeling", "mongodb", "management", "c++", "c#", "aws", "vim","spyder","Scikit","Learn", "SimilarityCount","SimilarityRate")) %>%
+     arrange(desc(SimilarityCount))
+   
+ return(select_res)
+ 
+}
+```
+
+### Extract Only Job Description from Job dataset
+
+```{r}
+jobs<-df$job_description
+```
+
+### Call Function
+
+```{r}
+b<-skills(jobs,df_res)
+b
+```
+
