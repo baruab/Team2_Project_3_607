@@ -1,0 +1,283 @@
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(httr)
+library(rvest)
+library(stringr)
+library(readr)
+library(tm)
+library(slam)
+library(dplyr)
+library(tidytext)
+library(tidyr)
+library(dplyr)
+library(textstem)
+library(lsa)
+library(data.table)
+library(VennDiagram)
+library(wordcloud)
+library(RColorBrewer)
+library(ggplot2)
+```
+
+
+```{r}
+library(readr)
+urlfile<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/job_posting.csv"
+jobs<-read_csv(url(urlfile))
+
+resume<-"
+
+Seattle, Washington 614-***-**** no sponsorship required adklxr@r.postjobfree.com
+
+w www.linkedin.com/in/liuyuan1129 https://github.com/yuanyvette1129 SKILLS
+
+Programming Languages: Python, SQL, SAS certified
+
+Technologies: - Apache Spark, MapReduce, Hadoop, Databricks, Google Colab, Git, Tableau
+
+- Machine Learning: Random Forest, Gradient Boosted Trees, Logistic Regression, Lasso, Ridge, PCA, KNN, NLP, Clustering, Anomaly Detection, Recommendation System
+
+- Statistics: A/B Testing, Experimental Design, Econometric Models, Time Series Forecasting EXPERIENCE
+
+Data Science Fellow, Insight, Seattle WA May 2020 - Present
+
+● Consulted for a mobile game company (A Thinking Ape) to monitor shard health and improve game monetization
+
+● Preprocessed over 1.2 million game behavior data and identified 16 key gameplay features from over 90 features using filter and embedded feature selection techniques
+
+● Built a random forest model that predicts player’s LTV by day 60 and identified low-performing shards for the community specialist team for early intervention
+
+Research Assistant, George Washington Institute of Public Policy, Washington D.C. Sep 2015 - May 2020
+
+● Collected income data from the Census of Population and visualized to understand the geography of U.S. county-level income inequality from 1950 to 2010
+
+● Empirically evaluated the employment impacts of Florida county recycling programs based on fixed effects regression model and estimated that a 1 percentage point increase in county recycling rate leads to a 0.4% job growth in solid waste and recycling industry
+
+Research Analyst, Ohio Civil Service Employee Association, Westerville, Ohio 2014 – 2015
+
+● Provided data support for successful negotiation of a $1.5 million contract with County Job and Family Services
+
+● Prepared charts using Tableau about wintertime slips and falls within Department of Rehabilitation and Corrections to help analyze and develop recommendations for injury reduction PROJECTS
+
+User Segmentation and Churn Prediction based on 1.6 million Merchant Transaction Activities Feb 2021
+
+● Identified 4 types of businesses using RFM clustering, to facilitate customized action plans to different segments
+
+● Defined a churned merchant as not make a transaction after 30 days of their first transaction, and self-labeled merchants into churn/no churn
+
+● Built a Random Forest model to predict which active merchants are likely to churn in the near future, with a F1 score= 0.45; found that the total transaction amount in a month is the most predictive of churning Financial Anomaly Detection and Risk Analysis in Python August 2020
+
+● Developed a machine learning model and built an alert system to predict and prevent fraudulent activities
+
+● Performed exploratory data analysis on 138K+ transactions and preprocessed data by matching IP address to country, feature engineering, encoding categorical features, and handling imbalance labeled data by SMOTE
+
+● Applied distribution-based modeling and supervised machine learning algorithms, and selected random forest model as the final model (best F1: 0.67)
+
+● Found that more than 50% of fraud activities occurred 1 second after sign up and the more a device or an IP is shared, the more likely to be classified as at risk EDUCATION
+
+George Washington University 2015 - Present
+
+Ph.D. candidate (ABD), Public Policy and Public Administration Ohio State University 2012 - 2014
+
+Master of Public Administration & Graduate Minor in Statistics Laioffer 2019 - 2020
+
+Artificial Intelligence & Data Engineering Certificate"
+
+```
+
+
+```{r}
+##Multiple Job postings at once (Corpus)
+#One row of posting
+postings<-50
+des_all<-subset(jobs,select=c(3))
+#des_all<-data.frame(jobs$job_description)
+des_all<-des_all[1:postings,]
+company_names<-jobs[1:postings,6]
+salary<-jobs[1:postings,4]
+location<-jobs[1:postings,5]
+title<-jobs[1:postings,2]
+industry<-jobs[1:postings,7]
+
+#adding resume text as doc_id last
+des_all<-rbind(des_all,resume)
+
+des_all$job_description<-des_all$job_description%>%
+  str_replace_all(pattern="\n",replacement=" ")%>%
+  str_replace_all(pattern="www+|com|@\\S+|#\\S+|http|\\*|\\s[A-Z]\\s|\\s[a-z]\\s|\\d|�+",replacement=" ")
+des_all$job_description<-tolower(des_all$job_description)
+#des_all$job_description<-removeNumbers(des_all$job_description)
+des_all$job_description<-removePunctuation(des_all$job_description)
+#des_all$job_description<-stripWhitespace(des_all$job_description)
+des_all$job_description<-removeWords(des_all$job_description,stopwords("en"))
+des_all$job_description<-sapply(des_all$job_description,lemmatize_strings)
+
+des_all_df<-data.frame(
+  doc_id=1:(postings+1),
+  text=des_all$job_description
+)
+
+Corpus=VCorpus(DataframeSource(des_all_df))
+
+#cr_DTM<-DocumentTermMatrix(Corpus)
+#tfidf <- removeSparseTerms(tfidf, 1-(10/length(Corpus)))
+tf<-DocumentTermMatrix(Corpus,control=list(weighting=weightTf))
+tfidf<-DocumentTermMatrix(Corpus,control=list(weighting=weightTfIdf))
+
+#all(findFreqTerms(tf)==findFreqTerms(tfidf))
+#findFreqTerms(tf,lowfreq = 1)
+#findFreqTerms(tfidf,lowfreq = 0.33)
+
+inspect(tf)
+inspect(tfidf)
+
+tf_df<-as.matrix(tf)
+tfidf_df<-as.matrix(tfidf)
+
+
+```
+
+```{r}
+#test cosine
+tfidf_a<-as.matrix(tfidf)
+tfidf_a<-transpose(data.frame(tfidf_a))
+tfidf_a<-as.matrix(tfidf_a)
+
+cos_df<-data.frame(cosine(tfidf_a))
+resume_similarity<-cos_df[(postings+1),]
+#resume_similarity
+list<-names(resume_similarity)<-NULL
+list<-unlist(c(resume_similarity))
+order<-order(list,decreasing=TRUE)
+order<-order[-c(1)]
+doc_ID<-data.frame(order)
+
+rec_df<-doc_ID
+colnames(rec_df)<-c("doc_ID")
+
+rec_df<-rec_df%>%
+  mutate(job_title=jobs[order,2])%>%
+  mutate(min_salary=jobs[order,4])%>%
+  mutate(max_salary=jobs[order,5])%>%
+  mutate(city=jobs[order,6])%>%
+  mutate(state=jobs[order,7])%>%
+  mutate(company_name=jobs[order,8])%>%
+  mutate(company_industry=jobs[order,9])%>%
+  mutate(company_rating=jobs[order,10])%>%
+  mutate(bachelors=jobs[order,11])%>%
+  mutate(masters=jobs[order,12])%>%
+  mutate(PHD=jobs[order,13])
+  
+
+```
+
+```{r}
+#understanding the terms that are most relevant
+ranking<-2
+row_num<-ranking+1
+
+z<-data.frame(as.matrix(tfidf)) 
+compare1<-rbind(z[ranking,],z[nrow(z),]) 
+comp1<-compare1%>%
+  mutate(row_n=1:n())%>%
+  select_if(function(x) any(x!=0 & .$row_n!=0))
+comp1_t<-transpose(comp1)
+colnames(comp1_t)<-c("Resume","Job")
+comp1_t$terms<-colnames(comp1)
+comp1_matches<-comp1_t[comp1_t$Resume!=0 & comp1_t$Job!=0,]
+rownames(comp1_matches)<-NULL
+comp1_matches<-comp1_matches[-c(nrow(comp1_matches)),]
+comp1_matches_n<-nrow(comp1_matches)
+Job1_diff<-comp1_t[comp1_t$Resume==0 & comp1_t$Job!=0,]
+Job1_diff_n<-nrow(Job1_diff)
+#Job1_diff<-subset(Job1_diff,select=-c(1))
+Resume1_diff<-comp1_t[comp1_t$Resume!=0 & comp1_t$Job==0,]
+Resume1_diff_n<-nrow(Resume1_diff)
+#compare2<-rbind(z[1,],z[order[2]+1,])
+
+#Venn Diagram of common and different words between resume and job posting. 
+grid.newpage()
+draw.pairwise.venn(Resume1_diff_n+comp1_matches_n, Job1_diff_n+comp1_matches_n, comp1_matches_n, category = c("Terms in your resume", "Terms in Job Posting"), lty = rep("blank", 
+    2), fill = c("light blue", "pink"), alpha = rep(0.5, 2), cat.pos = c(0, 
+    0), cat.dist = rep(0.025, 2), scaled = FALSE)
+
+#Terms explicitly listed from Venn Diagram - reordered based on tfidf score
+Terms_common<-comp1_matches$terms
+Terms_common<-Terms_common[-c(length(Terms_common))]
+Resume_unique<-Resume1_diff$terms
+Job_unique<-Job1_diff$terms
+
+#Word Cloud for top recommended job
+comp1_matches_adjust<-comp1_matches%>%
+  mutate(comp1_matches$Job*1000)
+colnames(comp1_matches_adjust)<-c("Resume","Job","terms","adjust")
+set.seed(1234)
+wordcloud(words = comp1_matches_adjust$terms, freq = comp1_matches_adjust$adjust, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+
+```
+
+```{r}
+#adding column of ranking
+rec_df$ranking<-1:nrow(rec_df)
+#reorder based on increasing salaries from rec_df
+rec_df_reorder<-rec_df%>%arrange(rec_df$max_salary)
+
+y1<-rec_df_reorder$max_salary
+y1<-y1%>%drop_na()
+x1<-1:nrow(y1)
+#ranking<-rec_df_reorder[1:nrow(y1),13]
+z1<-cbind(x1,y1,ranking)
+
+group1<-filter(z1,ranking<11)
+y2<-group1$max_salary
+x2<-1:length(y2)
+group2<-filter(z1,ranking>10)
+y3<-group2$max_salary
+x3<-1:length(y3)
+
+#ggplot(group1, aes(x = x1, y = max_salary)) +
+#    geom_point()
+
+plot(x3, y3, col='blue', pch=19)
+points(x2, y2, col='red', pch=19)
+
+```
+
+
+
+```{r}
+
+key_clean<-c( "jupyter/ipython", "jupyter",  "rstudio",   "pycharm",  "visual studio code",  "nteract", "atom", "matlab", "visual studio",   "notepad++","sublime text", "vim", "intellij", "spyder", "kaggle kernels", "google colab", "azure notebook",  "domino datalab","google cloud datalab", "paperspace", "floydhub", "crestle", "jupyterhub", "google cloud platform (gcp)",   "amazon web services (aws)",   "microsoft azure",   "ibm cloud",   "alibaba cloud", "python", "r","sql","bash","java", "javascript/typescript", "visual basic/vba", "c/c++", "scala","go", "c#/.net", "php",  "ruby", "sas/stata",  "scikit-learn",  "tensorflow",  "keras", "pytorch","spark mllib", "h20", "fastai", "mxnet", "caret",  "xgboost", "mlr", "prophet", "randomforest", "lightgbm", "cntk", "caffe", "ggplot2",  "matplotlib", "altair", "shiny", "d3", "plotly", "bokeh", "seaborn", "geoplotlib", "leaflet",  "lattice",  "aws elastic compute cloud (ec2)",  "google compute engine", "aws elastic beanstalk", "google app engine", "google kubernetes engine", "aws lambda", "google cloud functions","aws batch",  "azure virtual machines", "azure container service",  "azure functions",  "azure event grid",  "azure batch", "azure kubernetes service", "ibm cloud virtual servers", "ibm cloud container registry",   "ibm cloud kubernetes service", "ibm cloud foundry",  "amazon transcribe", "google cloud speech-to-text api",  "amazon rekognition", "google cloud vision api", "amazon comprehend", "google cloud natural language api", "amazon translate","google cloud translation api", "amazon lex", "google dialogflow enterprise edition",  "amazon rekognition video", "google cloud video intelligence api",  "google cloud automl", "amazon sagemaker","google cloud machine learning engine",  "datarobot",   "h20 driverless ai", "sas", "dataiku",  "rapidminer",  "instabase", "algorithmia", "dataversity", "cloudera", "azure machine learning studio", "azure machine learning workbench", "azure cortana intelligence suite", "azure bing speech api",  "azure speaker recognition api","azure computer vision api",  "azure face api", "azure video api", "ibm watson studio", "ibm watson knowledge catalog",  "ibm watson assistant", "ibm watson discovery", "ibm watson text to speech", "ibm watson visual recognition",  "ibm watson machine learning", "azure cognitive services",  "aws relational database service", "aws aurora",  "google cloud sql","google cloud spanner", "aws dynamodb",  "google cloud datastore", "google cloud bigtable", "aws simpledb", "microsoft sql server", "mysql","postgressql", "sqlite",  "oracle database","ingres", "microsoft access", "nexusdb",  "sap iq", "google fusion tables", "azure database for mysql",   "azure cosmos db", "azure sql database","azure database for postgresql",  "postgresql", "ibm cloud compose",  "ibm cloud compose for mysql",  "ibm cloud compose for postgresql", "ibm cloud db2",  "aws elastic mapreduce", "google cloud dataproc", "google cloud dataflow",   "google cloud dataprep", "aws kinesis", "google cloud pub/sub", "aws athena", "aws redshift", "google bigquery", "teradata",  "microsoft analysis services",  "oracle exadata",  "oracle warehouse builder", "snowflake","databricks",     "azure sql data warehouse",  "azure hdinsight", "azure stream analytics","ibm infosphere datastorage","ibm cloud analytics engine", "ibm cloud streaming analytics","audio data", "categorical data", "genetic data", "geospatial data", "image data", "numerical data", "sensor data","tabular data", "text data", "time series data", "video data", "government websites", "university research group websites", "non-profit research group websites", "dataset aggregator/platform (socrata, kaggle public datasets platform, etc.)", "i collect my own data (web-scraping, etc.)",  "publicly released data from private companies", "google search",  "google dataset search", "github","git")
+  resume <-as_tibble(resume) %>%
+    mutate(resume = row_number())
+  
+  wd<-resume %>% unnest_tokens(word, value,token = stringr::str_split, pattern = "[,;]")
+  #wd
+  pt<-wd$word
+  tools<-as_tibble(pt)
+  
+  res_tools<-tools%>%mutate(tool = trimws(str_replace_all(str_replace_all(unlist(tools),"[&():>]",""),"and","")))
+  resume_tools<-trimws(gsub(".*:","",res_tools$value))
+  resume_tools<-trimws(gsub("[.*:]","",resume_tools))
+  resume_tools<-trimws(gsub("and","",resume_tools))
+  resume_tools<-str_replace_all(resume_tools,"[()]","")
+  resume_tools<-str_replace_all(resume_tools,"aws","amazon web services (aws)")
+  resume_tools<-str_replace_all(resume_tools,"r shiny","shiny")
+  resume_tools<-unique(str_replace_all(resume_tools,"r-programing","r"))
+  
+  df = list(ResumeTools=resume_tools, DataSciTools=key_clean)
+  attributes(df) = list(names = names(df),
+                        row.names=1:max(length(resume_tools), length(key_clean)), class='data.frame')
+  df<-df%>%
+    dplyr::mutate(flag=as.integer(df$DataSciTools %in% df$ResumeTools),TotalTool=sum(flag))
+  print(unique(df$TotalTool))
+  t<-subset(df,flag==1)%>%select(DataSciTools)
+  print(t)
+  vec<-c(unique(df$TotalTool), length(key_clean))
+  resume_df <- df%>% select(c(DataSciTools,flag))
+
+```
