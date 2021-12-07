@@ -16,7 +16,7 @@ sel_glassdoor_df$job_title <- trimws(sel_glassdoor_df$job_title)
 url<-"https://raw.githubusercontent.com/baruab/msdsrepo/main/Project_3_607/kaggle-survey-2018/multipleChoiceResponses.csv"
 survey_tib <- read.csv(file=url(url), sep=",")
 
-df = data.frame(id =c('Q11','Q12','Q13','Q14','Q15','Q16','Q17','Q18','Q19','Q20','Q21','Q22','Q23','Q24','Q25','Q26','Q27','Q28','Q29','Q30','Q31','Q32','Q33','Q34','Q35','Q36','Q37','Q38','Q39','Q40','Q41','Q42','Q43','Q44','Q45','Q46','Q47','Q48','Q49','Q50'),
+qdf = data.frame(id =c('Q11','Q12','Q13','Q14','Q15','Q16','Q17','Q18','Q19','Q20','Q21','Q22','Q23','Q24','Q25','Q26','Q27','Q28','Q29','Q30','Q31','Q32','Q33','Q34','Q35','Q36','Q37','Q38','Q39','Q40','Q41','Q42','Q43','Q44','Q45','Q46','Q47','Q48','Q49','Q50'),
                 desc = c( " Q11	Select any activities that make up an important part of your role at work",
                           " Q12	What is the primary tool that you use at work or school to analyze data?",
                           " Q13	Which of the following integrated development environments",
@@ -98,7 +98,7 @@ skill_income <- read.csv("https://raw.githubusercontent.com/catfoodlover/Data607
 
 resume_url_df <- data.frame(
   name = c("https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny",
-           "https://www.postjobfree.com/resume/adktqz/senior-data-scientist-brooklyn-ny",
+        #   "https://www.postjobfree.com/resume/adktqz/senior-data-scientist-brooklyn-ny",
            "https://www.postjobfree.com/resume/adk07o/data-science-new-york-ny",
            "https://www.postjobfree.com/resume/adol8d/data-scientist-new-york-ny",
            "https://www.postjobfree.com/resume/adost3/data-scientist-new-york-ny",
@@ -255,6 +255,13 @@ function(input, output, session) {
                 selected = "")
   })
   
+  output$resume2Output <- renderUI({
+    selectInput("resume2Input", "Resume URL",
+                sort(resume_url_df$name ), 
+                width="80%",
+                selected = "")
+  })
+  
   newman <- reactive({
       web <- read_html(input$resumeUrlInput)
       raw_resume<-web %>%html_nodes(".normalText")%>%html_text()
@@ -309,7 +316,7 @@ function(input, output, session) {
   
   output$questionOutput <- renderUI({
     selectInput("questionInput", "Question",
-                setNames(df$id, df$desc), width="70%",
+                setNames(qdf$id, qdf$desc), width="70%",
                 selected = NULL)
   }) 
   
@@ -610,5 +617,137 @@ function(input, output, session) {
   output$plot <- renderPlot({
     show_plot()
   })
+  
+  
+  #########################################
+  #url<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/glassdoor_datascience.csv"
+  url<-"https://raw.githubusercontent.com/baruab/Team2_Project_3_607/main/job_posting.csv"
+  
+  alllisting <- read.csv(file=url(url), sep=",")
+  listing <- alllisting[1:100,]
+  jobs <- listing$job_description
+  
+  df_top_jobs<- reactive({
+  # inFile <- input$target_upload
+  #  if (is.null(inFile))
+  #      return(NULL)
+
+    skills<-function(desc,resu){
+      #Job Description
+      all_res<-NULL
+      desc_link<-rep(NA, length(desc))
+      indx<-rep(NA,length(desc))
+      for (j in 1:length(desc)){
+        indx[j]<-j
+        desc_link <-as_tibble(desc[j]) %>%
+          mutate(JobNumber = row_number())
+        wd<-desc_link %>% unnest_tokens(word, value)%>%anti_join(stop_words)
+        wu_unique <- unique(wd)%>%filter(!(word %in% seq(0,1000)))
+        wu_unique<-wu_unique$word
+        #Resume workup
+        res0 <-as_tibble(resu) %>%
+          mutate(resume = row_number())
+        wd_res<-res0 %>% unnest_tokens(word, value)%>%anti_join(stop_words)
+        res_unique <- unique(wd_res)%>%filter(!(word %in% seq(0,1000)))
+        res_tib<-res_unique$word
+        df1 <- list(ResumeTools=res_tib, JobDescripTools=wu_unique)
+        attributes(df1) <- list(names = names(df1), row.names=1:max(length(res_tib), length(wu_unique)), class='data.frame')
+        df1<-df1%>%
+          mutate(flag=as.integer(df1$ResumeTools %in% df1$JobDescripTools),TotalTool=sum(flag))
+        print(unique(df1$TotalTool))
+        #t<-subset(df1,flag==1)%>%select(ResumeTools)
+        #print(t)
+        resume_df <- df1%>% select(ResumeTools,flag)
+        res<-resume_df%>%
+          pivot_wider(names_from = ResumeTools, values_from = flag)
+        all_res<-rbind(all_res,res)
+        
+        
+      }
+      
+      size<-max(length(res_tib),length(wu_unique))
+      all_res$Index<-indx
+      all_res$SimilarityCount <- rowSums(all_res[,1:size],na.rm=TRUE)
+      all_res$SimilarityRate<-(all_res$SimilarityCount/size)
+      #print(all_res)
+      #print(all_res$SimilarityCount)
+      
+      select_res<-all_res %>%
+        select_if(names(all_res) %in% c("Index","jupyter",  "rstudio",   "pycharm",  "visual","studio","code",  "nteract", "atom", "matlab", "visual studio","notepad++","notepad","sublime", "text", "mysql", "machine", "learning", "python", "sql", "r", "statistical", "modeling", "mongodb", "management", "c++", "c#", "aws", "vim","spyder","Scikit","Learn", "SimilarityCount","SimilarityRate"))%>% select ("Index", "SimilarityCount","SimilarityRate") %>%
+        arrange(desc(SimilarityCount))
+      
+    }
+    
+    #obj <- read.csv(inFile$datapath)
+    #obj <- unlist(obj[2])
+    web <- read_html(input$resumeUrlInput)
+    raw_resume<-web %>%html_nodes(".normalText")%>%html_text()
+    
+    
+    
+    
+    b<-skills(jobs, raw_resume)
+ 
+    index <- b %>% arrange(desc(SimilarityRate)) %>% select(Index) %>% head()
+    df <- listing %>%  dplyr::mutate(Index = row_number())
+    top_jobs <-  dplyr::inner_join(df, index) %>% select(Title = job_title, Salary = max_salary, location = city, Company = company_name) # Description = job_description)
+   
+  })
+  
+  
+  output$top_job_table <- DT::renderDataTable({
+    top_jobs <- df_top_jobs()
+    DT::datatable(top_jobs)
+  })
+  
+  
+  cat_reco_jobs<- reactive({
+    
+    postings<-50
+    des_all<-subset(listing,select=c(3))
+    #des_all<-data.frame(listing$job_description)
+    des_all<-des_all[1:postings,]
+    company_names<-listing[1:postings,6]
+    salary<-listing[1:postings,4]
+    location<-listing[1:postings,5]
+    title<-listing[1:postings,2]
+    industry<-listing[1:postings,7]
+    
+    #adding resume text as doc_id last
+    web <- read_html(input$resume2Input)
+    raw_resume<-web %>%html_nodes(".normalText")%>%html_text()
+    
+    
+    des_all<-rbind(des_all,raw_resume)
+   # des_all$job_description<-des_all$job_description%>%str_replace_all(pattern="\n",replacement=" ")%>%str_replace_all(pattern="www+|com|@\\S+|#\\S+|http|\\*|\\s[A-Z]\\s|\\s[a-z]\\s|\\d|???+",replacement=" ")
+   # des_all$job_description<-tolower(des_all$job_description)
+    #des_all$job_description<-removeNumbers(des_all$job_description)
+   # des_all$job_description<-removePunctuation(des_all$job_description)
+    #des_all$job_description<-stripWhitespace(des_all$job_description)
+  #  des_all$job_description<-removeWords(des_all$job_description,stopwords("en"))
+ #   des_all$job_description<-sapply(des_all$job_description,lemmatize_strings)
+ #   des_all_df<-data.frame(
+  #    doc_id=1:(postings+1),
+   #   text=des_all$job_description
+  #  )
+    Corpus=VCorpus(DataframeSource(des_all))
+    tf<-DocumentTermMatrix(Corpus,control=list(weighting=weightTf))
+    tfidf<-DocumentTermMatrix(Corpus,control=list(weighting=weightTfIdf))
+    
+    tf_df<-as.matrix(tf)
+    tfidf_df<-as.matrix(tfidf)
+    
+    new_tf_df <- as.data.frame(as.matrix(tf))
+    new_tfidf_df <- as.data.frame(as.matrix(tfidf))
+    
+  })
+  
+  
+  
+  output$dtm_table <- DT::renderDataTable({
+    cat_jobs <- cat_reco_jobs()
+    DT::datatable(cat_jobs)
+  })
+  
   
 }
