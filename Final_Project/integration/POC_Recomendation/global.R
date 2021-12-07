@@ -14,3 +14,13 @@ library(tidytext)
 library(httr)
 library(rvest)
 
+library(wordcloud)
+
+library(tm)
+library(slam)
+
+#library(textstem)
+#library(lsa)
+#library(data.table)
+#library(VennDiagram)
+#library(RColorBrewer)
