@@ -92,11 +92,15 @@ hidden(fluidRow(
                     tabsetPanel(
                       tabPanel(title = "Skills Table",
                                DT::dataTableOutput("resume_table")
-                      ),tabPanel(title = "Skills Plot",
+                      ), tabPanel(title = "Skills Plot",
                                  plotOutput("plot")
+                      ), tabPanel(title = "Top Jobs Recommendation",
+                               DT::dataTableOutput("top_job_table")
                       )
+                                
                     )
             ),
+            
             #############################################################
             tabItem(tabName = "global",
                     box(width = NULL, status = "primary", solidHeader = TRUE, title= "global.R",
@@ -145,11 +149,7 @@ hidden(fluidRow(
             
             tabItem(tabName = "about",
                     fluidPage(
-                      
-                     # HTML("<iframe width=\"960\" height=\"680\" 
-                     #             src=\"https://rpubs.com/bikrambarua/Final_Project_Layout\" 
-                     #             frameborder=\"0\"></iframe>")
-                      tags$iframe(src = "Final_Project_Layout.html",
+                      tags$iframe(src = "Final_Project_R3.html",
                                   width = '100%', height = '800px', 
                                  frameborder = 0, scrolling = 'auto'
                        )
